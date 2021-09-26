@@ -1,0 +1,20 @@
+version: 2.1
+
+jobs:
+  run_tests_java:
+    docker:
+      - image: cimg/openjdk:8.0.292
+    steps:
+      - checkout
+      - run: |
+          ./gradlew clean test
+      - store_test_results:
+          path: build/test-results
+      - store_artifacts:
+          path: build/test-results
+
+workflows:
+  version: 2
+  run_tests:
+    jobs:
+      - run_tests_java
