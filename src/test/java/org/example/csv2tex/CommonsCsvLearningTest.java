@@ -23,17 +23,21 @@ public class CommonsCsvLearningTest {
 
     @Test
     public void tryOutCommonsCsvParsing() throws IOException {
+        // arrange
         URL resource = getClass().getClassLoader().getResource("testCsv.csv");
         assertThat(resource)
                 .describedAs("file not found in classpath: testCsv.csv")
                 .isNotNull();
         File csvFile = new File(resource.getFile());
-        Reader in = new FileReader(csvFile);
 
-        Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);
-
+        // act
         List<CSVRecord> recordList = new ArrayList<>();
-        records.forEach(recordList::add);
+        try (Reader in = new FileReader(csvFile)) {
+            Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);
+            records.forEach(recordList::add);
+        }
+
+        // assert
         assertThat(recordList)
                 .describedAs("should contain header, then 2 lines of content")
                 .hasSize(3);
@@ -49,22 +53,26 @@ public class CommonsCsvLearningTest {
 
     @Test
     public void tryOutCommonsCsvParsingWithOptions() throws IOException {
+        // arrange
         URL resource = getClass().getClassLoader().getResource("testCsv.csv");
         assertThat(resource)
                 .describedAs("file not found in classpath: testCsv.csv")
                 .isNotNull();
         File csvFile = new File(resource.getFile());
-        Reader in = new FileReader(csvFile);
         CSVFormat parser = CSVFormat.DEFAULT.builder()
                 .setTrim(true)
                 .setSkipHeaderRecord(true)
                 .setHeader(Header.class)
                 .build();
 
-        Iterable<CSVRecord> records = parser.parse(in);
-
+        // act
         List<CSVRecord> recordList = new ArrayList<>();
-        records.forEach(recordList::add);
+        try (Reader in = new FileReader(csvFile)) {
+            Iterable<CSVRecord> records = parser.parse(in);
+            records.forEach(recordList::add);
+        }
+
+        // assert
         assertThat(recordList)
                 .describedAs("should contain 2 lines of content (no header)")
                 .hasSize(2);
