@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - run: |
-          ./gradlew clean test
+          ./gradlew clean test -i
       - store_test_results:
           path: build/test-results
       - store_artifacts:
