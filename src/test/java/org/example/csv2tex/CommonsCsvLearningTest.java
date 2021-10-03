@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class CommonsCsvLearningTest {
 
-    // CSVFormat format = aformat.withHeader(Header.class);
     public enum Header {
         Name, Email, Comment
     }
@@ -24,11 +23,7 @@ public class CommonsCsvLearningTest {
     @Test
     public void tryOutCommonsCsvParsing() throws IOException {
         // arrange
-        URL resource = getClass().getClassLoader().getResource("testCsv.csv");
-        assertThat(resource)
-                .describedAs("file not found in classpath: testCsv.csv")
-                .isNotNull();
-        File csvFile = new File(resource.getFile());
+        File csvFile = getCsvFileFromClasspath();
 
         // act
         List<CSVRecord> recordList = new ArrayList<>();
@@ -54,11 +49,7 @@ public class CommonsCsvLearningTest {
     @Test
     public void tryOutCommonsCsvParsingWithOptions() throws IOException {
         // arrange
-        URL resource = getClass().getClassLoader().getResource("testCsv.csv");
-        assertThat(resource)
-                .describedAs("file not found in classpath: testCsv.csv")
-                .isNotNull();
-        File csvFile = new File(resource.getFile());
+        File csvFile = getCsvFileFromClasspath();
         CSVFormat parser = CSVFormat.DEFAULT.builder()
                 .setTrim(true)
                 .setSkipHeaderRecord(true)
@@ -84,5 +75,13 @@ public class CommonsCsvLearningTest {
         assertThat(record2.get(Header.Name)).isEqualTo("micha");
         assertThat(record2.get(Header.Email)).isEqualTo("micha@example.com");
         assertThat(record2.get(Header.Comment)).isEqualTo("test data set 2");
+    }
+
+    private File getCsvFileFromClasspath() {
+        URL resource = getClass().getClassLoader().getResource("csv/testCsv.csv");
+        assertThat(resource)
+                .describedAs("file not found in classpath: testCsv.csv")
+                .isNotNull();
+        return new File(resource.getFile());
     }
 }
