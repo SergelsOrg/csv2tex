@@ -1,5 +1,6 @@
 package org.example.csv2tex;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.assertj.core.api.SoftAssertions;
 import org.example.csv2tex.data.SchoolReportData;
 import org.example.csv2tex.data.SchoolReportDataParser;
@@ -17,7 +18,6 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.function.Function.identity;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.entry;
 
 /**
  * Tests that CSV data gets parsed correctly.
@@ -70,7 +70,7 @@ public class SchoolReportDataParserTest {
         assertEqualBooleanData(softly, actualEntry.booleanInformation, expectedEntry.booleanInformation);
     }
 
-    private void assertEqualSubjectData(SoftAssertions softly, List<Map.Entry<String, String>> actualSubjectToGrade, List<Map.Entry<String, String>> expectedSubjectToGrade) {
+    private void assertEqualSubjectData(SoftAssertions softly, List<Pair<String, String>> actualSubjectToGrade, List<Pair<String, String>> expectedSubjectToGrade) {
         softly.assertThat(actualSubjectToGrade).usingRecursiveComparison()
                 .describedAs("subject-grade mapping should match")
                 .isEqualTo(expectedSubjectToGrade);
@@ -294,4 +294,10 @@ public class SchoolReportDataParserTest {
                 .isNotNull();
         return new File(resource.getFile());
     }
+
+
+    private static Pair<String, String> entry(String key, String value) {
+        return Pair.of(key, value);
+    }
+
 }
