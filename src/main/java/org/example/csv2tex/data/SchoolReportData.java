@@ -1,5 +1,6 @@
 package org.example.csv2tex.data;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,13 +21,13 @@ public class SchoolReportData {
     //  In general, names are a complex topic, a separation into surname and given name is not always possible
     //  like that.
     //  Please consider if a simple "name" field containing everything would be an option.
-    public String surname;
-    public String givenName;
+    public String surname = "";
+    public String givenName = "";
 
     /**
      * Birthdate, represented as a String - we don't want to care about complex date formats etc
      */
-    public String birthday;
+    public String birthday = "";
 
     /**
      * Ordered listing of subjects and respective grades.
@@ -35,11 +36,11 @@ public class SchoolReportData {
      * different grade representations (A, B, C... vs 1, 2, 3, ... vs ?).
      */
     // TODO use a Pair class instead from some kind of util library instead of Map.Entry
-    public List<Map.Entry<String, String>> subjectToGrade;
+    public final List<Map.Entry<String, String>> subjectToGrade = new ArrayList<>();
 
     /**
      * Boolean data that will be part of the report, e.g. "advances to the next grade" or "will stay down / repeat the grade"
      */
-    public List<Boolean> booleanInformation;
+    public final List<Boolean> booleanInformation = new ArrayList<>();
 
 }
