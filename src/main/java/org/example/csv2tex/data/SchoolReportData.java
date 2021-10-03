@@ -1,8 +1,9 @@
 package org.example.csv2tex.data;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Data class representing one school report (report card).
@@ -35,8 +36,7 @@ public class SchoolReportData {
      * Again, represented as a String, as we don't want to take care of
      * different grade representations (A, B, C... vs 1, 2, 3, ... vs ?).
      */
-    // TODO use a Pair class instead from some kind of util library instead of Map.Entry
-    public final List<Map.Entry<String, String>> subjectToGrade = new ArrayList<>();
+    public final List<Pair<String, String>> subjectToGrade = new ArrayList<>();
 
     /**
      * Boolean data that will be part of the report, e.g. "advances to the next grade" or "will stay down / repeat the grade"
