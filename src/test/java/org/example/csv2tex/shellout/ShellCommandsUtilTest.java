@@ -13,7 +13,6 @@ class ShellCommandsUtilTest {
     private ShellCommandsUtil sut = new ShellCommandsUtil();
 
     @Test
-    @Tag("toolsInstalled")
     public void ensureCommandsExist() {
         assertThat(sut.ensureCommandsExist())
                 .describedAs("should not return any error codes on a system where all utilities are installed")

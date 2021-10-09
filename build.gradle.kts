@@ -15,14 +15,16 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
+// runs all tests except "toolsNotInstalled"
 tasks.getByName<Test>("test") {
     useJUnitPlatform() {
         excludeTags("toolsNotInstalled")
     }
 }
+// runs only "toolsNotInstalled" tests
 tasks.register<Test>("testToolsNotInstalled") {
     useJUnitPlatform() {
-        excludeTags("toolsInstalled")
+        includeTags("toolsNotInstalled")
     }
 }
 
