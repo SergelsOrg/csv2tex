@@ -1,5 +1,6 @@
 package org.example.csv2tex;
 
+import org.apache.commons.io.IOUtils;
 import org.assertj.core.data.Offset;
 import org.assertj.core.util.Files;
 import org.junit.jupiter.api.BeforeAll;
@@ -11,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static java.lang.Long.parseLong;
 import static org.assertj.core.api.Assertions.*;
@@ -35,18 +37,17 @@ public class ShellOutFromJavaLearningTest {
 
     @Test
     public void tryOutCallToShell() throws Exception {
-        File outputFile = Files.newTemporaryFile();
         ProcessBuilder processBuilder = new ProcessBuilder()
                 // UTC date as seconds since 1970
                 .command("date", "-u", "+%s")
-                .redirectErrorStream(true)
-                .redirectOutput(ProcessBuilder.Redirect.appendTo(outputFile));
+                // write stderr to stdout
+                .redirectErrorStream(true);
         long expectedUtcTimeMillis = Instant.now(Clock.systemUTC()).toEpochMilli();
 
         Process process = processBuilder.start();
 
         assertNormalTermination(process);
-        long actualUtcTimeMillis = getUtcMillisFromUtcSecondsOutput(outputFile);
+        long actualUtcTimeMillis = getUtcMillisFromUtcSecondsOutput(process);
         assertThat(actualUtcTimeMillis).isCloseTo(expectedUtcTimeMillis, Offset.offset(1000L));
     }
 
@@ -101,8 +102,9 @@ public class ShellOutFromJavaLearningTest {
                 .isZero();
     }
 
-    private long getUtcMillisFromUtcSecondsOutput(File outputFile) {
-        String output = Files.contentOf(outputFile, StandardCharsets.UTF_8);
+    private long getUtcMillisFromUtcSecondsOutput(Process process) throws IOException {
+        String output = IOUtils.readLines(process.getInputStream(), StandardCharsets.UTF_8).stream()
+                .collect(Collectors.joining(""));
         String sanitizedOutput = output.replaceAll("[\n\r]", "");
         assertThatCode(() -> parseLong(sanitizedOutput))
                 .describedAs("command's output was likely not an integer number, please check")
