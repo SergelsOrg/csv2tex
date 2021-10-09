@@ -4,14 +4,37 @@ orbs:
   # https://circleci.com/developer/orbs/orb/daniel-shuy/renovate
   renovate: daniel-shuy/renovate@3.1.0
 
+commands:
+  install_pdf_tools:
+    steps:
+      - run: |
+          sudo apt-get update
+          # contains pdfunite
+          sudo apt-get install poppler-utils
+          # contains texi2pdf
+          sudo apt-get install texinfo
+
 jobs:
   run_tests_java:
     docker:
       - image: cimg/openjdk:8.0.302
     steps:
       - checkout
+      - install_pdf_tools
       - run: |
           ./gradlew clean test
+      - store_test_results:
+          path: build/test-results
+      - store_artifacts:
+          path: build/test-results
+
+  run_tests_tools_not_installed_java:
+    docker:
+      - image: cimg/openjdk:8.0.292
+    steps:
+      - checkout
+      - run: |
+          ./gradlew clean testToolsNotInstalled
       - store_test_results:
           path: build/test-results
       - store_artifacts:
@@ -23,3 +46,4 @@ workflows:
     jobs:
       - renovate/validate-config
       - run_tests_java
+      - run_tests_tools_not_installed_java
