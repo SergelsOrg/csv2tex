@@ -16,7 +16,14 @@ dependencies {
 }
 
 tasks.getByName<Test>("test") {
-    useJUnitPlatform()
+    useJUnitPlatform() {
+        excludeTags("toolsNotInstalled")
+    }
+}
+tasks.register<Test>("testToolsNotInstalled") {
+    useJUnitPlatform() {
+        excludeTags("toolsInstalled")
+    }
 }
 
 java {
