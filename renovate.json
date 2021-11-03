@@ -1,5 +1,15 @@
 {
   "extends": [
-    "config:base"
+    "config:base",
+    ":automergeMinor",
+    ":enableVulnerabilityAlertsWithLabel(security)"
+  ],
+  "separateMajorMinor": true,
+  "prConcurrentLimit": 6,
+  "prCreation": "immediate",
+  "prHourlyLimit": 2,
+  "labels": [
+    "renovate",
+    "dependencies"
   ]
 }
