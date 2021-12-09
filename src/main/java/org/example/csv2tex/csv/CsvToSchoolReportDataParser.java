@@ -88,13 +88,13 @@ public class CsvToSchoolReportDataParser {
             // ASSUMPTION: subject, competency, description
             competencyData.schoolSubject = columnHeaderRows[0];
             competencyData.schoolCompetency = columnHeaderRows[1];
-            competencyData.schoolSubCompetencyDescription = columnHeaderRows[2];
+            competencyData.description = columnHeaderRows[2];
         } else if (columnHeaderRows.length == 4) {
             // ASSUMPTION: subject, competency, subcompetency, description
             competencyData.schoolSubject = columnHeaderRows[0];
             competencyData.schoolCompetency = columnHeaderRows[1];
             competencyData.schoolSubCompetency = columnHeaderRows[2];
-            competencyData.schoolSubCompetencyDescription = columnHeaderRows[3];
+            competencyData.description = columnHeaderRows[3];
         }
         competencyData.level = currentLevel;
         competencyData.grade = cellValue;

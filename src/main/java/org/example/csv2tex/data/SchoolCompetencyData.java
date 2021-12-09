@@ -14,7 +14,7 @@ public class SchoolCompetencyData {
 
     public String schoolSubCompetency = "";
 
-    public String schoolSubCompetencyDescription;
+    public String description;
 
     public String grade;
 }

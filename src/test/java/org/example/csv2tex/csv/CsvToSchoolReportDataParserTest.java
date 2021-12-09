@@ -273,70 +273,70 @@ public class CsvToSchoolReportDataParserTest {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Deutsch");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Texte rezipieren");
         assertThat(studentCompetency.schoolSubCompetency).isEqualTo("Lese- und Hörverstehen");
-        assertThat(studentCompetency.schoolSubCompetencyDescription).isEqualTo("Ich kann Informationen aus Texten entnehmen und wiedergeben. Ich kann Inhalt und Aussage von Texten wiedergeben. Ich kenne die Gattungsmerkmale von Märchen und Sagen.");
+        assertThat(studentCompetency.description).isEqualTo("Ich kann Informationen aus Texten entnehmen und wiedergeben. Ich kann Inhalt und Aussage von Texten wiedergeben. Ich kenne die Gattungsmerkmale von Märchen und Sagen.");
     }
 
     private void assertCompetency2Data(SchoolCompetencyData studentCompetency) {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Deutsch");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Texte produzieren");
         assertThat(studentCompetency.schoolSubCompetency).isEqualTo("Sprechen");
-        assertThat(studentCompetency.schoolSubCompetencyDescription).isEqualTo("Ich kann mich an Gesprächen und Diskussionen beteiligen. Ich besitze Sicherheit im einfachen Berichten und im Beschreiben. Ich kann freie Redebeiträge (Vorträge), ggf. mit Stichwortzettel, leisten. Ich kann Texte / Textpassagen fließend und gestaltend vorlesen (sinnbetont vortragen).");
+        assertThat(studentCompetency.description).isEqualTo("Ich kann mich an Gesprächen und Diskussionen beteiligen. Ich besitze Sicherheit im einfachen Berichten und im Beschreiben. Ich kann freie Redebeiträge (Vorträge), ggf. mit Stichwortzettel, leisten. Ich kann Texte / Textpassagen fließend und gestaltend vorlesen (sinnbetont vortragen).");
     }
 
     private void assertCompetency3Data(SchoolCompetencyData studentCompetency) {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Deutsch");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Texte produzieren");
         assertThat(studentCompetency.schoolSubCompetency).isEqualTo("Schreiben");
-        assertThat(studentCompetency.schoolSubCompetencyDescription).isEqualTo("Ich kann Texte mit Hilfe von Vorgaben planen und schreiben (z. B. Märchen, Tierbeschreibungen, Brief, Erzählung, Tagebucheintrag etc.).");
+        assertThat(studentCompetency.description).isEqualTo("Ich kann Texte mit Hilfe von Vorgaben planen und schreiben (z. B. Märchen, Tierbeschreibungen, Brief, Erzählung, Tagebucheintrag etc.).");
     }
 
     private void assertCompetency4Data(SchoolCompetencyData studentCompetency) {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Deutsch");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Über Sprache, Sprachverwendung und Sprachenlernen reflektieren");
         assertThat(studentCompetency.schoolSubCompetency).isEqualTo("Wortebene");
-        assertThat(studentCompetency.schoolSubCompetencyDescription).isEqualTo("Ich kann einen Grundbestand an Rechtschreibregeln sicher anwenden. Ich kann die Wortarten benennen. Ich kann Rechtschreibstrategien erkennen und sicher anwenden.");
+        assertThat(studentCompetency.description).isEqualTo("Ich kann einen Grundbestand an Rechtschreibregeln sicher anwenden. Ich kann die Wortarten benennen. Ich kann Rechtschreibstrategien erkennen und sicher anwenden.");
     }
 
     private void assertCompetency5Data(SchoolCompetencyData studentCompetency) {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Mathe");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Rechenoperationen");
         assertThat(studentCompetency.schoolSubCompetency).isEmpty();
-        assertThat(studentCompetency.schoolSubCompetencyDescription).isEqualTo("Ich kann die Grundrechenoperationen im Bereich der natürlichen im Kopf und schriftlich ausführen und an Beispielen den Zusammenhang zwischen Rechenoperationen und deren Umkehroperationen erläutern. Ich kann Teiler und Vielfache natürlicher Zahlen bestimmen. Ich kann ein Verfahren zur Bestimmung von Primzahlen anwenden.");
+        assertThat(studentCompetency.description).isEqualTo("Ich kann die Grundrechenoperationen im Bereich der natürlichen im Kopf und schriftlich ausführen und an Beispielen den Zusammenhang zwischen Rechenoperationen und deren Umkehroperationen erläutern. Ich kann Teiler und Vielfache natürlicher Zahlen bestimmen. Ich kann ein Verfahren zur Bestimmung von Primzahlen anwenden.");
     }
 
     private void assertCompetency6Data(SchoolCompetencyData studentCompetency) {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Mathe");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Mathematik mit Alltagsbezug");
         assertThat(studentCompetency.schoolSubCompetency).isEmpty();
-        assertThat(studentCompetency.schoolSubCompetencyDescription).isEqualTo("Ich kann Größen der Zeit, der Länge, der Masse, des Geldes, vergleichen, ordnen und umrechnen. Ich kann einfache Probleme aus dem Alltag lösen, in denen mehrere Rechenoperationen miteinander zu verknüpfen sind und negative Zahlen vorkommen (z. B. Temperaturänderungen).");
+        assertThat(studentCompetency.description).isEqualTo("Ich kann Größen der Zeit, der Länge, der Masse, des Geldes, vergleichen, ordnen und umrechnen. Ich kann einfache Probleme aus dem Alltag lösen, in denen mehrere Rechenoperationen miteinander zu verknüpfen sind und negative Zahlen vorkommen (z. B. Temperaturänderungen).");
     }
 
     private void assertCompetency7Data(SchoolCompetencyData studentCompetency) {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Mathe");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Rationale Zahlen");
         assertThat(studentCompetency.schoolSubCompetency).isEmpty();
-        assertThat(studentCompetency.schoolSubCompetencyDescription).isEqualTo("Ich kann natürliche und gebrochene Zahlen in verschiedenen Situationen lesen, im mündlichen und schriftlichen Sprachgebrauch sicher und sachgemäß verwenden. Ich kann Bruchteile zeichnerisch darstellen, aus geometrischen Darstellungen ablesen, gebrochene Zahlen der Situation angemessen darstellen. Ich kann natürliche Zahlen und einfache gemeine Brüche aus Alltagssituationen ordnen und vergleichen.");
+        assertThat(studentCompetency.description).isEqualTo("Ich kann natürliche und gebrochene Zahlen in verschiedenen Situationen lesen, im mündlichen und schriftlichen Sprachgebrauch sicher und sachgemäß verwenden. Ich kann Bruchteile zeichnerisch darstellen, aus geometrischen Darstellungen ablesen, gebrochene Zahlen der Situation angemessen darstellen. Ich kann natürliche Zahlen und einfache gemeine Brüche aus Alltagssituationen ordnen und vergleichen.");
     }
 
     private void assertCompetency8Data(SchoolCompetencyData studentCompetency) {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Mathe");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Geometrie");
         assertThat(studentCompetency.schoolSubCompetency).isEmpty();
-        assertThat(studentCompetency.schoolSubCompetencyDescription).isEqualTo("Ich kann die Begriffe Strecke, Strahl, Gerade unterscheiden. Ich kann die Lagebeziehung von Geraden beschreiben.");
+        assertThat(studentCompetency.description).isEqualTo("Ich kann die Begriffe Strecke, Strahl, Gerade unterscheiden. Ich kann die Lagebeziehung von Geraden beschreiben.");
     }
 
     private void assertCompetency9Data(SchoolCompetencyData studentCompetency) {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Mathe");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Texte rezipieren");
         assertThat(studentCompetency.schoolSubCompetency).isEmpty();
-        assertThat(studentCompetency.schoolSubCompetencyDescription).isEqualTo("Hör-/Hör-Sehverstehen Ich kann vertraute Wörter und einfache Sätze verstehen, die sich um mich selbst, meine eigene Familie oder auf konkrete Dinge um mich herum beziehen.");
+        assertThat(studentCompetency.description).isEqualTo("Hör-/Hör-Sehverstehen Ich kann vertraute Wörter und einfache Sätze verstehen, die sich um mich selbst, meine eigene Familie oder auf konkrete Dinge um mich herum beziehen.");
     }
 
     private void assertAlternateCompetency1Data(SchoolCompetencyData studentCompetency) {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Mathe");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Rechenoperationen");
         assertThat(studentCompetency.schoolSubCompetency).isEmpty();
-        assertThat(studentCompetency.schoolSubCompetencyDescription).isEqualTo("Ich kann die Grundrechenoperationen im Bereich der natürlichen im Kopf und schriftlich ausführen und an Beispielen den Zusammenhang zwischen Rechenoperationen und deren Umkehroperationen erläutern. Ich kann Teiler und Vielfache natürlicher Zahlen bestimmen. Ich kann ein Verfahren zur Bestimmung von Primzahlen anwenden.");
+        assertThat(studentCompetency.description).isEqualTo("Ich kann die Grundrechenoperationen im Bereich der natürlichen im Kopf und schriftlich ausführen und an Beispielen den Zusammenhang zwischen Rechenoperationen und deren Umkehroperationen erläutern. Ich kann Teiler und Vielfache natürlicher Zahlen bestimmen. Ich kann ein Verfahren zur Bestimmung von Primzahlen anwenden.");
     }
 
     private static File getCsvFileFromClasspath(String pathToResource) {
