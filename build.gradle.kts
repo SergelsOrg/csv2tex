@@ -10,6 +10,9 @@ repositories {
 }
 
 dependencies {
+    implementation("org.apache.commons:commons-csv:1.9.0")
+    implementation("org.apache.commons:commons-lang3:3.12.0")
+
     testImplementation("commons-io:commons-io:2.11.0")
     testImplementation("org.assertj:assertj-core:3.21.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
