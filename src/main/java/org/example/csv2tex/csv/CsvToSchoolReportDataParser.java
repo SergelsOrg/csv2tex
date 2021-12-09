@@ -19,16 +19,18 @@ public class CsvToSchoolReportDataParser {
 
         List<SchoolReportData> result = new ArrayList<>();
         for (CSVRecord rawData : recordList) {
-            SchoolReportData singleStudentData = createDataFromRecord(headers, rawData);
+            SchoolReportData singleStudentData = createReportDataFromRecord(headers, rawData);
             result.add(singleStudentData);
         }
         return result;
     }
 
+    /**
+     * @return pair of (header row titles, data rows)
+     */
     private Pair<List<String>, List<CSVRecord>> parseToRecords(File csvFile) throws IOException {
         CSVFormat parser = CSVFormat.DEFAULT.builder()
                 .setTrim(true)
-                // .setDelimiter("\"")
                 .build();
 
         List<CSVRecord> recordList = new ArrayList<>();
@@ -36,13 +38,18 @@ public class CsvToSchoolReportDataParser {
             Iterable<CSVRecord> records = parser.parse(in);
             records.forEach(recordList::add);
         }
-        // skip first record - header (cannot configure this out
-        // with .setSkipHeaderRecord() because we're not defining a fixed header enum)
+        // skip but save first record - header
         List<String> headerRow = recordList.remove(0).toList();
         return Pair.of(headerRow, recordList);
     }
 
-    private SchoolReportData createDataFromRecord(List<String> headers, CSVRecord rawData) {
+    private SchoolReportData createReportDataFromRecord(List<String> headers, CSVRecord rawRowData) {
+        SchoolReportData singleStudentData = createBaseData(rawRowData);
+        addCompetencyData(singleStudentData, headers, rawRowData);
+        return singleStudentData;
+    }
+
+    private SchoolReportData createBaseData(CSVRecord rawData) {
         SchoolReportData singleStudentData = new SchoolReportData();
         singleStudentData.schoolClass = rawData.get(0);
         singleStudentData.schoolYear = rawData.get(1);
@@ -50,7 +57,10 @@ public class CsvToSchoolReportDataParser {
         singleStudentData.givenName = rawData.get(3);
         singleStudentData.surName = rawData.get(4);
         singleStudentData.birthDay = rawData.get(5);
+        return singleStudentData;
+    }
 
+    private void addCompetencyData(SchoolReportData singleStudentData, List<String> headers, CSVRecord rawData) {
         String currentLevel = "";
         for (int i = 6; i < rawData.size(); i++) {
             String columnHeader = headers.get(i);
@@ -61,16 +71,15 @@ public class CsvToSchoolReportDataParser {
                 currentLevel = cellValue;
                 continue;
             }
-            singleStudentData.schoolCompetencies.add(createCompetencyData(columnHeader, cellValue, currentLevel));
+            singleStudentData.schoolCompetencies.add(addCompetencyData(columnHeader, cellValue, currentLevel));
         }
-        return singleStudentData;
     }
 
     private boolean isLevelSettingColumn(String columnHeader) {
         return "niveau".equalsIgnoreCase(columnHeader) || "level".equalsIgnoreCase(columnHeader);
     }
 
-    private SchoolCompetencyData createCompetencyData(String columnHeader, String cellValue, String currentLevel) {
+    private SchoolCompetencyData addCompetencyData(String columnHeader, String cellValue, String currentLevel) {
         SchoolCompetencyData competencyData = new SchoolCompetencyData();
         String[] columnHeaderRows = columnHeader.split("[\r\n]+", 4);
         if (columnHeaderRows.length < 3) {
