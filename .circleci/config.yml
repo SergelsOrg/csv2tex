@@ -17,7 +17,7 @@ commands:
 jobs:
   run_tests_java:
     docker:
-      - image: cimg/openjdk:8.0.302
+      - image: cimg/openjdk:11.0.12
     steps:
       - checkout
       - install_pdf_tools
