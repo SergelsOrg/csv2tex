@@ -12,7 +12,7 @@ public class SchoolCompetencyData {
 
     public String schoolCompetency;
 
-    public String schoolSubCompetency;
+    public String schoolSubCompetency = "";
 
     public String schoolSubCompetencyDescription;
 
