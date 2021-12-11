@@ -5,10 +5,13 @@ import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.tuple.Pair;
 import org.example.csv2tex.data.SchoolCompetencyData;
 import org.example.csv2tex.data.SchoolReportData;
+import org.example.csv2tex.exception.InvalidCsvException;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.example.csv2tex.exception.InvalidCsvCause.*;
 
 public class CsvToSchoolReportDataParser {
 
@@ -16,6 +19,8 @@ public class CsvToSchoolReportDataParser {
         Pair<List<String>, List<CSVRecord>> pair = parseToRecords(csvFile);
         List<String> headers = pair.getLeft();
         List<CSVRecord> recordList = pair.getRight();
+
+        ensureCorrectFormat(headers, recordList);
 
         List<SchoolReportData> result = new ArrayList<>();
         for (CSVRecord rawData : recordList) {
@@ -41,6 +46,24 @@ public class CsvToSchoolReportDataParser {
         // skip but save first record - header
         List<String> headerRow = recordList.remove(0).toList();
         return Pair.of(headerRow, recordList);
+    }
+
+    private void ensureCorrectFormat(List<String> headers, List<CSVRecord> recordList) {
+        ensureLevelColumn(headers);
+    }
+
+    private void ensureLevelColumn(List<String> headers) {
+        int baseDataLength = 6;
+        boolean levelColumnFound = false;
+        for (String columnName : headers) {
+            if (isLevelSettingColumn(columnName)) {
+                levelColumnFound = true;
+                break;
+            }
+        }
+        if (headers.size() > baseDataLength && !levelColumnFound) {
+            throw new InvalidCsvException(HEADER_NO_LEVEL_DEFINED);
+        }
     }
 
     private SchoolReportData createReportDataFromRecord(List<String> headers, CSVRecord rawRowData) {
