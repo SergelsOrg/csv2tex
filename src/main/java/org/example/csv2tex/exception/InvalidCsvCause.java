@@ -7,6 +7,8 @@ public enum InvalidCsvCause {
      */
     HEADER_NO_LEVEL_DEFINED("The header row defines no level column."),
 
+    HEADER_COMPETENCY_INCOMPLETE_DEFINITION("The competency definitions in the header are incomplete - 3 or 4 lines are assumed: Content row(s) {}."),
+
     /**
      * The header row is shorter than all content rows.
      */

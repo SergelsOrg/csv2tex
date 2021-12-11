@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.stream.Collectors.joining;
 import static org.example.csv2tex.exception.InvalidCsvCause.*;
 
 public class CsvToSchoolReportDataParser {
@@ -53,6 +54,7 @@ public class CsvToSchoolReportDataParser {
     private void ensureCorrectFormat(List<String> headers, List<CSVRecord> recordList) {
         ensureLevelColumn(headers);
         ensureRowLengths(headers, recordList);
+        ensureCompleteCompetencyHeaders(headers);
     }
 
     private void ensureLevelColumn(List<String> headers) {
@@ -179,6 +181,23 @@ public class CsvToSchoolReportDataParser {
     }
 
 
+    private void ensureCompleteCompetencyHeaders(List<String> headers) {
+        // check every column after the base data columns
+        List<Integer> invalidHeaderColumnsOneBased = new ArrayList<>();
+        for (int i = 6; i < headers.size(); i++) {
+            String header = headers.get(i);
+            if (!isLevelSettingColumn(header)) {
+                if (splitCompetencyColumnHeader(header).length < 3) {
+                    invalidHeaderColumnsOneBased.add(i + 1);
+                }
+            }
+        }
+        if (!invalidHeaderColumnsOneBased.isEmpty()) {
+            throw new InvalidCsvException(HEADER_COMPETENCY_INCOMPLETE_DEFINITION,
+                    invalidHeaderColumnsOneBased.stream().map(Object::toString).collect(joining(",")));
+        }
+    }
+
     private SchoolReportData createReportDataFromRecord(List<String> headers, CSVRecord rawRowData) {
         SchoolReportData singleStudentData = createBaseData(rawRowData);
         addCompetencyData(singleStudentData, headers, rawRowData);
@@ -217,10 +236,8 @@ public class CsvToSchoolReportDataParser {
 
     private SchoolCompetencyData addCompetencyData(String columnHeader, String cellValue, String currentLevel) {
         SchoolCompetencyData competencyData = new SchoolCompetencyData();
-        String[] columnHeaderRows = columnHeader.split("[\r\n]+", 4);
-        if (columnHeaderRows.length < 3) {
-            // TODO invalid data?
-        } else if (columnHeaderRows.length == 3) {
+        String[] columnHeaderRows = splitCompetencyColumnHeader(columnHeader);
+        if (columnHeaderRows.length == 3) {
             // ASSUMPTION: subject, competency, description
             competencyData.schoolSubject = columnHeaderRows[0];
             competencyData.schoolCompetency = columnHeaderRows[1];
@@ -235,5 +252,9 @@ public class CsvToSchoolReportDataParser {
         competencyData.level = currentLevel;
         competencyData.grade = cellValue;
         return competencyData;
+    }
+
+    private String[] splitCompetencyColumnHeader(String columnHeader) {
+        return columnHeader.split("[\r\n]+", 4);
     }
 }

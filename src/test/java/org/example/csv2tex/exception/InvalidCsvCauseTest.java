@@ -14,6 +14,8 @@ class InvalidCsvCauseTest {
                 .doesNotContain("1,2,3");
         assertThat(InvalidCsvCause.getMessageWithPlaceholderValue(HEADER_LONGER_THAN_ALL_CONTENT, "1,2,3"))
                 .doesNotContain("1,2,3");
+        assertThat(InvalidCsvCause.getMessageWithPlaceholderValue(HEADER_COMPETENCY_INCOMPLETE_DEFINITION, "1,2,3"))
+                .contains("1,2,3");
         assertThat(InvalidCsvCause.getMessageWithPlaceholderValue(HEADER_SHORTER_THAN_CONTENT, "1,2,3"))
                 .contains("1,2,3");
         assertThat(InvalidCsvCause.getMessageWithPlaceholderValue(HEADER_LONGER_THAN_CONTENT, "1,2,3"))
