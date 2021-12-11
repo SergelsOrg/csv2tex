@@ -352,6 +352,15 @@ public class CsvToSchoolReportDataParserTest {
     }
 
     @Test
+    public void parseCsvFileToReportDataList_ifHeaderTooLong_throwsException() throws Exception {
+        File file = getCsvFileFromClasspath("csv/student_data_faulty_header_too_long.csv");
+
+        assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
+                .isInstanceOf(InvalidCsvException.class)
+                .hasMessageContaining("header row is longer");
+    }
+
+    @Test
     public void parseCsvFileToReportDataList_ifContentTooShortByCountRelativeProportion_throwsException() throws Exception {
         File file = getCsvFileFromClasspath("csv/student_data_faulty_content_rows_too_short_relative.csv");
 
