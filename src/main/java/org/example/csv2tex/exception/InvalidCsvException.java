@@ -3,11 +3,11 @@ package org.example.csv2tex.exception;
 
 public class InvalidCsvException extends RuntimeException {
 
-    public InvalidCsvException(String message) {
-        super(message);
+    public InvalidCsvException(InvalidCsvCause cause) {
+        super(cause.getMessageTemplate());
     }
 
-    public InvalidCsvException(String message, Throwable cause) {
-        super(message, cause);
+    public InvalidCsvException(InvalidCsvCause cause, String placeHolderValue) {
+        super(InvalidCsvCause.getMessageWithPlaceholderValue(cause, placeHolderValue));
     }
 }
