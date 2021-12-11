@@ -9,7 +9,9 @@ import org.example.csv2tex.exception.InvalidCsvException;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.example.csv2tex.exception.InvalidCsvCause.*;
 
@@ -50,6 +52,7 @@ public class CsvToSchoolReportDataParser {
 
     private void ensureCorrectFormat(List<String> headers, List<CSVRecord> recordList) {
         ensureLevelColumn(headers);
+        ensureRowLengths(headers, recordList);
     }
 
     private void ensureLevelColumn(List<String> headers) {
@@ -64,6 +67,26 @@ public class CsvToSchoolReportDataParser {
         if (headers.size() > baseDataLength && !levelColumnFound) {
             throw new InvalidCsvException(HEADER_NO_LEVEL_DEFINED);
         }
+    }
+
+    private void ensureRowLengths(List<String> headers, List<CSVRecord> recordList) {
+        if(recordList.isEmpty()) {
+            return;
+        }
+        int headerRowLength = headers.size();
+        Map<Integer, Integer> rowLengths = new HashMap<>();
+        recordList.forEach(record -> {
+            int rowLength = record.size();
+            Integer existingValue = rowLengths.getOrDefault(rowLength, 0);
+            rowLengths.put(rowLength, existingValue + 1);
+        });
+
+        if (rowLengths.size() == 1 && headerRowLength == rowLengths.keySet().iterator().next()) {
+            // all rows have the same number of columns
+            return;
+        }
+
+        throw new InvalidCsvException(HEADER_SHORTER_THAN_CONTENT);
     }
 
     private SchoolReportData createReportDataFromRecord(List<String> headers, CSVRecord rawRowData) {
