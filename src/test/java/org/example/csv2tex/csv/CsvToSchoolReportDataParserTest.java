@@ -361,23 +361,44 @@ public class CsvToSchoolReportDataParserTest {
     }
 
     @Test
+    public void parseCsvFileToReportDataList_ifHeaderTooLongByCountRelativeProportion_throwsException() throws Exception {
+        File file = getCsvFileFromClasspath("csv/student_data_faulty_content_rows_too_short_relative_blaming_header.csv");
+
+        assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
+                .isInstanceOf(InvalidCsvException.class)
+                .hasMessageContaining("header row is longer than many content rows")
+                .hasMessageMatching(".*\\b1,2\\b.*");
+    }
+
+
+    @Test
     public void parseCsvFileToReportDataList_ifContentTooShortByCountRelativeProportion_throwsException() throws Exception {
-        File file = getCsvFileFromClasspath("csv/student_data_faulty_content_rows_too_short_relative.csv");
+        File file = getCsvFileFromClasspath("csv/student_data_faulty_content_rows_too_short_relative_blaming_content.csv");
 
         assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
                 .isInstanceOf(InvalidCsvException.class)
                 .hasMessageContaining("content rows are shorter than the header")
-                .hasMessageMatching("\\b1\\b");
+                .hasMessageMatching(".*\\b1\\b.*");
+    }
+
+    @Test
+    public void parseCsvFileToReportDataList_ifHeaderTooLongByAbsoluteCount_throwsException() throws Exception {
+        File file = getCsvFileFromClasspath("csv/student_data_faulty_content_rows_too_short_absolute_blaming_header.csv");
+
+        assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
+                .isInstanceOf(InvalidCsvException.class)
+                .hasMessageContaining("header row is longer than many content rows")
+                .hasMessageMatching(".*\\b1,2,3,4,5,6,7,8,9,10\\b.*");
     }
 
     @Test
     public void parseCsvFileToReportDataList_ifContentTooShortByAbsoluteCount_throwsException() throws Exception {
-        File file = getCsvFileFromClasspath("csv/student_data_faulty_content_rows_too_short_absolute.csv");
+        File file = getCsvFileFromClasspath("csv/student_data_faulty_content_rows_too_short_absolute_blaming_content.csv");
 
         assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
                 .isInstanceOf(InvalidCsvException.class)
                 .hasMessageContaining("content rows are shorter than the header")
-                .hasMessageMatching("\\b1, 2, 3, 4, 5, 6, 7, 8, 9, 10\\b");
+                .hasMessageMatching(".*\\b1,2,3,4,5,6,7,8,9\\b.*");
     }
 
     @Test

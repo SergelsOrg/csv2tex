@@ -10,11 +10,17 @@ class InvalidCsvCauseTest {
     public void getMessageWithPlaceholderValue_replacesPlaceholdersIfPresent() {
         assertThat(InvalidCsvCause.getMessageWithPlaceholderValue(HEADER_NO_LEVEL_DEFINED, "1,2,3"))
                 .doesNotContain("1,2,3");
+        assertThat(InvalidCsvCause.getMessageWithPlaceholderValue(HEADER_SHORTER_THAN_ALL_CONTENT, "1,2,3"))
+                .doesNotContain("1,2,3");
+        assertThat(InvalidCsvCause.getMessageWithPlaceholderValue(HEADER_LONGER_THAN_ALL_CONTENT, "1,2,3"))
+                .doesNotContain("1,2,3");
         assertThat(InvalidCsvCause.getMessageWithPlaceholderValue(HEADER_SHORTER_THAN_CONTENT, "1,2,3"))
                 .contains("1,2,3");
         assertThat(InvalidCsvCause.getMessageWithPlaceholderValue(HEADER_LONGER_THAN_CONTENT, "1,2,3"))
                 .contains("1,2,3");
         assertThat(InvalidCsvCause.getMessageWithPlaceholderValue(CONTENT_ROW_LONGER_THAN_HEADER, "1,2,3"))
+                .contains("1,2,3");
+        assertThat(InvalidCsvCause.getMessageWithPlaceholderValue(CONTENT_ROW_SHORTER_THAN_HEADER, "1,2,3"))
                 .contains("1,2,3");
     }
 }
