@@ -2,6 +2,7 @@ package org.example.csv2tex.csv;
 
 import org.example.csv2tex.data.SchoolCompetencyData;
 import org.example.csv2tex.data.SchoolReportData;
+import org.example.csv2tex.exception.InvalidCsvException;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -9,6 +10,7 @@ import java.net.URL;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
 public class CsvToSchoolReportDataParserTest {
@@ -337,6 +339,45 @@ public class CsvToSchoolReportDataParserTest {
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Rechenoperationen");
         assertThat(studentCompetency.schoolSubCompetency).isEmpty();
         assertThat(studentCompetency.description).isEqualTo("Ich kann die Grundrechenoperationen im Bereich der natürlichen im Kopf und schriftlich ausführen und an Beispielen den Zusammenhang zwischen Rechenoperationen und deren Umkehroperationen erläutern. Ich kann Teiler und Vielfache natürlicher Zahlen bestimmen. Ich kann ein Verfahren zur Bestimmung von Primzahlen anwenden.");
+    }
+
+
+    @Test
+    public void parseCsvFileToReportDataList_ifHeaderTooShort_throwsException() throws Exception {
+        File file = getCsvFileFromClasspath("csv/student_data_faulty_header_too_short.csv");
+
+        assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
+                .isInstanceOf(InvalidCsvException.class)
+                .hasMessageContaining("header row is shorter");
+    }
+
+    @Test
+    public void parseCsvFileToReportDataList_ifContentTooShortByCountRelativeProportion_throwsException() throws Exception {
+        File file = getCsvFileFromClasspath("csv/student_data_faulty_content_rows_too_short_relative.csv");
+
+        assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
+                .isInstanceOf(InvalidCsvException.class)
+                .hasMessageContaining("content rows are shorter than the header")
+                .hasMessageMatching("\\b1\\b");
+    }
+
+    @Test
+    public void parseCsvFileToReportDataList_ifContentTooShortByAbsoluteCount_throwsException() throws Exception {
+        File file = getCsvFileFromClasspath("csv/student_data_faulty_content_rows_too_short_absolute.csv");
+
+        assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
+                .isInstanceOf(InvalidCsvException.class)
+                .hasMessageContaining("content rows are shorter than the header")
+                .hasMessageMatching("\\b1, 2, 3, 4, 5, 6, 7, 8, 9, 10\\b");
+    }
+
+    @Test
+    public void parseCsvFileToReportDataList_ifHeaderHasGradesButNoLevel_throwsException() throws Exception {
+        File file = getCsvFileFromClasspath("csv/student_data_faulty_level_column_missing.csv");
+
+        assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
+                .isInstanceOf(InvalidCsvException.class)
+                .hasMessageContaining("no level column");
     }
 
     private static File getCsvFileFromClasspath(String pathToResource) {
