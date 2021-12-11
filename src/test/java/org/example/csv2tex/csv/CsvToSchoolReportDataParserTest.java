@@ -410,6 +410,25 @@ public class CsvToSchoolReportDataParserTest {
                 .hasMessageContaining("no level column");
     }
 
+    @Test
+    public void parseCsvFileToReportDataList_ifHeaderHasCompetencyOfOnlyOneLine_throwsException() throws Exception {
+        File file = getCsvFileFromClasspath("csv/student_data_faulty_one_line_competency.csv");
+
+        assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
+                .isInstanceOf(InvalidCsvException.class)
+                .hasMessageContaining("competency definitions in the header are incomplete")
+                .hasMessageMatching(".*\\b8\\b.*");
+    }
+    @Test
+    public void parseCsvFileToReportDataList_ifHeaderHasCompetencyOfOnlyTwoLine_throwsException() throws Exception {
+        File file = getCsvFileFromClasspath("csv/student_data_faulty_two_line_competency.csv");
+
+        assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
+                .isInstanceOf(InvalidCsvException.class)
+                .hasMessageContaining("competency definitions in the header are incomplete")
+                .hasMessageMatching(".*\\b8\\b.*");
+    }
+
     private static File getCsvFileFromClasspath(String pathToResource) {
         URL resource = CsvToSchoolReportDataParserTest.class.getClassLoader().getResource(pathToResource);
         assertThat(resource)
