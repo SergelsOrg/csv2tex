@@ -67,16 +67,8 @@ public class ShellCommandsUtil {
 
 
     public boolean doesCommandExitSuccessfully(String... commandAndArguments) {
-        ProcessBuilder processBuilder = new ProcessBuilder().command(commandAndArguments)
-                .directory(workingDirectory);
-
-        try {
-            Process process = processBuilder.start();
-            boolean terminatedCorrectly = process.waitFor(1, TimeUnit.SECONDS);
-            return terminatedCorrectly && process.exitValue() == 0;
-        } catch (IOException | InterruptedException e) {
-            return false;
-        }
+        ShellResult result = runShellCommand(commandAndArguments);
+        return result.successfulExit && result.exitCode.orElse(-1) == 0;
     }
 
     public ShellResult runShellCommand(String... commandAndArguments) {
@@ -87,9 +79,8 @@ public class ShellCommandsUtil {
         try {
             process = processBuilder.start();
         } catch (IOException e) {
-            return new ShellResult(getContentFromStream(process.getInputStream()),
-                    getContentFromStream(process.getErrorStream()),
-                    getExitValue(process), false);
+            // process will still be 'null'
+            return new ShellResult(Optional.empty(), Optional.empty(), Optional.empty(), false);
         }
 
         try {
