@@ -226,7 +226,7 @@ public class CsvToSchoolReportDataParser {
                 currentLevel = cellValue;
                 continue;
             }
-            singleStudentData.schoolCompetencies.add(addCompetencyData(columnHeader, cellValue, currentLevel));
+            singleStudentData.schoolCompetencies.add(addCompetencyData(columnHeader, currentLevel, cellValue));
         }
     }
 
@@ -234,7 +234,7 @@ public class CsvToSchoolReportDataParser {
         return "niveau".equalsIgnoreCase(columnHeader) || "level".equalsIgnoreCase(columnHeader);
     }
 
-    private SchoolCompetencyData addCompetencyData(String columnHeader, String cellValue, String currentLevel) {
+    private SchoolCompetencyData addCompetencyData(String columnHeader, String currentLevel, String cellValue) {
         SchoolCompetencyData competencyData = new SchoolCompetencyData();
         String[] columnHeaderRows = splitCompetencyColumnHeader(columnHeader);
         if (columnHeaderRows.length == 3) {
@@ -244,6 +244,7 @@ public class CsvToSchoolReportDataParser {
             competencyData.description = columnHeaderRows[2];
         } else if (columnHeaderRows.length == 4) {
             // ASSUMPTION: subject, competency, subcompetency, description
+            // If you don't have a subcompetency, but a multi-line description: Leave an empty line!
             competencyData.schoolSubject = columnHeaderRows[0];
             competencyData.schoolCompetency = columnHeaderRows[1];
             competencyData.schoolSubCompetency = columnHeaderRows[2];
@@ -255,6 +256,7 @@ public class CsvToSchoolReportDataParser {
     }
 
     private String[] splitCompetencyColumnHeader(String columnHeader) {
+        // limit 4: will keep all lines after the 4th as part of the 4th split
         return columnHeader.split("[\r\n]+", 4);
     }
 }
