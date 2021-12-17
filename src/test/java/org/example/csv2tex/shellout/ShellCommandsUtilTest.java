@@ -7,6 +7,9 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 
+import java.io.File;
+import java.net.URL;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.example.csv2tex.shellout.ErrorMessage.PDF_UNITE_NOT_INSTALLED;
 import static org.example.csv2tex.shellout.ErrorMessage.TEX_LIVE_NOT_INSTALLED;
@@ -99,4 +102,28 @@ class ShellCommandsUtilTest {
         assertThat(shellCommands.doesCommandExitSuccessfully("date", "--unsupportedParameter")).isFalse();
     }
 
+    @Test
+    public void texi2pdfExitsSuccessfully() {
+        assertThat(sut.doesCommandExitSuccessfully("texi2pdf", "src/test/resources/shellout/page1.tex")).isTrue();
+        assertThat(sut.doesCommandExitSuccessfully("texi2pdf", "src/test/resources/shellout/page2.tex")).isTrue();
+        // TODO check Path?
+        File outFile1 = new File("page1.pdf");
+        assertThat(outFile1)
+            .describedAs("file not found in classpath: page1.pdf")
+            .isNotNull();
+        File outFile2 = new File("page2.pdf");
+        assertThat(outFile2)
+            .describedAs("file not found in classpath: page2.pdf")
+            .isNotNull();
+    }
+
+    @Test
+    public void pdfUniteExitsSuccessfully() {
+        assertThat(sut.doesCommandExitSuccessfully("pdfunite", "page1.pdf", "page2.pdf", "/tmp/pages.pdf")).isTrue();
+        // TODO check Path?
+        File outFile = new File("/tmp/pages.pdf");
+        assertThat(outFile)
+                .describedAs("file not found in classpath: pages.pdf")
+                .isNotNull();
+    }
 }
