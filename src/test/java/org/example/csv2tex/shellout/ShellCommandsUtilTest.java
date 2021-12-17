@@ -49,7 +49,7 @@ class ShellCommandsUtilTest {
     }
 
     @Test
-    public void runShellCommand_inDefaultDirectory_hasSamePwdAsJava() throws Exception {
+    public void runShellCommand_inDefaultDirectory_hasSamePwdAsJava() {
         // arrange
         String javaWorkingDirectory = new File(".").getAbsolutePath();
 
@@ -70,7 +70,7 @@ class ShellCommandsUtilTest {
     }
 
     @Test
-    public void runShellCommand_inTmpDirectory_hasDifferentPwdThanJava() throws Exception {
+    public void runShellCommand_inTmpDirectory_hasDifferentPwdThanJava() {
         // arrange
         String javaWorkingDirectory = new File(".").getAbsolutePath();
 
