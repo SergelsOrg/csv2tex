@@ -30,7 +30,7 @@ jobs:
 
   run_tests_tools_not_installed_java:
     docker:
-      - image: cimg/openjdk:8.0.292
+      - image: cimg/openjdk:8.0.312
     steps:
       - checkout
       - run: |
