@@ -14,6 +14,7 @@ dependencies {
     implementation("org.apache.commons:commons-lang3:3.12.0")
 
     testImplementation("commons-io:commons-io:2.11.0")
+    testImplementation("com.itextpdf:itext7-core:7.2.0")
     testImplementation("org.apache.pdfbox:pdfbox:2.0.22")
     testImplementation("org.assertj:assertj-core:3.21.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
