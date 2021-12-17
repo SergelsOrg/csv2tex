@@ -1,22 +1,29 @@
 package org.example.csv2tex.shellout;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
 public class ShellCommandsUtil {
 
-    public ShellCommandsUtil() {
+    private final File workingDirectory;
 
+    public ShellCommandsUtil() {
+        this.workingDirectory = null;
     }
 
     public ShellCommandsUtil(File workingDirectory) {
-
+        this.workingDirectory = workingDirectory;
     }
 
     /**
@@ -60,7 +67,8 @@ public class ShellCommandsUtil {
 
 
     public boolean doesCommandExitSuccessfully(String... commandAndArguments) {
-        ProcessBuilder processBuilder = new ProcessBuilder().command(commandAndArguments);
+        ProcessBuilder processBuilder = new ProcessBuilder().command(commandAndArguments)
+                .directory(workingDirectory);
 
         try {
             Process process = processBuilder.start();
@@ -72,7 +80,46 @@ public class ShellCommandsUtil {
     }
 
     public ShellResult runShellCommand(String... commandAndArguments) {
-        return new ShellResult(Optional.empty(), Optional.empty(), Optional.empty(), false);
+        ProcessBuilder processBuilder = new ProcessBuilder().command(commandAndArguments)
+                .directory(workingDirectory);
+
+        Process process = null;
+        try {
+            process = processBuilder.start();
+        } catch (IOException e) {
+            return new ShellResult(getContentFromStream(process.getInputStream()),
+                    getContentFromStream(process.getErrorStream()),
+                    getExitValue(process), false);
+        }
+
+        try {
+            boolean terminatedCorrectly = process.waitFor(1, TimeUnit.SECONDS);
+            return new ShellResult(getContentFromStream(process.getInputStream()),
+                    getContentFromStream(process.getErrorStream()),
+                    getExitValue(process), terminatedCorrectly);
+        } catch (InterruptedException e) {
+            return new ShellResult(getContentFromStream(process.getInputStream()),
+                    getContentFromStream(process.getErrorStream()),
+                    getExitValue(process), false);
+        }
+    }
+
+    private Optional<String> getContentFromStream(InputStream inputStream) {
+        try {
+            String output = IOUtils.readLines(inputStream, StandardCharsets.UTF_8).stream()
+                    .collect(Collectors.joining(""));
+            return Optional.of(output);
+        } catch (IOException ex) {
+            return Optional.empty();
+        }
+    }
+
+    private Optional<Integer> getExitValue(Process process) {
+        try {
+            return Optional.of(process.exitValue());
+        } catch (IllegalThreadStateException e) {
+            return Optional.empty();
+        }
     }
 
     public static class ShellResult {
