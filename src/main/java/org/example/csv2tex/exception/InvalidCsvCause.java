@@ -43,6 +43,7 @@ public enum InvalidCsvCause {
     CONTENT_ROW_SHORTER_THAN_HEADER("One or more content rows are shorter than the header row: Content row(s) {}."),
     ;
 
+    private static final String PLACEHOLDER = "{}";
     private final String messageTemplate;
 
     InvalidCsvCause(String messageTemplate) {
@@ -54,6 +55,6 @@ public enum InvalidCsvCause {
     }
 
     public static String getMessageWithPlaceholderValue(InvalidCsvCause causeMessage, String placeHolderValue) {
-        return causeMessage.messageTemplate.replace("{}", placeHolderValue);
+        return causeMessage.messageTemplate.replace(PLACEHOLDER, placeHolderValue);
     }
 }
