@@ -58,8 +58,9 @@ public class ShellCommandsUtil {
         }
     }
 
-    public boolean doesCommandExitSuccessfully(String... command) {
-        ProcessBuilder processBuilder = new ProcessBuilder().command(command);
+
+    public boolean doesCommandExitSuccessfully(String... commandAndArguments) {
+        ProcessBuilder processBuilder = new ProcessBuilder().command(commandAndArguments);
 
         try {
             Process process = processBuilder.start();
