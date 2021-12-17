@@ -77,7 +77,7 @@ public class ShellCommandsUtil {
         Process process;
         try {
             process = processBuilder.start();
-        } catch (IOException e) {
+        } catch (IOException ignored) {
             // process will still be 'null'
             return new ShellResult(Optional.empty(), Optional.empty(), Optional.empty(), false);
         }
@@ -87,7 +87,7 @@ public class ShellCommandsUtil {
             return new ShellResult(getContentFromStream(process.getInputStream()),
                     getContentFromStream(process.getErrorStream()),
                     getExitValue(process), terminatedCorrectly);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
             return new ShellResult(getContentFromStream(process.getInputStream()),
                     getContentFromStream(process.getErrorStream()),
                     getExitValue(process), false);
@@ -106,7 +106,7 @@ public class ShellCommandsUtil {
     private Optional<Integer> getExitValue(Process process) {
         try {
             return Optional.of(process.exitValue());
-        } catch (IllegalThreadStateException e) {
+        } catch (IllegalThreadStateException ignored) {
             return Optional.empty();
         }
     }
