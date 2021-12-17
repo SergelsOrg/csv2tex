@@ -9,7 +9,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -75,7 +74,7 @@ public class ShellCommandsUtil {
         ProcessBuilder processBuilder = new ProcessBuilder().command(commandAndArguments)
                 .directory(workingDirectory);
 
-        Process process = null;
+        Process process;
         try {
             process = processBuilder.start();
         } catch (IOException e) {
@@ -97,10 +96,9 @@ public class ShellCommandsUtil {
 
     private Optional<String> getContentFromStream(InputStream inputStream) {
         try {
-            String output = IOUtils.readLines(inputStream, StandardCharsets.UTF_8).stream()
-                    .collect(Collectors.joining(""));
+            String output = String.join("", IOUtils.readLines(inputStream, StandardCharsets.UTF_8));
             return Optional.of(output);
-        } catch (IOException ex) {
+        } catch (IOException ignored) {
             return Optional.empty();
         }
     }
@@ -114,6 +112,8 @@ public class ShellCommandsUtil {
     }
 
     public static class ShellResult {
+
+        // not great style to have optional fields, but I prefer this over nullable fields
 
         public Optional<String> stdout;
         public Optional<String> stderr;
