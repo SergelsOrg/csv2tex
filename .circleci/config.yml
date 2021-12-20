@@ -13,6 +13,7 @@ commands:
           sudo apt-get install poppler-utils
           # contains texi2pdf
           sudo apt-get install texinfo
+          sudo apt-get install texlive
 
 jobs:
   run_tests_java:
