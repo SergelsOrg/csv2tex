@@ -114,10 +114,14 @@ class ShellCommandsUtilTest {
 
         assertThat(texi2pdf1.successfulExit).isTrue();
         assertThat(texi2pdf1.exitCode).isPresent();
-        assertThat(texi2pdf1.exitCode.get()).isEqualTo(0);
+        assertThat(texi2pdf1.exitCode.get())
+                .describedAs(texi2pdf1.toString())
+                .isEqualTo(0);
         assertThat(texi2pdf2.successfulExit).isTrue();
         assertThat(texi2pdf2.exitCode).isPresent();
-        assertThat(texi2pdf2.exitCode.get()).isEqualTo(0);
+        assertThat(texi2pdf2.exitCode.get())
+                .describedAs(texi2pdf2.toString())
+                .isEqualTo(0);
         assertThat(expectedOutFile1.lastModified()/1000L).isGreaterThanOrEqualTo(timeSecs);
         assertThat(expectedOutFile1)
             .describedAs("file not found in classpath: page1.pdf")
@@ -126,6 +130,7 @@ class ShellCommandsUtilTest {
         assertThat(expectedOutFile2)
             .describedAs("file not found in classpath: page2.pdf")
             .isNotNull();
+        assertThat(texi2pdf1.exitCode.get()).isEqualTo(0);
     }
 
     @Test
@@ -136,8 +141,11 @@ class ShellCommandsUtilTest {
 
         assertThat(result.successfulExit).isTrue();
         assertThat(result.exitCode).isPresent();
-        assertThat(result.exitCode.get()).isEqualTo(0);
+        assertThat(result.exitCode.get())
+                .describedAs(result.toString())
+                .isEqualTo(0);
         File outFile1 = new File("page1.pdf");
+        assertThat(outFile1).exists();
         assertThat(outFile1.lastModified()/1000L).isGreaterThanOrEqualTo(timeSecs);
         assertThat(outFile1)
                 .describedAs("file not found in classpath: page1.pdf")

@@ -138,5 +138,14 @@ public class ShellCommandsUtil {
             this.successfulExit = successfulExit;
         }
 
+        @Override
+        public String toString() {
+            return "ShellResult{" +
+                    "stdout=" + stdout +
+                    ", stderr=" + stderr +
+                    ", exitCode=" + exitCode +
+                    ", successfulExit=" + successfulExit +
+                    '}';
+        }
     }
 }
