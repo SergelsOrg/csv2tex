@@ -187,7 +187,7 @@ public class CsvToSchoolReportDataParser {
         for (int i = 6; i < headers.size(); i++) {
             String header = headers.get(i);
             if (!isLevelSettingColumn(header)) {
-                if (splitCompetencyColumnHeader(header).length < 3) {
+                if (splitCompetencyColumnHeader(header).length < 2) {
                     invalidHeaderColumnsOneBased.add(i + 1);
                 }
             }
@@ -237,16 +237,15 @@ public class CsvToSchoolReportDataParser {
     private SchoolCompetencyData addCompetencyData(String columnHeader, String currentLevel, String cellValue) {
         SchoolCompetencyData competencyData = new SchoolCompetencyData();
         String[] columnHeaderRows = splitCompetencyColumnHeader(columnHeader);
+        // ASSUMPTION: subject, competency
+        competencyData.schoolSubject = columnHeaderRows[0];
+        competencyData.schoolCompetency = columnHeaderRows[1];
         if (columnHeaderRows.length == 3) {
             // ASSUMPTION: subject, competency, description
-            competencyData.schoolSubject = columnHeaderRows[0];
-            competencyData.schoolCompetency = columnHeaderRows[1];
             competencyData.description = columnHeaderRows[2];
         } else if (columnHeaderRows.length == 4) {
             // ASSUMPTION: subject, competency, subcompetency, description
             // If you don't have a subcompetency, but a multi-line description: Leave an empty line!
-            competencyData.schoolSubject = columnHeaderRows[0];
-            competencyData.schoolCompetency = columnHeaderRows[1];
             competencyData.schoolSubCompetency = columnHeaderRows[2];
             competencyData.description = columnHeaderRows[3];
         }

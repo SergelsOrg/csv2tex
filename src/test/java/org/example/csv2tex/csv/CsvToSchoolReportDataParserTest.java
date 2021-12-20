@@ -101,6 +101,59 @@ public class CsvToSchoolReportDataParserTest {
         assertStudent3FirstCompetency(student3Competency);
     }
 
+
+    @Test
+    public void parseCsvFileToReportDataList_parsesTwoLineSingleCompetencyData() throws Exception {
+        File file = getCsvFileFromClasspath("csv/student_data_example_two_line_competency.csv");
+        List<SchoolReportData> actual = sut.parseCsvFileToReportDataList(file);
+
+        assertThat(actual).hasSize(3);
+        SchoolReportData student1 = actual.get(0);
+        assertStudent1BaseData(student1);
+        assertThat(student1.schoolCompetencies).hasSize(1);
+        SchoolCompetencyData student1Competency = student1.schoolCompetencies.get(0);
+        assertWorkshopCompetencyData(student1Competency);
+        assertStudent1WorkshopCompetency(student1Competency);
+
+        SchoolReportData student2 = actual.get(1);
+        assertStudent2BaseData(student2);
+        assertThat(student2.schoolCompetencies).hasSize(1);
+        SchoolCompetencyData student2Competency = student2.schoolCompetencies.get(0);
+        assertWorkshopCompetencyData(student2Competency);
+        assertStudent2WorkshopCompetency(student2Competency);
+
+        SchoolReportData student3 = actual.get(2);
+        assertStudent3BaseData(student3);
+        assertThat(student3.schoolCompetencies).hasSize(1);
+        SchoolCompetencyData student3Competency = student3.schoolCompetencies.get(0);
+        assertWorkshopCompetencyData(student3Competency);
+        assertStudent3WorkshopCompetency(student3Competency);
+    }
+
+
+    private void assertWorkshopCompetencyData(SchoolCompetencyData studentCompetency) {
+        assertThat(studentCompetency.schoolSubject).isEqualTo("MUSIK (Wird ausschließlich im Werkstattsystem unterrichtet)");
+        assertThat(studentCompetency.schoolCompetency).isEqualTo("Werkstatt");
+        assertThat(studentCompetency.schoolSubCompetency).isEmpty();
+        assertThat(studentCompetency.description).isEmpty();
+    }
+
+    private void assertStudent1WorkshopCompetency(SchoolCompetencyData studentCompetency) {
+        assertThat(studentCompetency.level).isEqualTo("1");
+        assertThat(studentCompetency.grade).isEqualTo("1");
+    }
+
+    private void assertStudent2WorkshopCompetency(SchoolCompetencyData studentCompetency) {
+        assertThat(studentCompetency.level).isEqualTo("2");
+        assertThat(studentCompetency.grade).isEqualTo("4");
+    }
+
+    private void assertStudent3WorkshopCompetency(SchoolCompetencyData studentCompetency) {
+        assertThat(studentCompetency.level).isEqualTo("3");
+        assertThat(studentCompetency.grade).isEqualTo("1");
+    }
+
+
     @Test
     public void parseCsvFileToReportDataList_parsesFullExampleFile() throws Exception {
         File file = getCsvFileFromClasspath("csv/student_data_example_full.csv");
@@ -270,7 +323,6 @@ public class CsvToSchoolReportDataParserTest {
         assertThat(studentCompetency.level).isEqualTo("3");
         assertThat(studentCompetency.grade).isEqualTo("1");
     }
-
     private void assertCompetency1Data(SchoolCompetencyData studentCompetency) {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Deutsch");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Texte rezipieren");
@@ -413,15 +465,6 @@ public class CsvToSchoolReportDataParserTest {
     @Test
     public void parseCsvFileToReportDataList_ifHeaderHasCompetencyOfOnlyOneLine_throwsException() throws Exception {
         File file = getCsvFileFromClasspath("csv/student_data_faulty_one_line_competency.csv");
-
-        assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
-                .isInstanceOf(InvalidCsvException.class)
-                .hasMessageContaining("competency definitions in the header are incomplete")
-                .hasMessageMatching(".*\\b8\\b.*");
-    }
-    @Test
-    public void parseCsvFileToReportDataList_ifHeaderHasCompetencyOfOnlyTwoLine_throwsException() throws Exception {
-        File file = getCsvFileFromClasspath("csv/student_data_faulty_two_line_competency.csv");
 
         assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
                 .isInstanceOf(InvalidCsvException.class)
