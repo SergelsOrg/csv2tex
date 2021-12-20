@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.DATE;
 import static org.example.csv2tex.shellout.ErrorMessage.PDF_UNITE_NOT_INSTALLED;
 import static org.example.csv2tex.shellout.ErrorMessage.TEX_LIVE_NOT_INSTALLED;
 
@@ -105,20 +106,38 @@ class ShellCommandsUtilTest {
     }
 
     @Test
-    // FIXME
-    @Disabled("work in progress")
     public void texi2pdfExitsSuccessfully() {
-        assertThat(shellCommands.doesCommandExitSuccessfully("texi2pdf", "src/test/resources/shellout/page1.tex")).isTrue();
-        assertThat(shellCommands.doesCommandExitSuccessfully("texi2pdf", "src/test/resources/shellout/page2.tex")).isTrue();
-        // TODO check Path?
+        long timeSecs = System.currentTimeMillis()/1000L;
+        assertThat(shellCommands.runShellCommand("texi2pdf", "src/test/resources/shellout/page1.tex").successfulExit).isTrue();
+        assertThat(shellCommands.runShellCommand("texi2pdf", "src/test/resources/shellout/page2.tex").successfulExit).isTrue();
+
         File outFile1 = new File("page1.pdf");
+        assertThat(outFile1.lastModified()/1000L).isGreaterThanOrEqualTo(timeSecs);
         assertThat(outFile1)
             .describedAs("file not found in classpath: page1.pdf")
             .isNotNull();
+
         File outFile2 = new File("page2.pdf");
+        assertThat(outFile2.lastModified()/1000L).isGreaterThanOrEqualTo(timeSecs);
         assertThat(outFile2)
             .describedAs("file not found in classpath: page2.pdf")
             .isNotNull();
+    }
+
+    @Test
+    public void texi2pdfRunsCorrectly() {
+        long timeSecs = System.currentTimeMillis()/1000L;
+
+        ShellCommandsUtil.ShellResult result = shellCommands.runTexi2Pdf("src/test/resources/shellout/page1.tex");
+        assertThat(result.successfulExit).isTrue();
+        assertThat(result.exitCode).isPresent();
+        assertThat(result.exitCode.get()).isEqualTo(0);
+
+        File outFile1 = new File("page1.pdf");
+        assertThat(outFile1.lastModified()/1000L).isGreaterThanOrEqualTo(timeSecs);
+        assertThat(outFile1)
+                .describedAs("file not found in classpath: page1.pdf")
+                .isNotNull();
     }
 
     @Test

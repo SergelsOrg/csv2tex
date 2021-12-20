@@ -72,6 +72,10 @@ public class ShellCommandsUtil {
         return runShellCommand(shellCommand.toArray(new String[]{}));
     }
 
+    public ShellResult runTexi2Pdf(String inputFile) {
+        return runShellCommand("texi2pdf", inputFile);
+    }
+
     public boolean doesCommandExitSuccessfully(String... commandAndArguments) {
         ShellResult result = runShellCommand(commandAndArguments);
         return result.successfulExit && result.exitCode.orElse(-1) == 0;
