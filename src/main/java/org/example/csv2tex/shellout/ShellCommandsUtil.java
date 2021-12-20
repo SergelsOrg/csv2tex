@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -65,7 +66,10 @@ public class ShellCommandsUtil {
     }
 
     public ShellResult runPdfUnite(String outputFile, List<String> filesToMerge) {
-        return null;
+        List<String> shellCommand = new ArrayList(filesToMerge);
+        shellCommand.add(0, "pdfunite");
+        shellCommand.add(outputFile);
+        return runShellCommand(shellCommand.toArray(new String[]{}));
     }
 
     public boolean doesCommandExitSuccessfully(String... commandAndArguments) {
