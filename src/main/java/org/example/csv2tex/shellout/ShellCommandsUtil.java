@@ -64,6 +64,9 @@ public class ShellCommandsUtil {
         }
     }
 
+    public ShellResult runPdfUnite(String outputFile, List<String> filesToMerge) {
+        return null;
+    }
 
     public boolean doesCommandExitSuccessfully(String... commandAndArguments) {
         ShellResult result = runShellCommand(commandAndArguments);
