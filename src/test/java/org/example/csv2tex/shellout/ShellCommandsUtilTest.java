@@ -3,7 +3,6 @@ package org.example.csv2tex.shellout;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -15,7 +14,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.DATE;
 import static org.example.csv2tex.shellout.ErrorMessage.PDF_UNITE_NOT_INSTALLED;
 import static org.example.csv2tex.shellout.ErrorMessage.TEX_LIVE_NOT_INSTALLED;
 
@@ -108,18 +106,24 @@ class ShellCommandsUtilTest {
     @Test
     public void texi2pdfExitsSuccessfully() {
         long timeSecs = System.currentTimeMillis()/1000L;
-        assertThat(shellCommands.runShellCommand("texi2pdf", "src/test/resources/shellout/page1.tex").successfulExit).isTrue();
-        assertThat(shellCommands.runShellCommand("texi2pdf", "src/test/resources/shellout/page2.tex").successfulExit).isTrue();
+        File expectedOutFile1 = new File("page1.pdf");
+        File expectedOutFile2 = new File("page2.pdf");
 
-        File outFile1 = new File("page1.pdf");
-        assertThat(outFile1.lastModified()/1000L).isGreaterThanOrEqualTo(timeSecs);
-        assertThat(outFile1)
+        ShellCommandsUtil.ShellResult texi2pdf1 = shellCommands.runShellCommand("texi2pdf", "src/test/resources/shellout/page1.tex");
+        ShellCommandsUtil.ShellResult texi2pdf2 = shellCommands.runShellCommand("texi2pdf", "src/test/resources/shellout/page2.tex");
+
+        assertThat(texi2pdf1.successfulExit).isTrue();
+        assertThat(texi2pdf1.exitCode).isPresent();
+        assertThat(texi2pdf1.exitCode.get()).isEqualTo(0);
+        assertThat(texi2pdf2.successfulExit).isTrue();
+        assertThat(texi2pdf2.exitCode).isPresent();
+        assertThat(texi2pdf2.exitCode.get()).isEqualTo(0);
+        assertThat(expectedOutFile1.lastModified()/1000L).isGreaterThanOrEqualTo(timeSecs);
+        assertThat(expectedOutFile1)
             .describedAs("file not found in classpath: page1.pdf")
             .isNotNull();
-
-        File outFile2 = new File("page2.pdf");
-        assertThat(outFile2.lastModified()/1000L).isGreaterThanOrEqualTo(timeSecs);
-        assertThat(outFile2)
+        assertThat(expectedOutFile2.lastModified()/1000L).isGreaterThanOrEqualTo(timeSecs);
+        assertThat(expectedOutFile2)
             .describedAs("file not found in classpath: page2.pdf")
             .isNotNull();
     }
@@ -129,10 +133,10 @@ class ShellCommandsUtilTest {
         long timeSecs = System.currentTimeMillis()/1000L;
 
         ShellCommandsUtil.ShellResult result = shellCommands.runTexi2Pdf("src/test/resources/shellout/page1.tex");
+
         assertThat(result.successfulExit).isTrue();
         assertThat(result.exitCode).isPresent();
         assertThat(result.exitCode.get()).isEqualTo(0);
-
         File outFile1 = new File("page1.pdf");
         assertThat(outFile1.lastModified()/1000L).isGreaterThanOrEqualTo(timeSecs);
         assertThat(outFile1)
@@ -143,14 +147,15 @@ class ShellCommandsUtilTest {
     @Test
     public void pdfUniteExitsSuccessfully() throws IOException {
         String outputFile = "/tmp/pages.pdf";
-        assertThat(shellCommands.doesCommandExitSuccessfully("pdfunite", "src/test/resources/shellout/page1.pdf", "src/test/resources/shellout/page2.pdf", outputFile)).isTrue();
+
+        boolean successfulExit = shellCommands.doesCommandExitSuccessfully("pdfunite", "src/test/resources/shellout/page1.pdf", "src/test/resources/shellout/page2.pdf", outputFile);
+
+        assertThat(successfulExit).isTrue();
         File outFile = new File(outputFile);
         assertThat(outFile)
                 .describedAs("file not found in classpath: pages.pdf")
                 .isNotNull();
-
         String[] splitSting = extractTextLinesFromPdf(outputFile);
-
         assertThat(splitSting[0]).isEqualTo("page1");
         assertThat(splitSting[2]).isEqualTo("page2");
     }
