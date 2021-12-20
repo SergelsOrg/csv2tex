@@ -1,5 +1,7 @@
 package org.example.csv2tex.shellout;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -8,6 +10,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.File;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,7 +19,6 @@ import static org.example.csv2tex.shellout.ErrorMessage.TEX_LIVE_NOT_INSTALLED;
 
 
 class ShellCommandsUtilTest {
-
 
     @TempDir
     private File tempDir;
@@ -29,7 +31,6 @@ class ShellCommandsUtilTest {
         shellCommands = new ShellCommandsUtil();
         shellCommandsInTmpFolder = new ShellCommandsUtil(tempDir);
     }
-
 
     @Test
     public void ensureCommandsExist() {
@@ -104,8 +105,8 @@ class ShellCommandsUtilTest {
 
     @Test
     public void texi2pdfExitsSuccessfully() {
-        assertThat(sut.doesCommandExitSuccessfully("texi2pdf", "src/test/resources/shellout/page1.tex")).isTrue();
-        assertThat(sut.doesCommandExitSuccessfully("texi2pdf", "src/test/resources/shellout/page2.tex")).isTrue();
+        assertThat(shellCommands.doesCommandExitSuccessfully("texi2pdf", "src/test/resources/shellout/page1.tex")).isTrue();
+        assertThat(shellCommands.doesCommandExitSuccessfully("texi2pdf", "src/test/resources/shellout/page2.tex")).isTrue();
         // TODO check Path?
         File outFile1 = new File("page1.pdf");
         assertThat(outFile1)
@@ -118,12 +119,18 @@ class ShellCommandsUtilTest {
     }
 
     @Test
-    public void pdfUniteExitsSuccessfully() {
-        assertThat(sut.doesCommandExitSuccessfully("pdfunite", "page1.pdf", "page2.pdf", "/tmp/pages.pdf")).isTrue();
-        // TODO check Path?
+    public void pdfUniteExitsSuccessfully() throws IOException {
+        assertThat(shellCommands.doesCommandExitSuccessfully("pdfunite", "src/test/resources/shellout/page1.pdf", "src/test/resources/shellout/page2.pdf", "/tmp/pages.pdf")).isTrue();
         File outFile = new File("/tmp/pages.pdf");
         assertThat(outFile)
                 .describedAs("file not found in classpath: pages.pdf")
                 .isNotNull();
+
+        PDDocument doc = PDDocument.load(new File("/tmp/pages.pdf"));
+        String strip = new PDFTextStripper().getText(doc);
+        String[] splitSting = strip.split("[\r\n]+", 4);
+
+        assertThat(splitSting[0]).isEqualTo("page1");
+        assertThat(splitSting[2]).isEqualTo("page2");
     }
 }
