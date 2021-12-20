@@ -34,19 +34,10 @@ public class ShellCommandsUtil {
      * the condition that one required command does not exist.
      */
     public List<ErrorMessage> ensureCommandsExist() {
-        return Stream.of(ensureMvExists(), ensurePdfUniteExists(), ensureTexLiveExists())
+        return Stream.of(ensurePdfUniteExists(), ensureTexLiveExists())
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(toList());
-    }
-
-    // TODO discuss: we could likely replace usages of mv with calls to File::renameTo
-    private Optional<ErrorMessage> ensureMvExists() {
-        if (doesCommandExitSuccessfully("mv", "--help")) {
-            return Optional.empty();
-        } else {
-            return Optional.of(ErrorMessage.MV_NOT_INSTALLED);
-        }
     }
 
     private Optional<ErrorMessage> ensurePdfUniteExists() {
@@ -61,7 +52,11 @@ public class ShellCommandsUtil {
         if (doesCommandExitSuccessfully("texi2pdf", "--help")) {
             return Optional.empty();
         } else {
-            return Optional.of(ErrorMessage.TEX_LIVE_NOT_INSTALLED);
+            if (doesCommandExitSuccessfully("tex", "--help")) {
+                return Optional.empty();
+            } else {
+                return Optional.of(ErrorMessage.TEX_LIVE_NOT_INSTALLED);
+            }
         }
     }
 
