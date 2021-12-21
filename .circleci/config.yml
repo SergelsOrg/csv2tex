@@ -23,6 +23,9 @@ jobs:
       - checkout
       - install_pdf_tools
       - run: |
+          # Actually a CircleCI env variable, but it's hard to get it into the gradle-triggered tests.
+          # So this is a workaround.
+          export JAVA_TOOL_OPTIONS="-DCI=true"
           ./gradlew clean check -i
       - store_test_results:
           path: build/test-results
