@@ -19,6 +19,7 @@ class SchoolReportsRendererTest {
     private static String FILE_PATH_PREFIX = "src/test/resources/rendering/";
 
     private static final File NONEXISTENT_TEX_FILE = new File("nonexistent.tex");
+    private static final File INVALID_TEX_FILE = new File(FILE_PATH_PREFIX + "invalid_format.tex");
     private static final File NO_PLACEHOLDERS_TEX_FILE = new File(FILE_PATH_PREFIX + "no_placeholders.tex");
 
     private static final File NONEXISTENT_CSV_FILE = new File("nonexistent.csv");
@@ -30,17 +31,17 @@ class SchoolReportsRendererTest {
     private final SchoolReportsRenderer sut = new SchoolReportsRenderer();
 
     @Test
-    public void renderSchoolReportsForGivenFiles_withInvalidCsv_throwsException() {
-        assertThatThrownBy(() -> sut.renderSchoolReportsForGivenFiles(INVALID_CSV_FILE, NO_PLACEHOLDERS_TEX_FILE))
-                .isInstanceOf(InvalidCsvException.class);
-    }
-
-    @Test
     public void renderSchoolReportsForGivenFiles_withNoStudents_throwsException() {
         assertThatThrownBy(() -> sut.renderSchoolReportsForGivenFiles(EMPTY_CSV_FILE, NO_PLACEHOLDERS_TEX_FILE))
                 .isInstanceOf(RenderingException.class)
                 .extracting(e -> ((RenderingException) e).getErrorCode())
                 .isEqualTo(RenderingExceptionCause.NO_DATA);
+    }
+
+    @Test
+    public void renderSchoolReportsForGivenFiles_withInvalidCsv_throwsException() {
+        assertThatThrownBy(() -> sut.renderSchoolReportsForGivenFiles(INVALID_CSV_FILE, NO_PLACEHOLDERS_TEX_FILE))
+                .isInstanceOf(InvalidCsvException.class);
     }
 
     @Test
@@ -52,6 +53,15 @@ class SchoolReportsRendererTest {
                 .extracting(e -> ((RenderingException) e).getErrorCode())
                 .isEqualTo(RenderingExceptionCause.UNEXPECTED)
         ;
+    }
+
+    @Test
+    public void renderSchoolReportsForGivenFiles_withInvalidTex_throwsException() {
+        assertThatThrownBy(() -> sut.renderSchoolReportsForGivenFiles(VALID_CSV_FILE, INVALID_TEX_FILE))
+                .isInstanceOf(RenderingException.class)
+                .hasMessageContaining("ShellResult")
+                .extracting(e -> ((RenderingException) e).getErrorCode())
+                .isEqualTo(RenderingExceptionCause.SHELL_COMMAND_FAILED);
     }
 
     @Test

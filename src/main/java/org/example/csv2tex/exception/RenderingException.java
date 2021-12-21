@@ -15,6 +15,11 @@ public class RenderingException extends RuntimeException {
         this.cause = cause;
     }
 
+    public RenderingException(RenderingExceptionCause cause, String additionalMessage) {
+        super(cause.getMessage() + additionalMessage);
+        this.cause = cause;
+    }
+
     public RenderingException(RenderingExceptionCause cause) {
         super(cause.getMessage());
         this.cause = cause;

@@ -16,8 +16,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import static org.example.csv2tex.exception.RenderingExceptionCause.NO_DATA;
+import static org.example.csv2tex.exception.RenderingExceptionCause.SHELL_COMMAND_FAILED;
 
 /**
  * Implements the rendering pipeline, from given CSV and TEX files to output PDF.
@@ -77,13 +79,26 @@ public class SchoolReportsRenderer {
         String texWithReplacedPlaceholders = placeholderReplacer.replacePlaceholdersInTexFile(texTemplate, studentDataList.get(fileNumber));
         Path temporaryTexFilePath = temporaryDirectory.resolve("schoolReport_" + fileNumber + ".tex").toAbsolutePath();
         Files.writeString(temporaryTexFilePath, texWithReplacedPlaceholders);
-        shellCommandsInTempDir.runTexi2Pdf(temporaryTexFilePath.toString());
+        runShellCommandThrowing(() -> shellCommandsInTempDir.runTexi2Pdf(temporaryTexFilePath.toString()));
         renderedPdfs.add("schoolReport_" + fileNumber + ".pdf");
     }
 
     private Path mergePdfs(Path temporaryDirectory, ShellCommandsUtil shellCommandsInTempDir, List<String> renderedPdfs) {
         Path outputFile = temporaryDirectory.resolve("schoolReports.df").toAbsolutePath();
-        shellCommandsInTempDir.runPdfUnite(outputFile.toString(), renderedPdfs);
+        runShellCommandThrowing(() -> shellCommandsInTempDir.runPdfUnite(outputFile.toString(), renderedPdfs));
         return outputFile;
     }
+
+    private void runShellCommandThrowing(Callable<ShellCommandsUtil.ShellResult> callable) {
+        ShellCommandsUtil.ShellResult result;
+        try {
+            result = callable.call();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        if (!result.successfulExit || !result.exitCode.isPresent() || result.exitCode.get() != 0) {
+            throw new RenderingException(SHELL_COMMAND_FAILED, result.toString());
+        }
+    }
+
 }
