@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.stage.Window;
@@ -11,9 +12,12 @@ import net.raumzeitfalle.fx.filechooser.FXFileChooserStage;
 import net.raumzeitfalle.fx.filechooser.PathFilter;
 import net.raumzeitfalle.fx.filechooser.Skin;
 import net.raumzeitfalle.fx.filechooser.locations.Locations;
+import org.example.csv2tex.rendering.SchoolReportsRenderer;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
@@ -61,6 +65,7 @@ public class Csv2TexController {
         return getFileChooser("CSV file", "csv", "Pick a CSV file");
     }
 
+
     private FXFileChooserStage getFileChooser(String filterLabel, String fileExtension, String dialogTitle) {
         PathFilter filter = PathFilter.forFileExtension(filterLabel, fileExtension);
         FXFileChooserStage chooser;
@@ -71,10 +76,13 @@ public class Csv2TexController {
         }
         chooser.setTitle(dialogTitle);
         chooser.addLocations(List.of(
-                Locations.at(Path.of(".")),
-                Locations.at(Path.of("./src/integrationTest/resources"))
+                Locations.at(Path.of("."))
         ));
         return chooser;
+    }
+
+    private Window getWindow() {
+        return mainLayout.getScene().getWindow();
     }
 
     private void updateCsvFile(Optional<Path> tempCsvFilePath) {
@@ -86,7 +94,9 @@ public class Csv2TexController {
     }
 
     @FXML
-    public void onRenderPdfButtonClick(ActionEvent ignored) {
+    public void onRenderPdfButtonClick(ActionEvent buttonEvent) {
+        Button button = (Button) buttonEvent.getSource();
+        button.setDisable(true);
         try {
             if (!validateCsvFile()) {
                 return;
@@ -94,11 +104,20 @@ public class Csv2TexController {
             if (!validateTexFile()) {
                 return;
             }
+            button.setText("Transforming...");
             transformToPdf();
         } catch (Exception e) {
-            showErrorMessage("An exception occurred - " + e.getClass().getSimpleName() + ": '" + e.getMessage() + "'");
+            showErrorMessage(
+                    "An exception occurred - " + e.getClass().getSimpleName() + ": '" + e.getMessage() + "'"
+            );
+//                    + renderStackTrace(e));
+//                    + renderRootCauseStackTrace(e));
+        } finally {
+            button.setDisable(false);
+            button.setText("Render PDFs!");
         }
     }
+
 
     /**
      * @return true iff existing file
@@ -124,15 +143,17 @@ public class Csv2TexController {
     }
 
     private void transformToPdf() {
-        // do nothing, for now
-        showSuccessMessage("Starting PDF rendering...");
+        SchoolReportsRenderer renderer = new SchoolReportsRenderer();
+        Path result = renderer.renderSchoolReportsForGivenFiles(csvFile, texFile);
+        showInfoMessage("Done", "PDF generated: '" + result.toAbsolutePath() + "'");
     }
 
-    private void showSuccessMessage(String text) {
-        Alert errorAlert = new Alert(Alert.AlertType.INFORMATION);
-        errorAlert.setHeaderText("Success");
-        errorAlert.setContentText(text);
-        errorAlert.showAndWait();
+    private Alert showInfoMessage(String headerText, String text) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(headerText);
+        alert.setContentText(text);
+        alert.showAndWait();
+        return alert;
     }
 
     private void showErrorMessage(String text) {
@@ -142,7 +163,20 @@ public class Csv2TexController {
         errorAlert.showAndWait();
     }
 
-    private Window getWindow() {
-        return mainLayout.getScene().getWindow();
+
+    private String renderRootCauseStackTrace(Throwable t) {
+        Throwable rootCause = t;
+        while (rootCause.getCause() != rootCause && rootCause.getCause() != null) {
+            rootCause = rootCause.getCause();
+        }
+        return renderStackTrace(rootCause);
     }
+
+    private String renderStackTrace(Throwable rootCause) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(out);
+        rootCause.printStackTrace(printStream);
+        return out.toString();
+    }
+
 }
