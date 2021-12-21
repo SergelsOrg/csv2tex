@@ -1,4 +1,4 @@
-package org.example.csv2tex;
+package org.example.csv2tex.shellout;
 
 import org.apache.commons.io.IOUtils;
 import org.assertj.core.data.Offset;
