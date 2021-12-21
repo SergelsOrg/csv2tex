@@ -23,7 +23,7 @@ jobs:
       - checkout
       - install_pdf_tools
       - run: |
-          ./gradlew clean test
+          ./gradlew clean check -i
       - store_test_results:
           path: build/test-results
       - store_artifacts:
