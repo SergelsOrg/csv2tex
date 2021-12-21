@@ -23,12 +23,23 @@ jobs:
       - checkout
       - install_pdf_tools
       - run: |
+          ./gradlew :test -i
+      - store_test_results:
+          path: build/test-results
+      - store_artifacts:
+          path: build/test-results
+
+  run_integration_tests_java:
+    docker:
+      - image: cimg/openjdk:11.0.13
+    steps:
+      - checkout
+      - install_pdf_tools
+      - run: |
           # Actually a CircleCI env variable, but it's hard to get it into the gradle-triggered tests.
           # So this is a workaround.
           export JAVA_TOOL_OPTIONS="-DCI=true"
           ./gradlew :integrationTest -i
-      - run: |
-          ./gradlew :test -i
       - store_test_results:
           path: build/test-results
       - store_artifacts:
@@ -52,4 +63,5 @@ workflows:
     jobs:
       - renovate/validate-config
       - run_tests_java
+      - run_integration_tests_java
       - run_tests_tools_not_installed_java
