@@ -35,8 +35,8 @@ import static org.testfx.assertions.api.Assertions.assertThat;
 public class Csv2TexApplicationTest {
 
     private static final String RESOURCES_DIR_RELATIVE_PATH = "./src/integrationTest/resources/";
-    private static final String DUMMY_CSV_FILE_NAME = "dummyCsv.csv";
-    private static final String DUMMY_TEX_FILE_NAME = "dummyTex.tex";
+    private static final String DUMMY_CSV_FILE_NAME = "student_data_example_one_competency.csv";
+    private static final String DUMMY_TEX_FILE_NAME = "valid_tex.tex";
 
     private Button openCsvButton;
     private Label csvFileLabel;
@@ -206,7 +206,7 @@ public class Csv2TexApplicationTest {
         DialogPane dialogPane = assertAndLookUpAlert(robot);
         assertThat(dialogPane.getHeaderText())
                 .describedAs("no alert dialog should be shown")
-                .isEqualTo("Success");
+                .isEqualTo("Done");
     }
 
     private void lookUpUiNodes(FxRobot robot) {
