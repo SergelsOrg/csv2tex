@@ -70,7 +70,7 @@ public class Csv2TexController {
         PathFilter filter = PathFilter.forFileExtension(filterLabel, fileExtension);
         FXFileChooserStage chooser;
         try {
-            chooser = FXFileChooserStage.create(Skin.DEFAULT, filter);
+            chooser = FXFileChooserStage.create(Skin.MODENA, filter);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
