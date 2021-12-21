@@ -67,7 +67,8 @@ public class SchoolReportsRenderer {
         return outputFile;
     }
 
-    private List<String> renderStudentReports(List<SchoolReportData> studentDataList, String texTemplate, Path temporaryDirectory, ShellCommandsUtil shellCommandsInTempDir) throws IOException {
+    private List<String> renderStudentReports(List<SchoolReportData> studentDataList, String texTemplate, Path temporaryDirectory,
+                                              ShellCommandsUtil shellCommandsInTempDir) throws IOException {
         List<String> renderedPdfs = new ArrayList<>();
         for (int fileNumber = 0; fileNumber < studentDataList.size(); fileNumber++) {
             renderSingleSchoolReportPdf(studentDataList, texTemplate, temporaryDirectory, shellCommandsInTempDir, renderedPdfs, fileNumber);
@@ -75,7 +76,8 @@ public class SchoolReportsRenderer {
         return renderedPdfs;
     }
 
-    private void renderSingleSchoolReportPdf(List<SchoolReportData> studentDataList, String texTemplate, Path temporaryDirectory, ShellCommandsUtil shellCommandsInTempDir, List<String> renderedPdfs, int fileNumber) throws IOException {
+    private void renderSingleSchoolReportPdf(List<SchoolReportData> studentDataList, String texTemplate, Path temporaryDirectory,
+                                             ShellCommandsUtil shellCommandsInTempDir, List<String> renderedPdfs, int fileNumber) throws IOException {
         String texWithReplacedPlaceholders = placeholderReplacer.replacePlaceholdersInTexFile(texTemplate, studentDataList.get(fileNumber));
         Path temporaryTexFilePath = temporaryDirectory.resolve("schoolReport_" + fileNumber + ".tex").toAbsolutePath();
         Files.writeString(temporaryTexFilePath, texWithReplacedPlaceholders);
@@ -84,7 +86,7 @@ public class SchoolReportsRenderer {
     }
 
     private Path mergePdfs(Path temporaryDirectory, ShellCommandsUtil shellCommandsInTempDir, List<String> renderedPdfs) {
-        Path outputFile = temporaryDirectory.resolve("schoolReports.df").toAbsolutePath();
+        Path outputFile = temporaryDirectory.resolve("schoolReports.pdf").toAbsolutePath();
         runShellCommandThrowing(() -> shellCommandsInTempDir.runPdfUnite(outputFile.toString(), renderedPdfs));
         return outputFile;
     }
