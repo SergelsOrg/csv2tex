@@ -6,7 +6,6 @@ import org.example.csv2tex.exception.InvalidCsvException;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.net.URL;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,11 +13,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
 public class CsvToSchoolReportDataParserTest {
+
     private CsvToSchoolReportDataParser sut = new CsvToSchoolReportDataParser();
+
+    private static final String FILE_PATH_PREFIX = "src/test/resources/";
 
     @Test
     public void parseCsvFileToReportDataList_parsesEmptyFile() throws Exception {
-        File file = getCsvFileFromClasspath("csv/student_data_example_empty.csv");
+        File file = getFile("csv/student_data_example_empty.csv");
 
         List<SchoolReportData> actual = sut.parseCsvFileToReportDataList(file);
 
@@ -27,7 +29,7 @@ public class CsvToSchoolReportDataParserTest {
 
     @Test
     public void parseCsvFileToReportDataList_parsesBaseData() throws Exception {
-        File file = getCsvFileFromClasspath("csv/student_data_example_base_data_only.csv");
+        File file = getFile("csv/student_data_example_base_data_only.csv");
 
         List<SchoolReportData> actual = sut.parseCsvFileToReportDataList(file);
 
@@ -45,7 +47,7 @@ public class CsvToSchoolReportDataParserTest {
 
     @Test
     public void parseCsvFileToReportDataList_parsesSingleCompetencyData() throws Exception {
-        File file = getCsvFileFromClasspath("csv/student_data_example_one_competency.csv");
+        File file = getFile("csv/student_data_example_one_competency.csv");
 
         List<SchoolReportData> actual = sut.parseCsvFileToReportDataList(file);
 
@@ -74,7 +76,7 @@ public class CsvToSchoolReportDataParserTest {
 
     @Test
     public void parseCsvFileToReportDataList_parsesShortSingleCompetencyData() throws Exception {
-        File file = getCsvFileFromClasspath("csv/student_data_example_one_competency2.csv");
+        File file = getFile("csv/student_data_example_one_competency2.csv");
 
         List<SchoolReportData> actual = sut.parseCsvFileToReportDataList(file);
 
@@ -104,7 +106,7 @@ public class CsvToSchoolReportDataParserTest {
 
     @Test
     public void parseCsvFileToReportDataList_parsesTwoLineSingleCompetencyData() throws Exception {
-        File file = getCsvFileFromClasspath("csv/student_data_example_two_line_competency.csv");
+        File file = getFile("csv/student_data_example_two_line_competency.csv");
         List<SchoolReportData> actual = sut.parseCsvFileToReportDataList(file);
 
         assertThat(actual).hasSize(3);
@@ -156,7 +158,7 @@ public class CsvToSchoolReportDataParserTest {
 
     @Test
     public void parseCsvFileToReportDataList_parsesFullExampleFile() throws Exception {
-        File file = getCsvFileFromClasspath("csv/student_data_example_full.csv");
+        File file = getFile("csv/student_data_example_full.csv");
 
         List<SchoolReportData> actual = sut.parseCsvFileToReportDataList(file);
 
@@ -323,6 +325,7 @@ public class CsvToSchoolReportDataParserTest {
         assertThat(studentCompetency.level).isEqualTo("3");
         assertThat(studentCompetency.grade).isEqualTo("1");
     }
+
     private void assertCompetency1Data(SchoolCompetencyData studentCompetency) {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Deutsch");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Texte rezipieren");
@@ -395,8 +398,8 @@ public class CsvToSchoolReportDataParserTest {
 
 
     @Test
-    public void parseCsvFileToReportDataList_ifHeaderTooShort_throwsException() throws Exception {
-        File file = getCsvFileFromClasspath("csv/student_data_faulty_header_too_short.csv");
+    public void parseCsvFileToReportDataList_ifHeaderTooShort_throwsException() {
+        File file = getFile("csv/student_data_faulty_header_too_short.csv");
 
         assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
                 .isInstanceOf(InvalidCsvException.class)
@@ -404,8 +407,8 @@ public class CsvToSchoolReportDataParserTest {
     }
 
     @Test
-    public void parseCsvFileToReportDataList_ifHeaderTooLong_throwsException() throws Exception {
-        File file = getCsvFileFromClasspath("csv/student_data_faulty_header_too_long.csv");
+    public void parseCsvFileToReportDataList_ifHeaderTooLong_throwsException() {
+        File file = getFile("csv/student_data_faulty_header_too_long.csv");
 
         assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
                 .isInstanceOf(InvalidCsvException.class)
@@ -413,8 +416,8 @@ public class CsvToSchoolReportDataParserTest {
     }
 
     @Test
-    public void parseCsvFileToReportDataList_ifHeaderTooLongByCountRelativeProportion_throwsException() throws Exception {
-        File file = getCsvFileFromClasspath("csv/student_data_faulty_content_rows_too_short_relative_blaming_header.csv");
+    public void parseCsvFileToReportDataList_ifHeaderTooLongByCountRelativeProportion_throwsException() {
+        File file = getFile("csv/student_data_faulty_content_rows_too_short_relative_blaming_header.csv");
 
         assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
                 .isInstanceOf(InvalidCsvException.class)
@@ -424,8 +427,8 @@ public class CsvToSchoolReportDataParserTest {
 
 
     @Test
-    public void parseCsvFileToReportDataList_ifContentTooShortByCountRelativeProportion_throwsException() throws Exception {
-        File file = getCsvFileFromClasspath("csv/student_data_faulty_content_rows_too_short_relative_blaming_content.csv");
+    public void parseCsvFileToReportDataList_ifContentTooShortByCountRelativeProportion_throwsException() {
+        File file = getFile("csv/student_data_faulty_content_rows_too_short_relative_blaming_content.csv");
 
         assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
                 .isInstanceOf(InvalidCsvException.class)
@@ -434,8 +437,8 @@ public class CsvToSchoolReportDataParserTest {
     }
 
     @Test
-    public void parseCsvFileToReportDataList_ifHeaderTooLongByAbsoluteCount_throwsException() throws Exception {
-        File file = getCsvFileFromClasspath("csv/student_data_faulty_content_rows_too_short_absolute_blaming_header.csv");
+    public void parseCsvFileToReportDataList_ifHeaderTooLongByAbsoluteCount_throwsException() {
+        File file = getFile("csv/student_data_faulty_content_rows_too_short_absolute_blaming_header.csv");
 
         assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
                 .isInstanceOf(InvalidCsvException.class)
@@ -444,8 +447,8 @@ public class CsvToSchoolReportDataParserTest {
     }
 
     @Test
-    public void parseCsvFileToReportDataList_ifContentTooShortByAbsoluteCount_throwsException() throws Exception {
-        File file = getCsvFileFromClasspath("csv/student_data_faulty_content_rows_too_short_absolute_blaming_content.csv");
+    public void parseCsvFileToReportDataList_ifContentTooShortByAbsoluteCount_throwsException() {
+        File file = getFile("csv/student_data_faulty_content_rows_too_short_absolute_blaming_content.csv");
 
         assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
                 .isInstanceOf(InvalidCsvException.class)
@@ -454,8 +457,8 @@ public class CsvToSchoolReportDataParserTest {
     }
 
     @Test
-    public void parseCsvFileToReportDataList_ifHeaderHasGradesButNoLevel_throwsException() throws Exception {
-        File file = getCsvFileFromClasspath("csv/student_data_faulty_level_column_missing.csv");
+    public void parseCsvFileToReportDataList_ifHeaderHasGradesButNoLevel_throwsException() {
+        File file = getFile("csv/student_data_faulty_level_column_missing.csv");
 
         assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
                 .isInstanceOf(InvalidCsvException.class)
@@ -463,8 +466,8 @@ public class CsvToSchoolReportDataParserTest {
     }
 
     @Test
-    public void parseCsvFileToReportDataList_ifHeaderHasCompetencyOfOnlyOneLine_throwsException() throws Exception {
-        File file = getCsvFileFromClasspath("csv/student_data_faulty_one_line_competency.csv");
+    public void parseCsvFileToReportDataList_ifHeaderHasCompetencyOfOnlyOneLine_throwsException() {
+        File file = getFile("csv/student_data_faulty_one_line_competency.csv");
 
         assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
                 .isInstanceOf(InvalidCsvException.class)
@@ -472,11 +475,7 @@ public class CsvToSchoolReportDataParserTest {
                 .hasMessageMatching(".*\\b8\\b.*");
     }
 
-    private static File getCsvFileFromClasspath(String pathToResource) {
-        URL resource = CsvToSchoolReportDataParserTest.class.getClassLoader().getResource(pathToResource);
-        assertThat(resource)
-                .describedAs("file not found in classpath: " + pathToResource)
-                .isNotNull();
-        return new File(resource.getFile());
+    private static File getFile(String relativePath) {
+        return new File(FILE_PATH_PREFIX + relativePath);
     }
 }

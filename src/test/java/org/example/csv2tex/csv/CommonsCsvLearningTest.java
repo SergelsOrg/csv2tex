@@ -4,8 +4,10 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
-import java.net.URL;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class CommonsCsvLearningTest {
 
+    private static final String FILE_PATH_PREFIX = "src/test/resources/";
+
     public enum Header {
         Name, Email, Comment
     }
@@ -23,7 +27,7 @@ public class CommonsCsvLearningTest {
     @Test
     public void tryOutCommonsCsvParsing() throws IOException {
         // arrange
-        File csvFile = getCsvFileFromClasspath();
+        File csvFile = getCsvFile();
 
         // act
         List<CSVRecord> recordList = new ArrayList<>();
@@ -49,7 +53,7 @@ public class CommonsCsvLearningTest {
     @Test
     public void tryOutCommonsCsvParsingWithOptions() throws IOException {
         // arrange
-        File csvFile = getCsvFileFromClasspath();
+        File csvFile = getCsvFile();
         CSVFormat parser = CSVFormat.DEFAULT.builder()
                 .setTrim(true)
                 .setSkipHeaderRecord(true)
@@ -77,11 +81,7 @@ public class CommonsCsvLearningTest {
         assertThat(record2.get(Header.Comment)).isEqualTo("test data set 2");
     }
 
-    private File getCsvFileFromClasspath() {
-        URL resource = getClass().getClassLoader().getResource("csv/testCsv.csv");
-        assertThat(resource)
-                .describedAs("file not found in classpath: testCsv.csv")
-                .isNotNull();
-        return new File(resource.getFile());
+    private File getCsvFile() {
+        return new File(FILE_PATH_PREFIX + "csv/testCsv.csv");
     }
 }
