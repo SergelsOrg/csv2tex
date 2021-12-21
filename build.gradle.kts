@@ -70,7 +70,7 @@ dependencies {
     // ######################## JavaFX testing #########################################
 
     // module required by junit, it seems
-    testImplementation("org.apiguardian:apiguardian-api:1.0.0")
+    testImplementation("org.apiguardian:apiguardian-api:1.1.2")
 
     val testFxVersion = "4.0.16-alpha"
     testImplementation("org.testfx:testfx-core:${testFxVersion}")
