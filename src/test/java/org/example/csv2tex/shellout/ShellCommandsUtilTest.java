@@ -105,7 +105,7 @@ class ShellCommandsUtilTest {
 
     @Test
     public void texi2pdfExitsSuccessfully() {
-        long timeSecs = System.currentTimeMillis()/1000L;
+        long timeSecs = System.currentTimeMillis() / 1000L;
         File expectedOutFile1 = new File("page1.pdf");
         File expectedOutFile2 = new File("page2.pdf");
 
@@ -122,20 +122,20 @@ class ShellCommandsUtilTest {
         assertThat(texi2pdf2.exitCode.get())
                 .describedAs(texi2pdf2.toString())
                 .isEqualTo(0);
-        assertThat(expectedOutFile1.lastModified()/1000L).isGreaterThanOrEqualTo(timeSecs);
+        assertThat(expectedOutFile1.lastModified() / 1000L).isGreaterThanOrEqualTo(timeSecs);
         assertThat(expectedOutFile1)
-            .describedAs("file not found in classpath: page1.pdf")
-            .isNotNull();
-        assertThat(expectedOutFile2.lastModified()/1000L).isGreaterThanOrEqualTo(timeSecs);
+                .describedAs("file not found in classpath: page1.pdf")
+                .isNotNull();
+        assertThat(expectedOutFile2.lastModified() / 1000L).isGreaterThanOrEqualTo(timeSecs);
         assertThat(expectedOutFile2)
-            .describedAs("file not found in classpath: page2.pdf")
-            .isNotNull();
+                .describedAs("file not found in classpath: page2.pdf")
+                .isNotNull();
         assertThat(texi2pdf1.exitCode.get()).isEqualTo(0);
     }
 
     @Test
     public void texi2pdfRunsCorrectly() {
-        long timeSecs = System.currentTimeMillis()/1000L;
+        long timeSecs = System.currentTimeMillis() / 1000L;
 
         ShellCommandsUtil.ShellResult result = shellCommands.runTexi2Pdf("src/test/resources/shellout/page1.tex");
 
@@ -146,7 +146,7 @@ class ShellCommandsUtilTest {
                 .isEqualTo(0);
         File outFile1 = new File("page1.pdf");
         assertThat(outFile1).exists();
-        assertThat(outFile1.lastModified()/1000L).isGreaterThanOrEqualTo(timeSecs);
+        assertThat(outFile1.lastModified() / 1000L).isGreaterThanOrEqualTo(timeSecs);
         assertThat(outFile1)
                 .describedAs("file not found in classpath: page1.pdf")
                 .isNotNull();
