@@ -1,6 +1,7 @@
 package org.example.csv2tex.rendering;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.example.csv2tex.exception.InvalidCsvException;
 import org.example.csv2tex.exception.RenderingException;
 import org.example.csv2tex.exception.RenderingExceptionCause;
@@ -71,6 +72,8 @@ class SchoolReportsRendererTest {
         assertThat(outputFilePath).exists();
         PDDocument doc = PDDocument.load(outputFilePath.toFile());
         assertThat(doc.getNumberOfPages()).isEqualTo(1);
+        String pdfText = new PDFTextStripper().getText(doc);
+        assertThat(pdfText).isEqualTo("No placeholders here.\n1\n");
     }
 
     @Test
@@ -80,5 +83,10 @@ class SchoolReportsRendererTest {
         assertThat(outputFilePath).exists();
         PDDocument doc = PDDocument.load(outputFilePath.toFile());
         assertThat(doc.getNumberOfPages()).isEqualTo(3);
+        String pdfText = new PDFTextStripper().getText(doc);
+        assertThat(pdfText).isEqualTo("No placeholders here.\n1\n" +
+                "No placeholders here.\n1\n" +
+                "No placeholders here.\n1\n"
+        );
     }
 }
