@@ -154,7 +154,7 @@ class ShellCommandsUtilTest {
 
     @Test
     public void pdfUniteExitsSuccessfully() throws IOException {
-        String outputFile = "/tmp/pages.pdf";
+        String outputFile = tempDir.getAbsolutePath() + "/pagess.pdf";
 
         boolean successfulExit = shellCommands.doesCommandExitSuccessfully("pdfunite", "src/test/resources/shellout/page1.pdf", "src/test/resources/shellout/page2.pdf", outputFile);
 
