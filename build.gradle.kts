@@ -49,6 +49,15 @@ dependencies {
     implementation("org.apache.commons:commons-lang3:3.12.0")
     implementation("commons-io:commons-io:2.11.0")
 
+    // ############################ Logging ###########################################
+
+    implementation("org.slf4j:slf4j-api:1.7.32")
+
+    // slf4j bindings:
+    implementation("ch.qos.logback:logback-core:1.2.9")
+    runtimeOnly("ch.qos.logback:logback-classic:1.2.9")
+    // implementation("org.slf4j:slf4j-simple:1.7.32")
+
     // ############################ JavaFX ############################################
 
     implementation("org.openjfx:javafx-base:${javaFxVersion}")

@@ -22,7 +22,12 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Csv2TexController {
+
+    private static final Logger logger = LoggerFactory.getLogger(Csv2TexController.class);
 
     @FXML
     private Node mainLayout;
@@ -107,11 +112,10 @@ public class Csv2TexController {
             button.setText("Transforming...");
             transformToPdf();
         } catch (Exception e) {
+            logErrorMessage(e);
             showErrorMessage(
                     "An exception occurred - " + e.getClass().getSimpleName() + ": '" + e.getMessage() + "'"
             );
-//                    + renderStackTrace(e));
-//                    + renderRootCauseStackTrace(e));
         } finally {
             button.setDisable(false);
             button.setText("Render PDFs!");
@@ -163,6 +167,9 @@ public class Csv2TexController {
         errorAlert.showAndWait();
     }
 
+    private void logErrorMessage(Exception e) {
+        logger.warn("Exception: #############\n{}\n######'", renderStackTrace(e));
+    }
 
     private String renderRootCauseStackTrace(Throwable t) {
         Throwable rootCause = t;
