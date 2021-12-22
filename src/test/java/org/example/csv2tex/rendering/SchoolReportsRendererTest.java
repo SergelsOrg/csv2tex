@@ -11,8 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class SchoolReportsRendererTest {
 
@@ -57,11 +56,13 @@ class SchoolReportsRendererTest {
 
     @Test
     public void renderSchoolReportsForGivenFiles_withInvalidTex_throwsException() {
-        assertThatThrownBy(() -> sut.renderSchoolReportsForGivenFiles(VALID_CSV_FILE, INVALID_TEX_FILE))
+        Throwable thrownException = catchThrowable(() -> sut.renderSchoolReportsForGivenFiles(VALID_CSV_FILE, INVALID_TEX_FILE));
+
+        assertThat(thrownException)
                 .isInstanceOf(RenderingException.class)
-                .hasMessageContaining("ShellResult")
                 .extracting(e -> ((RenderingException) e).getErrorCode())
                 .isEqualTo(RenderingExceptionCause.SHELL_COMMAND_FAILED);
+        assertThat(((RenderingException) thrownException).getAdditionalMessage()).contains("ShellResult");
     }
 
     @Test
