@@ -168,14 +168,6 @@ public class Csv2TexController {
     }
 
     private void logErrorMessage(Exception e) {
-        logger.warn("Exception: #############\n{}\n######'", renderStackTrace(e));
+        logger.warn("An exception occurred", e);
     }
-
-    private String renderStackTrace(Throwable rootCause) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        PrintStream printStream = new PrintStream(out);
-        rootCause.printStackTrace(printStream);
-        return out.toString();
-    }
-
 }
