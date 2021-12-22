@@ -65,7 +65,7 @@ dependencies {
     implementation("org.openjfx:javafx-fxml:${javaFxVersion}")
     implementation("org.openjfx:javafx-graphics:${javaFxVersion}")
 
-    implementation("net.raumzeitfalle.fx:filechooser:0.0.7")
+    implementation("net.raumzeitfalle.fx:filechooser:0.0.8")
 
     // ################################################################################
 
