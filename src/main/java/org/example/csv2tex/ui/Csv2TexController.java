@@ -12,6 +12,7 @@ import net.raumzeitfalle.fx.filechooser.FXFileChooserStage;
 import net.raumzeitfalle.fx.filechooser.PathFilter;
 import net.raumzeitfalle.fx.filechooser.Skin;
 import net.raumzeitfalle.fx.filechooser.locations.Locations;
+import org.example.csv2tex.exception.RenderingException;
 import org.example.csv2tex.rendering.SchoolReportsRenderer;
 
 import java.io.ByteArrayOutputStream;
@@ -111,6 +112,9 @@ public class Csv2TexController {
             }
             button.setText("Transforming...");
             transformToPdf();
+        } catch (RenderingException e) {
+            logErrorMessage(e);
+            showErrorMessage(e);
         } catch (Exception e) {
             logErrorMessage(e);
             showErrorMessage(
@@ -167,7 +171,17 @@ public class Csv2TexController {
         errorAlert.showAndWait();
     }
 
+    private void logErrorMessage(RenderingException e) {
+        logger.warn("An exception occurred: " + e.toString(), e);
+    }
+
     private void logErrorMessage(Exception e) {
         logger.warn("An exception occurred", e);
+    }
+
+    private void showErrorMessage(RenderingException e) {
+        showErrorMessage(
+                "An exception occurred - " + e.getClass().getSimpleName() + ": '" + e.getMessage() + "'"
+        );
     }
 }
