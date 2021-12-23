@@ -47,8 +47,9 @@
     <Button fx:id="renderPdfButton" mnemonicParsing="false" onAction="#onRenderPdfButtonClick" prefHeight="50.0"
             prefWidth="400.0" text="Render PDFs!"/>
     <VBox alignment="CENTER" prefHeight="100.0" prefWidth="660.0">
-        <RadioButton id="language_select_en" maxWidth="200.0" minWidth="200.0"
-                     mnemonicParsing="false" prefWidth="200.0" selected="true" text="English">
+        <RadioButton id="languageSelectEn" maxWidth="200.0" minWidth="200.0"
+                     mnemonicParsing="false" prefWidth="200.0" selected="true" text="English"
+                     onAction="#updateLanguage">
             <toggleGroup>
                 <ToggleGroup fx:id="language"/>
             </toggleGroup>
@@ -58,8 +59,9 @@
                 </ImageView>
             </graphic>
         </RadioButton>
-        <RadioButton id="language_select_de" maxWidth="200.0" minWidth="200.0"
-                     mnemonicParsing="false" prefWidth="200.0" text="Deutsch" toggleGroup="$language">
+        <RadioButton id="languageSelectDe" maxWidth="200.0" minWidth="200.0"
+                     mnemonicParsing="false" prefWidth="200.0" text="Deutsch" toggleGroup="$language"
+                     onAction="#updateLanguage">
             <graphic>
                 <ImageView fitHeight="150.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                     <Image url="@openmoji_flag-germany_1f1e9-1f1ea.png"/>

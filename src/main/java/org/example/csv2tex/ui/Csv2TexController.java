@@ -3,10 +3,7 @@ package org.example.csv2tex.ui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.stage.Window;
 import net.raumzeitfalle.fx.filechooser.FXFileChooserStage;
 import net.raumzeitfalle.fx.filechooser.PathFilter;
@@ -21,6 +18,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -30,16 +28,19 @@ public class Csv2TexController {
 
     private static final Logger logger = LoggerFactory.getLogger(Csv2TexController.class);
 
+
     @FXML
     private Node mainLayout;
     @FXML
     private Label csvFileLabel;
     @FXML
     private Label texFileLabel;
+    @FXML
+    public ToggleGroup language;
 
     private File texFile;
     private File csvFile;
-
+    private Locale selectedLanguage = Locale.ENGLISH;
 
     @FXML
     public void onOpenTexButtonClick(ActionEvent ignored) {
@@ -183,5 +184,29 @@ public class Csv2TexController {
         showErrorMessage(
                 "An exception occurred - " + e.getClass().getSimpleName() + ": '" + e.getMessage() + "'"
         );
+    }
+
+    public void updateLanguage(ActionEvent actionEvent) {
+        String selectedLanguageButtonId = ((Node) actionEvent.getSource()).getId();
+        switch (selectedLanguageButtonId) {
+            case "languageSelectEn":
+                selectedLanguage = Locale.ENGLISH;
+                logger.info("Language changed to English");
+                languageChangedTo(selectedLanguage);
+                break;
+            case "languageSelectDe":
+                selectedLanguage = Locale.GERMAN;
+                logger.info("Language changed to German");
+                languageChangedTo(selectedLanguage);
+                break;
+            default:
+                showErrorMessage(
+                        "Unknown language: " + selectedLanguageButtonId
+                );
+        }
+    }
+
+    private void languageChangedTo(Locale selectedLanguage) {
+        // TODO update UI and whatever is necessary
     }
 }
