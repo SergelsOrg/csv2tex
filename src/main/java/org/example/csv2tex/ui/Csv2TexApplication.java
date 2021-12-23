@@ -21,6 +21,7 @@ public class Csv2TexApplication extends Application {
         Scene scene = new Scene(loadedParent, 700, 300);
         stage.setTitle("Pick files for rendering!");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
