@@ -2,9 +2,11 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<VBox fx:id="mainLayout" alignment="CENTER" prefHeight="300.0" prefWidth="700.0" spacing="20.0"
+<VBox fx:id="mainLayout" alignment="CENTER" prefHeight="476.0" prefWidth="700.0" spacing="20.0"
       xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="org.example.csv2tex.ui.Csv2TexController">
     <padding>
@@ -48,4 +50,31 @@
     </HBox>
     <Button fx:id="renderPdfButton" mnemonicParsing="false" onAction="#onRenderPdfButtonClick" prefHeight="50.0"
             prefWidth="400.0" text="Render PDFs!"/>
+    <VBox alignment="CENTER" prefHeight="100.0" prefWidth="660.0">
+        <children>
+            <RadioButton id="language_select_en" alignment="CENTER_LEFT" maxWidth="200.0" minWidth="200.0"
+                         mnemonicParsing="false" prefWidth="200.0" selected="true" text="English">
+                <toggleGroup>
+                    <ToggleGroup fx:id="language"/>
+                </toggleGroup>
+                <graphic>
+                    <ImageView fitHeight="150.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@openmoji_flag-united-kingdom_1f1ec-1f1e7.png"/>
+                        </image>
+                    </ImageView>
+                </graphic>
+            </RadioButton>
+            <RadioButton id="language_select_de" alignment="CENTER_LEFT" maxWidth="200.0" minWidth="200.0"
+                         mnemonicParsing="false" prefWidth="200.0" text="Deutsch" toggleGroup="$language">
+                <graphic>
+                    <ImageView fitHeight="150.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@openmoji_flag-germany_1f1e9-1f1ea.png"/>
+                        </image>
+                    </ImageView>
+                </graphic>
+            </RadioButton>
+        </children>
+    </VBox>
 </VBox>
