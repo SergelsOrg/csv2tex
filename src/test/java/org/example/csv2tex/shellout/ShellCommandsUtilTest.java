@@ -105,48 +105,53 @@ class ShellCommandsUtilTest {
 
     @Test
     public void texi2pdfExitsSuccessfully() {
-        long timeSecs = System.currentTimeMillis()/1000L;
-        File expectedOutFile1 = new File("page1.pdf");
-        File expectedOutFile2 = new File("page2.pdf");
+        long timeSecs = System.currentTimeMillis() / 1000L;
+        String texFile1 = new File("src/test/resources/shellout/page1.tex").getAbsolutePath();
+        String texFile2 = new File("src/test/resources/shellout/page2.tex").getAbsolutePath();
+        File expectedOutFile1 = new File(tempDir, "page1.pdf");
+        File expectedOutFile2 = new File(tempDir, "page2.pdf");
 
-        ShellCommandsUtil.ShellResult texi2pdf1 = shellCommands.runShellCommand("texi2pdf", "src/test/resources/shellout/page1.tex");
-        ShellCommandsUtil.ShellResult texi2pdf2 = shellCommands.runShellCommand("texi2pdf", "src/test/resources/shellout/page2.tex");
+        ShellCommandsUtil.ShellResult texi2pdf1 = shellCommandsInTmpFolder.runShellCommand("texi2pdf", texFile1);
+        ShellCommandsUtil.ShellResult texi2pdf2 = shellCommandsInTmpFolder.runShellCommand("texi2pdf", texFile2);
 
         assertThat(texi2pdf1.successfulExit).isTrue();
         assertThat(texi2pdf1.exitCode).isPresent();
         assertThat(texi2pdf1.exitCode.get())
                 .describedAs(texi2pdf1.toString())
                 .isEqualTo(0);
+        assertThat(expectedOutFile1).exists();
+        assertThat(expectedOutFile1)
+                .describedAs("file not found in classpath: page1.pdf")
+                .isNotNull();
+        assertThat(expectedOutFile1.lastModified() / 1000L).isGreaterThanOrEqualTo(timeSecs);
+
         assertThat(texi2pdf2.successfulExit).isTrue();
         assertThat(texi2pdf2.exitCode).isPresent();
         assertThat(texi2pdf2.exitCode.get())
                 .describedAs(texi2pdf2.toString())
                 .isEqualTo(0);
-        assertThat(expectedOutFile1.lastModified()/1000L).isGreaterThanOrEqualTo(timeSecs);
-        assertThat(expectedOutFile1)
-            .describedAs("file not found in classpath: page1.pdf")
-            .isNotNull();
-        assertThat(expectedOutFile2.lastModified()/1000L).isGreaterThanOrEqualTo(timeSecs);
+        assertThat(expectedOutFile2).exists();
         assertThat(expectedOutFile2)
-            .describedAs("file not found in classpath: page2.pdf")
-            .isNotNull();
-        assertThat(texi2pdf1.exitCode.get()).isEqualTo(0);
+                .describedAs("file not found in classpath: page2.pdf")
+                .isNotNull();
+        assertThat(expectedOutFile2.lastModified() / 1000L).isGreaterThanOrEqualTo(timeSecs);
     }
 
     @Test
     public void texi2pdfRunsCorrectly() {
-        long timeSecs = System.currentTimeMillis()/1000L;
+        long timeSecs = System.currentTimeMillis() / 1000L;
+        String texFile = new File("src/test/resources/shellout/page1.tex").getAbsolutePath();
 
-        ShellCommandsUtil.ShellResult result = shellCommands.runTexi2Pdf("src/test/resources/shellout/page1.tex");
+        ShellCommandsUtil.ShellResult result = shellCommandsInTmpFolder.runTexi2Pdf(texFile);
 
         assertThat(result.successfulExit).isTrue();
         assertThat(result.exitCode).isPresent();
         assertThat(result.exitCode.get())
                 .describedAs(result.toString())
                 .isEqualTo(0);
-        File outFile1 = new File("page1.pdf");
+        File outFile1 = new File(tempDir, "page1.pdf");
         assertThat(outFile1).exists();
-        assertThat(outFile1.lastModified()/1000L).isGreaterThanOrEqualTo(timeSecs);
+        assertThat(outFile1.lastModified() / 1000L).isGreaterThanOrEqualTo(timeSecs);
         assertThat(outFile1)
                 .describedAs("file not found in classpath: page1.pdf")
                 .isNotNull();
@@ -154,9 +159,12 @@ class ShellCommandsUtilTest {
 
     @Test
     public void pdfUniteExitsSuccessfully() throws IOException {
-        String outputFile = "/tmp/pages.pdf";
+        String pdf1 = new File("src/test/resources/shellout/page1.pdf").getAbsolutePath();
+        String pdf2 = new File("src/test/resources/shellout/page2.pdf").getAbsolutePath();
+        String outputFile = Files.createTempFile("output", "pdf").toAbsolutePath().toString();
 
-        boolean successfulExit = shellCommands.doesCommandExitSuccessfully("pdfunite", "src/test/resources/shellout/page1.pdf", "src/test/resources/shellout/page2.pdf", outputFile);
+        boolean successfulExit = shellCommandsInTmpFolder.doesCommandExitSuccessfully("pdfunite",
+                pdf1, pdf2, outputFile);
 
         assertThat(successfulExit).isTrue();
         File outFile = new File(outputFile);
@@ -170,10 +178,12 @@ class ShellCommandsUtilTest {
 
     @Test
     public void runPdfUnite_mergesTwoGivenPdfs() throws IOException {
-        String outputPath = Files.createTempFile("output", "pdf").toString();
-        List<String> filesToMerge = Arrays.asList("src/test/resources/shellout/page1.pdf", "src/test/resources/shellout/page2.pdf");
+        String outputPath = Files.createTempFile("output", "pdf").toAbsolutePath().toString();
+        String pdf1 = new File("src/test/resources/shellout/page1.pdf").getAbsolutePath();
+        String pdf2 = new File("src/test/resources/shellout/page2.pdf").getAbsolutePath();
+        List<String> filesToMerge = Arrays.asList(pdf1, pdf2);
 
-        ShellCommandsUtil.ShellResult result = shellCommands.runPdfUnite(outputPath, filesToMerge);
+        ShellCommandsUtil.ShellResult result = shellCommandsInTmpFolder.runPdfUnite(outputPath, filesToMerge);
 
         String[] actualText = extractTextLinesFromPdf(outputPath);
         assertThat(actualText[0]).isEqualTo("page1");
