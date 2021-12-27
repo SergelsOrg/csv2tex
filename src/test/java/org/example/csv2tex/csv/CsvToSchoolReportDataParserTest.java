@@ -2,6 +2,7 @@ package org.example.csv2tex.csv;
 
 import org.example.csv2tex.data.SchoolCompetencyData;
 import org.example.csv2tex.data.SchoolReportData;
+import org.example.csv2tex.exception.InvalidCsvCause;
 import org.example.csv2tex.exception.InvalidCsvException;
 import org.junit.jupiter.api.Test;
 
@@ -473,6 +474,17 @@ public class CsvToSchoolReportDataParserTest {
                 .isInstanceOf(InvalidCsvException.class)
                 .hasMessageContaining("competency definitions in the header are incomplete")
                 .hasMessageMatching(".*\\b8\\b.*");
+    }
+
+    @Test
+    public void parseCsvFileToReportDataList_ifTooFewColumns_throwsException() {
+        File file = getFile("csv/student_data_faulty_too_few_columns.csv");
+
+        assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
+                .isInstanceOf(InvalidCsvException.class)
+                .hasMessageContaining("too few columns")
+                .extracting(e -> ((InvalidCsvException) e).getErrorCode())
+                .isEqualTo(InvalidCsvCause.TOO_FEW_COLUMNS);
     }
 
     private static File getFile(String relativePath) {

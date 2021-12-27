@@ -17,9 +17,17 @@ import static org.example.csv2tex.exception.InvalidCsvCause.HEADER_COMPETENCY_IN
 public class CsvValidator {
 
     public void ensureCorrectFormat(List<String> headers, List<CSVRecord> recordList) {
+        ensureBaseColumns(headers);
         ensureLevelColumn(headers);
         ensureRowLengths(headers, recordList);
         ensureCompleteCompetencyHeaders(headers);
+    }
+
+
+    private void ensureBaseColumns(List<String> headers) {
+        if (headers.size() < 6) {
+            throw new InvalidCsvException(TOO_FEW_COLUMNS);
+        }
     }
 
     private void ensureLevelColumn(List<String> headers) {
