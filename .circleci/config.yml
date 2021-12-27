@@ -15,6 +15,13 @@ commands:
           sudo apt-get install texinfo
           sudo apt-get install texlive
 
+  install_needed_font_package:
+    steps:
+      - run: |
+          sudo apt-get update
+          # contains the pango font. Without it, there is this error: 
+          # "java.util.concurrent.ExecutionException: java.lang.UnsatisfiedLinkError: no javafx_font_pango in java.library.path"
+          sudo apt-get install libpangoft2-1.0-0
 jobs:
   run_tests_java:
     docker:
@@ -23,7 +30,24 @@ jobs:
       - checkout
       - install_pdf_tools
       - run: |
-          ./gradlew clean test
+          ./gradlew :test -i
+      - store_test_results:
+          path: build/test-results
+      - store_artifacts:
+          path: build/test-results
+
+  run_integration_tests_java:
+    docker:
+      - image: cimg/openjdk:11.0.13
+    steps:
+      - checkout
+      - install_pdf_tools
+      - install_needed_font_package
+      - run: |
+          # Actually a CircleCI env variable, but it's hard to get it into the gradle-triggered tests.
+          # So this is a workaround.
+          export JAVA_TOOL_OPTIONS="-DCI=true"
+          ./gradlew :integrationTest -i
       - store_test_results:
           path: build/test-results
       - store_artifacts:
@@ -47,4 +71,5 @@ workflows:
     jobs:
       - renovate/validate-config
       - run_tests_java
+      - run_integration_tests_java
       - run_tests_tools_not_installed_java

@@ -3,6 +3,13 @@ package org.example.csv2tex.exception;
 public enum InvalidCsvCause {
 
     /**
+     * If there are not even enough columns to cover the student's base data
+     */
+    TOO_FEW_COLUMNS("The CSV has too few columns - there should be at least 6 columns for the student's " +
+            "base data (class, school year, part of year (e.g. '1' for 1st semester), given name, surname, birthday)"),
+
+
+    /**
      * CSV has more than just base data, but no level column is defined.
      */
     HEADER_NO_LEVEL_DEFINED("The header row defines no level column."),
