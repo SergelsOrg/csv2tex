@@ -1,19 +1,21 @@
 package org.example.csv2tex.exception;
 
+import org.example.csv2tex.globalstate.GlobalState;
+
 public enum RenderingExceptionCause {
 
-    UNEXPECTED("An unexpected exception occurred"),
-    SHELL_COMMAND_FAILED("A shell command failed"),
-    NO_DATA("The given CSV file contains no data"),
+    UNEXPECTED("exception.rendering.unexpected"),
+    SHELL_COMMAND_FAILED("exception.rendering.shell_command_failed"),
+    NO_DATA("exception.rendering.no_data"),
     ;
 
-    private final String message;
+    private final String messageKey;
 
-    RenderingExceptionCause(String message) {
-        this.message = message;
+    RenderingExceptionCause(String messageKey) {
+        this.messageKey = messageKey;
     }
 
     public String getMessage() {
-        return message;
+        return GlobalState.getInstance().getTranslations().getString(messageKey);
     }
 }
