@@ -5,16 +5,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.example.csv2tex.globalstate.GlobalState;
 
 import java.io.IOException;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 public class Csv2TexApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Csv2TexApplication.class.getResource("csv2tex-view.fxml"));
-        fxmlLoader.setResources(ResourceBundle.getBundle("translations", Locale.ENGLISH));
+        fxmlLoader.setResources(GlobalState.getInstance().getTranslations());
 
         VBox loadedParent = fxmlLoader.load();
 

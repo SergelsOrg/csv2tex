@@ -10,6 +10,7 @@ import net.raumzeitfalle.fx.filechooser.PathFilter;
 import net.raumzeitfalle.fx.filechooser.Skin;
 import net.raumzeitfalle.fx.filechooser.locations.Locations;
 import org.example.csv2tex.exception.RenderingException;
+import org.example.csv2tex.globalstate.GlobalState;
 import org.example.csv2tex.rendering.SchoolReportsRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,6 @@ public class Csv2TexController {
 
     private File texFile;
     private File csvFile;
-    private Locale selectedLanguage = Locale.ENGLISH;
 
     // called by JAVAFX using reflection
     public void initialize() {
@@ -202,14 +202,12 @@ public class Csv2TexController {
         String selectedLanguageButtonId = ((Node) actionEvent.getSource()).getId();
         switch (selectedLanguageButtonId) {
             case "languageSelectEn":
-                selectedLanguage = Locale.ENGLISH;
-                LOGGER.info("Language changed to English");
-                languageChangedTo(selectedLanguage);
+                GlobalState.getInstance().setLocale(Locale.ENGLISH);
+                updateUiTranslations();
                 break;
             case "languageSelectDe":
-                selectedLanguage = Locale.GERMAN;
-                LOGGER.info("Language changed to German");
-                languageChangedTo(selectedLanguage);
+                GlobalState.getInstance().setLocale(Locale.GERMAN);
+                updateUiTranslations();
                 break;
             default:
                 showErrorMessage(
@@ -218,16 +216,14 @@ public class Csv2TexController {
         }
     }
 
-    private void languageChangedTo(Locale selectedLanguage) {
-
-        ResourceBundle bundle = ResourceBundle.getBundle("translations", selectedLanguage);
-
+    private void updateUiTranslations() {
+        ResourceBundle translations = GlobalState.getInstance().getTranslations();
         // I tried my best using property bindings instead of this manual update, but did not succeed - it seems this
         // can be done easily when creating the UI in program, but it's different when using FXML, and none of the
         // information from the stuff I found worked out, e.g. https://stackoverflow.com/a/19826636/1143126
-        openCsvButton.setText(bundle.getString("openCsvButtonText"));
-        openTexButton.setText(bundle.getString("openTexButtonText"));
-        renderPdfButton.setText(bundle.getString("renderPdfButtonText"));
+        openCsvButton.setText(translations.getString("openCsvButtonText"));
+        openTexButton.setText(translations.getString("openTexButtonText"));
+        renderPdfButton.setText(translations.getString("renderPdfButtonText"));
     }
 
 }

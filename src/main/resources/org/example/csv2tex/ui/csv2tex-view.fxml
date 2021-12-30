@@ -47,6 +47,7 @@
     <Button fx:id="renderPdfButton" mnemonicParsing="false" onAction="#onRenderPdfButtonClick" prefHeight="50.0"
             prefWidth="400.0" text="%renderPdfButtonText"/>
     <VBox alignment="CENTER" prefHeight="100.0" prefWidth="660.0">
+        <!-- If you change the preselected language, do also change GlobalState#locale -->
         <RadioButton id="languageSelectEn" maxWidth="200.0" minWidth="200.0"
                      mnemonicParsing="false" prefWidth="200.0" selected="true" text="English"
                      onAction="#updateLanguage">
