@@ -64,10 +64,11 @@ public class Csv2TexApplicationTest {
     }
 
     @BeforeEach
-    public void setup() throws Exception {
+    public void setup(FxRobot robot) throws Exception {
         ApplicationTest.launch(Csv2TexApplication.class);
 
         putDummyFilesIntoUserHome();
+        setUiToEnglish(robot);
     }
 
     // FXFileChooser always has the user's home as the very first pre-selected item in the search path.
@@ -90,6 +91,12 @@ public class Csv2TexApplicationTest {
                 Files.copy(input, targetTex);
             }
         }
+    }
+
+    private void setUiToEnglish(FxRobot robot) {
+        lookUpUiNodes(robot);
+        robot.clickOn(languageSelectDe);
+        robot.clickOn(languageSelectEn);
     }
 
     @AfterEach
@@ -124,6 +131,22 @@ public class Csv2TexApplicationTest {
 
         // act
         robot.clickOn(languageSelectDe);
+
+        // assert
+        assertThat(openCsvButton).hasText("Wählen Sie eine CSV-Datei!");
+        assertThat(openTexButton).hasText("Wählen Sie eine TEX-Datei!");
+        assertThat(renderPdfButton).hasText("PDFs erstellen!");
+    }
+
+    @Test
+    public void testThatUiValuesChangeBackRightAfterRendering(FxRobot robot) {
+        // arrange
+        lookUpUiNodes(robot);
+
+        // act
+        robot.clickOn(languageSelectDe);
+        robot.clickOn(renderPdfButton);
+        closeAllAlertWindows(robot);
 
         // assert
         assertThat(openCsvButton).hasText("Wählen Sie eine CSV-Datei!");
