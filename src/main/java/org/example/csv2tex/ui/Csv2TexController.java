@@ -22,6 +22,8 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import static net.raumzeitfalle.fx.filechooser.Skin.MODENA;
+
 public class Csv2TexController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Csv2TexController.class);
@@ -88,7 +90,7 @@ public class Csv2TexController {
         PathFilter filter = PathFilter.forFileExtension(filterLabel, fileExtension);
         FXFileChooserStage chooser;
         try {
-            chooser = FXFileChooserStage.create(Skin.MODENA, filter);
+            chooser = FXFileChooserStage.create(MODENA, filter);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
