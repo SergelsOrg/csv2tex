@@ -7,7 +7,6 @@ import javafx.scene.control.*;
 import javafx.stage.Window;
 import net.raumzeitfalle.fx.filechooser.FXFileChooserStage;
 import net.raumzeitfalle.fx.filechooser.PathFilter;
-import net.raumzeitfalle.fx.filechooser.Skin;
 import net.raumzeitfalle.fx.filechooser.locations.Locations;
 import org.example.csv2tex.exception.RenderingException;
 import org.example.csv2tex.globalstate.GlobalState;
@@ -135,7 +134,8 @@ public class Csv2TexController {
             );
         } finally {
             button.setDisable(false);
-            button.setText("Render PDFs!");
+            ResourceBundle translations = GlobalState.getInstance().getTranslations();
+            renderPdfButton.setText(translations.getString("renderPdfButtonText"));
         }
     }
 
