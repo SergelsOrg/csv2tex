@@ -1,7 +1,7 @@
 package org.example.csv2tex.data;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * School report data for one student's school report

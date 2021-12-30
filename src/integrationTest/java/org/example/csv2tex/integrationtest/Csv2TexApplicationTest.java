@@ -1,12 +1,12 @@
 package org.example.csv2tex.integrationtest;
 
-import javafx.scene.control.*;
-import org.example.csv2tex.ui.Csv2TexApplication;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Window;
+import org.example.csv2tex.ui.Csv2TexApplication;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
