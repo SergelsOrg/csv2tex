@@ -1,13 +1,10 @@
 package org.example.csv2tex.integrationtest;
 
+import javafx.scene.control.*;
 import org.example.csv2tex.ui.Csv2TexApplication;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Window;
 import org.junit.jupiter.api.AfterEach;
@@ -43,6 +40,8 @@ public class Csv2TexApplicationTest {
     private Button openTexButton;
     private Label texFileLabel;
     private Button renderPdfButton;
+    private RadioButton languageSelectDe;
+    private RadioButton languageSelectEn;
 
     // headless testing: no UI will pop up, this should work on CI
     @BeforeAll
@@ -115,6 +114,35 @@ public class Csv2TexApplicationTest {
         assertThat(csvFileLabel).hasText("[CSV file]");
         assertThat(openTexButton).hasText("Pick a TEX file!");
         assertThat(texFileLabel).hasText("[TEX file]");
+        assertThat(renderPdfButton).hasText("Render PDFs!");
+    }
+
+    @Test
+    public void testThatUiValuesChangeOnLanguageSelection(FxRobot robot) {
+        // arrange
+        lookUpUiNodes(robot);
+
+        // act
+        robot.clickOn(languageSelectDe);
+
+        // assert
+        assertThat(openCsvButton).hasText("Wählen Sie eine CSV-Datei!");
+        assertThat(openTexButton).hasText("Wählen Sie eine TEX-Datei!");
+        assertThat(renderPdfButton).hasText("PDFs erstellen!");
+    }
+
+    @Test
+    public void testThatUiValuesChangeBackOnLanguageSelection(FxRobot robot) {
+        // arrange
+        lookUpUiNodes(robot);
+
+        // act
+        robot.clickOn(languageSelectDe);
+        robot.clickOn(languageSelectEn);
+
+        // assert
+        assertThat(openCsvButton).hasText("Pick a CSV file!");
+        assertThat(openTexButton).hasText("Pick a TEX file!");
         assertThat(renderPdfButton).hasText("Render PDFs!");
     }
 
@@ -215,6 +243,8 @@ public class Csv2TexApplicationTest {
         openTexButton = robot.lookup("#openTexButton").queryButton();
         texFileLabel = robot.lookup("#texFileLabel").queryAs(Label.class);
         renderPdfButton = robot.lookup("#renderPdfButton").queryButton();
+        languageSelectDe = robot.lookup("#languageSelectDe").queryAs(RadioButton.class);
+        languageSelectEn = robot.lookup("#languageSelectEn").queryAs(RadioButton.class);
     }
 
     /**
