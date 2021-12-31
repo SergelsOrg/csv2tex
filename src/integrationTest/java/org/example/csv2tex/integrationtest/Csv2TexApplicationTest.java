@@ -257,6 +257,7 @@ public class Csv2TexApplicationTest {
                 .isEqualTo("Done");
     }
 
+    @Test
     @Tag("toolsNotInstalled")
     public void onStart_withUninstalledSoftware_showsError(FxRobot robot) {
         // directly do the assert
