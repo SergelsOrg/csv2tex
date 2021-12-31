@@ -11,6 +11,8 @@ import net.raumzeitfalle.fx.filechooser.locations.Locations;
 import org.example.csv2tex.exception.RenderingException;
 import org.example.csv2tex.globalstate.GlobalState;
 import org.example.csv2tex.rendering.SchoolReportsRenderer;
+import org.example.csv2tex.shellout.ErrorMessage;
+import org.example.csv2tex.shellout.ShellCommandsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +24,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import static java.util.stream.Collectors.joining;
 import static net.raumzeitfalle.fx.filechooser.Skin.MODENA;
 
 public class Csv2TexController {
@@ -53,6 +56,19 @@ public class Csv2TexController {
     // called by JAVAFX using reflection
     public void initialize() {
         LOGGER.info("Initializing controller");
+        showWarningIfSoftwareIsMissing();
+    }
+
+    private void showWarningIfSoftwareIsMissing() {
+        List<ErrorMessage> missingShellCommandsErrors = new ShellCommandsUtil().ensureCommandsExist();
+        if (!missingShellCommandsErrors.isEmpty()) {
+            String title = GlobalState.getInstance().getTranslations().getString("exception.shellcommands.missing_software");
+            String message = missingShellCommandsErrors.stream()
+                    .map(ErrorMessage::getMessage)
+                    .collect(joining("\n"));
+            LOGGER.warn(message);
+            showErrorMessage(title, message);
+        }
     }
 
     @FXML
@@ -180,8 +196,12 @@ public class Csv2TexController {
     }
 
     private void showErrorMessage(String text) {
+        showErrorMessage("Error", text);
+    }
+
+    private void showErrorMessage(String title, String text) {
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-        errorAlert.setHeaderText("Error");
+        errorAlert.setHeaderText(title);
         errorAlert.setContentText(text);
         errorAlert.showAndWait();
     }
