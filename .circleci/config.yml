@@ -4,6 +4,9 @@ orbs:
   # https://circleci.com/developer/orbs/orb/daniel-shuy/renovate
   renovate: daniel-shuy/renovate@3.1.0
 
+references:
+  test_docker_image: &test_docker_image "cimg/openjdk:11.0.13"
+
 commands:
   install_pdf_tools:
     steps:
@@ -25,7 +28,7 @@ commands:
 jobs:
   run_tests_java:
     docker:
-      - image: cimg/openjdk:11.0.13
+      - image: *test_docker_image
     steps:
       - checkout
       - install_pdf_tools
@@ -38,7 +41,7 @@ jobs:
 
   run_integration_tests_java:
     docker:
-      - image: cimg/openjdk:11.0.13
+      - image: *test_docker_image
     steps:
       - checkout
       - install_pdf_tools
@@ -55,7 +58,7 @@ jobs:
 
   run_tests_tools_not_installed_java:
     docker:
-      - image: cimg/openjdk:11.0.13
+      - image: *test_docker_image
     steps:
       - checkout
       - run: |
@@ -67,7 +70,7 @@ jobs:
 
   run_integration_tests_tools_not_installed_java:
     docker:
-      - image: cimg/openjdk:11.0.13
+      - image: *test_docker_image
     steps:
       - checkout
       - run: |
