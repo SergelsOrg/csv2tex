@@ -29,7 +29,9 @@ val integrationTestJarTask = tasks.register<Jar>(integrationTest.jarTaskName) {
 val integrationTestTask = tasks.register<Test>("integrationTest") {
     description = "Runs integration tests."
     group = "verification"
-    useJUnitPlatform()
+    useJUnitPlatform {
+        excludeTags("toolsNotInstalled")
+    }
     jvmArgs = listOf("--add-exports", "javafx.graphics/com.sun.javafx.application=org.testfx",
             "--add-exports", "javafx.graphics/com.sun.glass.ui=ALL-UNNAMED",
             "--add-opens", "javafx.graphics/com.sun.glass.ui=org.testfx",
@@ -40,8 +42,24 @@ val integrationTestTask = tasks.register<Test>("integrationTest") {
     testClassesDirs = integrationTest.output.classesDirs
     // Make sure we run the 'Jar' containing the tests (and not just the 'classes' folder) so that test resources are also part of the test module
     classpath = configurations[integrationTest.runtimeClasspathConfigurationName] + files(integrationTestJarTask)
+}
 
-    shouldRunAfter(tasks.test)
+tasks.register<Test>("integrationTestToolsNotInstalled") {
+    description = "Runs integration tests where some shell software is not installed."
+    group = "verification"
+    useJUnitPlatform {
+        includeTags("toolsNotInstalled")
+    }
+    jvmArgs = listOf("--add-exports", "javafx.graphics/com.sun.javafx.application=org.testfx",
+            "--add-exports", "javafx.graphics/com.sun.glass.ui=ALL-UNNAMED",
+            "--add-opens", "javafx.graphics/com.sun.glass.ui=org.testfx",
+            "--add-exports", "javafx.graphics/com.sun.glass.ui=org.testfx.monocle",
+            "--add-reads", "org.example.csv2tex=ALL-UNNAMED"
+    )
+
+    testClassesDirs = integrationTest.output.classesDirs
+    // Make sure we run the 'Jar' containing the tests (and not just the 'classes' folder) so that test resources are also part of the test module
+    classpath = configurations[integrationTest.runtimeClasspathConfigurationName] + files(integrationTestJarTask)
 }
 
 dependencies {
@@ -94,13 +112,13 @@ dependencies {
 
 // runs all tests except "toolsNotInstalled"
 tasks.getByName<Test>("test") {
-    useJUnitPlatform() {
+    useJUnitPlatform {
         excludeTags("toolsNotInstalled")
     }
 }
 // runs only "toolsNotInstalled" tests
 tasks.register<Test>("testToolsNotInstalled") {
-    useJUnitPlatform() {
+    useJUnitPlatform {
         includeTags("toolsNotInstalled")
     }
 }

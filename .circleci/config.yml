@@ -59,7 +59,19 @@ jobs:
     steps:
       - checkout
       - run: |
-          ./gradlew clean testToolsNotInstalled
+          ./gradlew clean :testToolsNotInstalled
+      - store_test_results:
+          path: build/test-results
+      - store_artifacts:
+          path: build/test-results
+
+  run_integration_tests_tools_not_installed_java:
+    docker:
+      - image: cimg/openjdk:11.0.13
+    steps:
+      - checkout
+      - run: |
+          ./gradlew clean :integrationTestToolsNotInstalled
       - store_test_results:
           path: build/test-results
       - store_artifacts:
@@ -71,5 +83,6 @@ workflows:
     jobs:
       - renovate/validate-config
       - run_tests_java
-      - run_integration_tests_java
       - run_tests_tools_not_installed_java
+      - run_integration_tests_java
+      - run_integration_tests_tools_not_installed_java

@@ -7,10 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Window;
 import org.example.csv2tex.ui.Csv2TexApplication;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
@@ -258,6 +255,17 @@ public class Csv2TexApplicationTest {
         assertThat(dialogPane.getHeaderText())
                 .describedAs("no alert dialog should be shown")
                 .isEqualTo("Done");
+    }
+
+    @Tag("toolsNotInstalled")
+    public void onStart_withUninstalledSoftware_showsError(FxRobot robot) {
+        // directly do the assert
+        DialogPane dialogPane = assertAndLookUpAlert(robot);
+        assertThat(dialogPane.getHeaderText()).contains("missing software");
+        assertThat(dialogPane.getContentText()).contains("install the packages");
+        assertThat(dialogPane.getContentText()).contains("texlive");
+        assertThat(dialogPane.getContentText()).contains("texinfo");
+        assertThat(dialogPane.getContentText()).contains("pdfunite");
     }
 
     private void lookUpUiNodes(FxRobot robot) {
