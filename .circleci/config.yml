@@ -39,6 +39,18 @@ jobs:
       - store_artifacts:
           path: build/test-results
 
+  run_tests_tools_not_installed_java:
+    docker:
+      - image: *test_docker_image
+    steps:
+      - checkout
+      - run: |
+          ./gradlew clean :testToolsNotInstalled -i
+      - store_test_results:
+          path: build/test-results
+      - store_artifacts:
+          path: build/test-results
+
   run_integration_tests_java:
     docker:
       - image: *test_docker_image
@@ -51,18 +63,6 @@ jobs:
           # So this is a workaround.
           export JAVA_TOOL_OPTIONS="-DCI=true"
           ./gradlew :integrationTest -i
-      - store_test_results:
-          path: build/test-results
-      - store_artifacts:
-          path: build/test-results
-
-  run_tests_tools_not_installed_java:
-    docker:
-      - image: *test_docker_image
-    steps:
-      - checkout
-      - run: |
-          ./gradlew clean :testToolsNotInstalled
       - store_test_results:
           path: build/test-results
       - store_artifacts:
