@@ -203,7 +203,7 @@ public class Csv2TexController {
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         errorAlert.setHeaderText(title);
         errorAlert.setContentText(text);
-        errorAlert.showAndWait();
+        errorAlert.show();
     }
 
     private void logErrorMessage(RenderingException e) {
