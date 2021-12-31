@@ -73,8 +73,12 @@ jobs:
       - image: *test_docker_image
     steps:
       - checkout
+      - install_needed_font_package
       - run: |
-          ./gradlew clean :integrationTestToolsNotInstalled
+          # Actually a CircleCI env variable, but it's hard to get it into the gradle-triggered tests.
+          # So this is a workaround.
+          export JAVA_TOOL_OPTIONS="-DCI=true"
+          ./gradlew clean :integrationTestToolsNotInstalled -i
       - store_test_results:
           path: build/test-results
       - store_artifacts:
