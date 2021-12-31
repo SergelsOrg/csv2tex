@@ -26,12 +26,9 @@ val integrationTestJarTask = tasks.register<Jar>(integrationTest.jarTaskName) {
     from(integrationTest.output)
 }
 
-val integrationTestTask = tasks.register<Test>("integrationTest") {
+val commonIntegrationTestConfiguration: Test.() -> Unit = {
     description = "Runs integration tests."
     group = "verification"
-    useJUnitPlatform {
-        excludeTags("toolsNotInstalled")
-    }
     jvmArgs = listOf("--add-exports", "javafx.graphics/com.sun.javafx.application=org.testfx",
             "--add-exports", "javafx.graphics/com.sun.glass.ui=ALL-UNNAMED",
             "--add-opens", "javafx.graphics/com.sun.glass.ui=org.testfx",
@@ -43,23 +40,18 @@ val integrationTestTask = tasks.register<Test>("integrationTest") {
     // Make sure we run the 'Jar' containing the tests (and not just the 'classes' folder) so that test resources are also part of the test module
     classpath = configurations[integrationTest.runtimeClasspathConfigurationName] + files(integrationTestJarTask)
 }
+val integrationTestTask = tasks.register("integrationTest", commonIntegrationTestConfiguration)
+integrationTestTask {
+    useJUnitPlatform {
+        excludeTags("toolsNotInstalled")
+    }
+}
 
-tasks.register<Test>("integrationTestToolsNotInstalled") {
-    description = "Runs integration tests where some shell software is not installed."
-    group = "verification"
+val integrationTestToolsNotInstalledTask = tasks.register("integrationTestToolsNotInstalled", commonIntegrationTestConfiguration)
+integrationTestToolsNotInstalledTask {
     useJUnitPlatform {
         includeTags("toolsNotInstalled")
     }
-    jvmArgs = listOf("--add-exports", "javafx.graphics/com.sun.javafx.application=org.testfx",
-            "--add-exports", "javafx.graphics/com.sun.glass.ui=ALL-UNNAMED",
-            "--add-opens", "javafx.graphics/com.sun.glass.ui=org.testfx",
-            "--add-exports", "javafx.graphics/com.sun.glass.ui=org.testfx.monocle",
-            "--add-reads", "org.example.csv2tex=ALL-UNNAMED"
-    )
-
-    testClassesDirs = integrationTest.output.classesDirs
-    // Make sure we run the 'Jar' containing the tests (and not just the 'classes' folder) so that test resources are also part of the test module
-    classpath = configurations[integrationTest.runtimeClasspathConfigurationName] + files(integrationTestJarTask)
 }
 
 dependencies {
@@ -123,6 +115,7 @@ tasks.register<Test>("testToolsNotInstalled") {
     }
 }
 
+// don't run the "not installed" tests by default
 tasks.check {
     dependsOn(tasks.test)
     dependsOn(integrationTestTask)
