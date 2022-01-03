@@ -4,6 +4,9 @@ orbs:
   # https://circleci.com/developer/orbs/orb/daniel-shuy/renovate
   renovate: daniel-shuy/renovate@3.1.0
 
+references:
+  test_docker_image: &test_docker_image "cimg/openjdk:11.0.13"
+
 commands:
   install_pdf_tools:
     steps:
@@ -25,7 +28,7 @@ commands:
 jobs:
   run_tests_java:
     docker:
-      - image: cimg/openjdk:11.0.13
+      - image: *test_docker_image
     steps:
       - checkout
       - install_pdf_tools
@@ -36,9 +39,21 @@ jobs:
       - store_artifacts:
           path: build/test-results
 
+  run_tests_tools_not_installed_java:
+    docker:
+      - image: *test_docker_image
+    steps:
+      - checkout
+      - run: |
+          ./gradlew clean :testToolsNotInstalled -i
+      - store_test_results:
+          path: build/test-results
+      - store_artifacts:
+          path: build/test-results
+
   run_integration_tests_java:
     docker:
-      - image: cimg/openjdk:11.0.13
+      - image: *test_docker_image
     steps:
       - checkout
       - install_pdf_tools
@@ -53,13 +68,17 @@ jobs:
       - store_artifacts:
           path: build/test-results
 
-  run_tests_tools_not_installed_java:
+  run_integration_tests_tools_not_installed_java:
     docker:
-      - image: cimg/openjdk:11.0.13
+      - image: *test_docker_image
     steps:
       - checkout
+      - install_needed_font_package
       - run: |
-          ./gradlew clean testToolsNotInstalled
+          # Actually a CircleCI env variable, but it's hard to get it into the gradle-triggered tests.
+          # So this is a workaround.
+          export JAVA_TOOL_OPTIONS="-DCI=true"
+          ./gradlew clean :integrationTestToolsNotInstalled -i
       - store_test_results:
           path: build/test-results
       - store_artifacts:
@@ -71,5 +90,6 @@ workflows:
     jobs:
       - renovate/validate-config
       - run_tests_java
-      - run_integration_tests_java
       - run_tests_tools_not_installed_java
+      - run_integration_tests_java
+      - run_integration_tests_tools_not_installed_java
