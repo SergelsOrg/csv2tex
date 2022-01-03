@@ -2,50 +2,72 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<VBox fx:id="mainLayout" alignment="CENTER" prefHeight="300.0" prefWidth="700.0" spacing="20.0"
+<VBox fx:id="mainLayout" alignment="CENTER" prefHeight="500.0" prefWidth="700.0" spacing="20.0"
       xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="org.example.csv2tex.ui.Csv2TexController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
-    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-        <children>
-            <Button fx:id="openCsvButton" alignment="CENTER" contentDisplay="CENTER" onAction="#onOpenCsvButtonClick"
-                    prefHeight="50.0" prefWidth="200.0" text="Pick a CSV file!" textAlignment="CENTER">
-                <padding>
-                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                </padding>
-            </Button>
-            <Label fx:id="csvFileLabel" prefHeight="50.0" prefWidth="450.0" text="[CSV file]">
-                <padding>
-                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                </padding>
-            </Label>
-        </children>
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="700.0">
         <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
         </padding>
+        <Button fx:id="openCsvButton" alignment="CENTER" contentDisplay="CENTER" onAction="#onOpenCsvButtonClick"
+                prefHeight="50.0" prefWidth="300.0" text="%openCsvButtonText" textAlignment="CENTER">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+        </Button>
+        <Label fx:id="csvFileLabel" prefHeight="50.0" prefWidth="400.0" text="%dummyCsvFileText">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+        </Label>
     </HBox>
-    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-        <children>
-            <Button fx:id="openTexButton" alignment="CENTER" contentDisplay="CENTER" onAction="#onOpenTexButtonClick"
-                    prefHeight="50.0" prefWidth="200.0" text="Pick a TEX file!" textAlignment="CENTER">
-                <padding>
-                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                </padding>
-            </Button>
-            <Label fx:id="texFileLabel" prefHeight="50.0" prefWidth="450.0" text="[TEX file]">
-                <padding>
-                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                </padding>
-            </Label>
-        </children>
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="700.0">
         <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
         </padding>
+        <Button fx:id="openTexButton" alignment="CENTER" contentDisplay="CENTER" onAction="#onOpenTexButtonClick"
+                prefHeight="50.0" prefWidth="300.0" text="%openTexButtonText" textAlignment="CENTER">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+        </Button>
+        <Label fx:id="texFileLabel" prefHeight="50.0" prefWidth="400.0" text="%dummyTexFileText">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+        </Label>
     </HBox>
     <Button fx:id="renderPdfButton" mnemonicParsing="false" onAction="#onRenderPdfButtonClick" prefHeight="50.0"
-            prefWidth="400.0" text="Render PDFs!"/>
+            prefWidth="400.0" text="%renderPdfButtonText"/>
+    <VBox alignment="CENTER" prefHeight="100.0" prefWidth="660.0">
+        <!-- If you change the preselected language, do also change GlobalState#locale -->
+        <RadioButton id="languageSelectEn" maxWidth="200.0" minWidth="200.0"
+                     mnemonicParsing="false" prefWidth="200.0" selected="true" text="English"
+                     onAction="#updateLanguage">
+            <toggleGroup>
+                <ToggleGroup fx:id="language"/>
+            </toggleGroup>
+            <graphic>
+                <ImageView fitHeight="150.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@openmoji_flag-united-kingdom_1f1ec-1f1e7.png"/>
+                </ImageView>
+            </graphic>
+        </RadioButton>
+        <RadioButton id="languageSelectDe" maxWidth="200.0" minWidth="200.0"
+                     mnemonicParsing="false" prefWidth="200.0" text="Deutsch" toggleGroup="$language"
+                     onAction="#updateLanguage">
+            <graphic>
+                <ImageView fitHeight="150.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@openmoji_flag-germany_1f1e9-1f1ea.png"/>
+                </ImageView>
+            </graphic>
+        </RadioButton>
+    </VBox>
 </VBox>

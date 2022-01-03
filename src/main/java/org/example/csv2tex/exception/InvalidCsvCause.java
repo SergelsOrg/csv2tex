@@ -1,67 +1,68 @@
 package org.example.csv2tex.exception;
 
+import org.example.csv2tex.globalstate.GlobalState;
+
 public enum InvalidCsvCause {
 
     /**
      * If there are not even enough columns to cover the student's base data
      */
-    TOO_FEW_COLUMNS("The CSV has too few columns - there should be at least 6 columns for the student's " +
-            "base data (class, school year, part of year (e.g. '1' for 1st semester), given name, surname, birthday)"),
-
+    TOO_FEW_COLUMNS("exception.csv.too_few_columns"),
 
     /**
      * CSV has more than just base data, but no level column is defined.
      */
-    HEADER_NO_LEVEL_DEFINED("The header row defines no level column."),
+    HEADER_NO_LEVEL_DEFINED("exception.csv.header_no_level_column_defined"),
 
-    HEADER_COMPETENCY_INCOMPLETE_DEFINITION("The competency definitions in the header are incomplete - 2 to 4 lines are assumed: Content row(s) {}."),
+    HEADER_COMPETENCY_INCOMPLETE_DEFINITION("exception.csv.header_competency_incomplete_definition"),
 
     /**
      * The header row is shorter than all content rows.
      */
-    HEADER_SHORTER_THAN_ALL_CONTENT("The header row is shorter than all content rows."),
+    HEADER_SHORTER_THAN_ALL_CONTENT("exception.csv.header_shorter_than_all_content"),
 
     /**
      * The header row is longer than all content rows.
      */
-    HEADER_LONGER_THAN_ALL_CONTENT("The header row is longer than all content rows."),
+    HEADER_LONGER_THAN_ALL_CONTENT("exception.csv.header_longer_than_all_content"),
 
     /**
      * The header row is shorter than most content rows (heuristic: at least 10 or at least 20%).
      * Placeholder: Content row numbers
      */
-    HEADER_SHORTER_THAN_CONTENT("The header row is shorter than many content rows: Content row(s) {}."),
+    HEADER_SHORTER_THAN_CONTENT("exception.csv.header_shorter_than_content"),
 
     /**
      * The header row is longer than most content rows (heuristic: at least 10 or at least 20%).
      * Placeholder: Content row numbers
      */
-    HEADER_LONGER_THAN_CONTENT("The header row is longer than many content rows: Content row(s) {}."),
+    HEADER_LONGER_THAN_CONTENT("exception.csv.header_longer_than_content"),
 
     /**
      * One or more content rows are longer than the header row.
      * Placeholder: Content row numbers
      */
-    CONTENT_ROW_LONGER_THAN_HEADER("One or more content rows are longer than the header row: Content row(s) {}."),
+    CONTENT_ROW_LONGER_THAN_HEADER("exception.csv.content_row_longer_than_header"),
+
     /**
      * One or more content rows are shorter than the header row.
      * Placeholder: Content row numbers
      */
-    CONTENT_ROW_SHORTER_THAN_HEADER("One or more content rows are shorter than the header row: Content row(s) {}."),
+    CONTENT_ROW_SHORTER_THAN_HEADER("exception.csv.content_row_shorter_than_header"),
     ;
 
     private static final String PLACEHOLDER = "{}";
-    private final String messageTemplate;
+    private final String messageKey;
 
-    InvalidCsvCause(String messageTemplate) {
-        this.messageTemplate = messageTemplate;
+    InvalidCsvCause(String messageKey) {
+        this.messageKey = messageKey;
     }
 
     public String getMessageTemplate() {
-        return messageTemplate;
+        return GlobalState.getInstance().getTranslations().getString(messageKey);
     }
 
     public static String getMessageWithPlaceholderValue(InvalidCsvCause causeMessage, String placeHolderValue) {
-        return causeMessage.messageTemplate.replace(PLACEHOLDER, placeHolderValue);
+        return causeMessage.getMessageTemplate().replace(PLACEHOLDER, placeHolderValue);
     }
 }

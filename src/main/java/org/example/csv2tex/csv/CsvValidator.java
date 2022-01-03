@@ -12,7 +12,6 @@ import static java.util.stream.Collectors.joining;
 import static org.example.csv2tex.csv.CsvParsingUtil.isLevelSettingColumn;
 import static org.example.csv2tex.csv.CsvParsingUtil.splitCompetencyColumnHeader;
 import static org.example.csv2tex.exception.InvalidCsvCause.*;
-import static org.example.csv2tex.exception.InvalidCsvCause.HEADER_COMPETENCY_INCOMPLETE_DEFINITION;
 
 public class CsvValidator {
 

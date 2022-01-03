@@ -3,43 +3,57 @@ package org.example.csv2tex.ui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.stage.Window;
 import net.raumzeitfalle.fx.filechooser.FXFileChooserStage;
 import net.raumzeitfalle.fx.filechooser.PathFilter;
-import net.raumzeitfalle.fx.filechooser.Skin;
 import net.raumzeitfalle.fx.filechooser.locations.Locations;
 import org.example.csv2tex.exception.RenderingException;
+import org.example.csv2tex.globalstate.GlobalState;
 import org.example.csv2tex.rendering.SchoolReportsRenderer;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
+import static net.raumzeitfalle.fx.filechooser.Skin.MODENA;
+
 public class Csv2TexController {
 
-    private static final Logger logger = LoggerFactory.getLogger(Csv2TexController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Csv2TexController.class);
 
     @FXML
     private Node mainLayout;
+
+    @FXML
+    private Button openCsvButton;
+    @FXML
+    private Button openTexButton;
+    @FXML
+    private Button renderPdfButton;
+
     @FXML
     private Label csvFileLabel;
+
     @FXML
     private Label texFileLabel;
+
+    @FXML
+    public ToggleGroup language;
 
     private File texFile;
     private File csvFile;
 
+    // called by JAVAFX using reflection
+    public void initialize() {
+        LOGGER.info("Initializing controller");
+    }
 
     @FXML
     public void onOpenTexButtonClick(ActionEvent ignored) {
@@ -76,7 +90,7 @@ public class Csv2TexController {
         PathFilter filter = PathFilter.forFileExtension(filterLabel, fileExtension);
         FXFileChooserStage chooser;
         try {
-            chooser = FXFileChooserStage.create(Skin.MODENA, filter);
+            chooser = FXFileChooserStage.create(MODENA, filter);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -122,7 +136,8 @@ public class Csv2TexController {
             );
         } finally {
             button.setDisable(false);
-            button.setText("Render PDFs!");
+            ResourceBundle translations = GlobalState.getInstance().getTranslations();
+            renderPdfButton.setText(translations.getString("renderPdfButtonText"));
         }
     }
 
@@ -172,11 +187,11 @@ public class Csv2TexController {
     }
 
     private void logErrorMessage(RenderingException e) {
-        logger.warn("An exception occurred: " + e.toString(), e);
+        LOGGER.warn("An exception occurred: " + e.toString(), e);
     }
 
     private void logErrorMessage(Exception e) {
-        logger.warn("An exception occurred", e);
+        LOGGER.warn("An exception occurred", e);
     }
 
     private void showErrorMessage(RenderingException e) {
@@ -184,4 +199,33 @@ public class Csv2TexController {
                 "An exception occurred - " + e.getClass().getSimpleName() + ": '" + e.getMessage() + "'"
         );
     }
+
+    public void updateLanguage(ActionEvent actionEvent) {
+        String selectedLanguageButtonId = ((Node) actionEvent.getSource()).getId();
+        switch (selectedLanguageButtonId) {
+            case "languageSelectEn":
+                GlobalState.getInstance().setLocale(Locale.ENGLISH);
+                updateUiTranslations();
+                break;
+            case "languageSelectDe":
+                GlobalState.getInstance().setLocale(Locale.GERMAN);
+                updateUiTranslations();
+                break;
+            default:
+                showErrorMessage(
+                        "Unknown language: " + selectedLanguageButtonId
+                );
+        }
+    }
+
+    private void updateUiTranslations() {
+        ResourceBundle translations = GlobalState.getInstance().getTranslations();
+        // I tried my best using property bindings instead of this manual update, but did not succeed - it seems this
+        // can be done easily when creating the UI in program, but it's different when using FXML, and none of the
+        // information from the stuff I found worked out, e.g. https://stackoverflow.com/a/19826636/1143126
+        openCsvButton.setText(translations.getString("openCsvButtonText"));
+        openTexButton.setText(translations.getString("openTexButtonText"));
+        renderPdfButton.setText(translations.getString("renderPdfButtonText"));
+    }
+
 }
