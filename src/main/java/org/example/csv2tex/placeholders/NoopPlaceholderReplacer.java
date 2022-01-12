@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 /**
  * Dummy implementation that does no transformation.
@@ -23,34 +24,83 @@ public class NoopPlaceholderReplacer implements PlaceholderReplacer {
 
         String texFileContent = replaceBaseData(texFileTemplate, schoolReportData);
 
+        String partOfYear = schoolReportData.partOfYear;;
         String currentSubject = null;
-        String subjectTableEntry = null;
-        int i = 0;
-        for (SchoolCompetencyData schoolCompetencyData : schoolReportData.schoolCompetencies) {
-            i++;
-            if (currentSubject == null) {
-                currentSubject = schoolCompetencyData.schoolSubject;
+        StringBuilder tables = new StringBuilder();
+        List<SchoolCompetencyData> competencyList = null;
 
-                subjectTableEntry.concat(makeTableHeader(schoolCompetencyData.schoolSubject));
-                subjectTableEntry.concat(makeTableEntry(schoolCompetencyData));
+        for (SchoolCompetencyData schoolCompetencyData : schoolReportData.schoolCompetencies) {
+            if (currentSubject.equals(null)) {
+                competencyList.add(schoolCompetencyData);
             } else if (currentSubject != schoolCompetencyData.schoolSubject) {
                 currentSubject = schoolCompetencyData.schoolSubject;
 
-                subjectTableEntry.concat(makeTableEntry(schoolCompetencyData));
-                String stringToReplace = "#" + schoolCompetencyData.schoolSubject;
-                texFileContent.replace(stringToReplace, subjectTableEntry);
-            } else if (i == schoolReportData.schoolCompetencies.size()) {
-                subjectTableEntry.concat(makeTableEntry(schoolCompetencyData));
-                String stringToReplace = "#" + schoolCompetencyData.schoolSubject;
-                texFileContent.replace(stringToReplace, subjectTableEntry);
+                tables.append(makeTableEntry(competencyList, partOfYear));
+                competencyList.removeAll(competencyList);
+                competencyList.add(schoolCompetencyData);
             } else {
-                subjectTableEntry.concat(makeTableEntry(schoolCompetencyData));
+                competencyList.add(schoolCompetencyData);
             }
         }
+        texFileContent.replace("#Tables", tables);
         return texFileContent;
     }
 
+    private String makeTableEntry(List<SchoolCompetencyData> competencyList, String partOfYear) {
+        StringBuilder subjectTable = new StringBuilder();
+        SchoolCompetencyData firstSchoolcompetencyData = competencyList.get(0);
+        String competencytableMSCmd = "\\competencytableMS{#SUBJECT}{#COMPETENCIES}{#LEVEL}";
+        String competencytableSSCmd = "\\competencytable{#SUBJECT}{#COMPETENCIES}";
 
+        if (partOfYear.equals("Endjahr") ||
+                firstSchoolcompetencyData.schoolSubject.equals("Mathematik") ||
+                firstSchoolcompetencyData.schoolSubject.equals("Deutsch") ||
+                firstSchoolcompetencyData.schoolSubject.equals("Englisch")) {
+            subjectTable.append(
+                    competencytableMSCmd
+                            .replace("#SUBJECT", firstSchoolcompetencyData.schoolSubject)
+                            .replace("#LEVEL", firstSchoolcompetencyData.level)
+                            .replace("#COMPETENCIES", makeCompetencyEntriesMS(competencyList)));
+        } else {
+            subjectTable.append(
+                    competencytableSSCmd
+                            .replace("#SUBJECT", firstSchoolcompetencyData.schoolSubject)
+                            .replace("#COMPETENCIES", makeCompetencyEntriesSS(competencyList)));
+        }
+    }
+
+    private String makeCompetencyEntriesSS(List<SchoolCompetencyData> competencyList) {
+        String competencySSCmd = "\\competencySS{#COMPETENCY}{#GRADE}{#LEVEL}";
+        StringBuilder competenciesTable = new StringBuilder();
+
+        for (SchoolCompetencyData schoolCompetencyData : competencyList) {
+            competenciesTable.append(competencySSCmd.replace("#COMPETENCY", schoolCompetencyData.schoolCompetency)
+                    .replace("#GRADE", makeGrade(schoolCompetencyData.grade))
+                    .replace("#LEVEL", schoolCompetencyData.level));
+        }
+        return competenciesTable.toString();
+    }
+
+    private String makeCompetencyEntriesMS(List<SchoolCompetencyData> competencyList) {
+        String competencyMSCmd = "\\competencyMS{#COMPETENCY}{#GRADE}";
+        StringBuilder competenciesTable = new StringBuilder();
+
+        for (SchoolCompetencyData schoolCompetencyData : competencyList) {
+            competenciesTable.append(competencyMSCmd.replace("#COMPETENCY", schoolCompetencyData.schoolCompetency)
+                    .replace("#GRADE", makeGrade(schoolCompetencyData.grade)));
+        }
+        return competenciesTable.toString();
+    }
+
+    private String makeGrade(String grade) {
+        switch (grade) {
+            case "1": return "\\gradeOne";
+            case "2": return "\\gradeTwo";
+            case "3": return "\\gradeThree";
+            case "4": return "\\gradeFour";
+            default: return "\\gradeNon";
+        }
+    }
 
     public String loadTexTemplate(String texTemplate) {
         Path path = Paths.get(texTemplate);
@@ -72,47 +122,5 @@ public class NoopPlaceholderReplacer implements PlaceholderReplacer {
         texFileContent.replace("#partOfYear", schoolReportData.partOfYear);
 
         return texFileContent;
-    }
-    private String makeTableHeader(String schoolSubject) {
-        StringBuilder tableHead = new StringBuilder();
-        tableHead.append("\\hline\\multicolumn{5}{|H|}{").append(schoolSubject).append("}\\\\\\hline\\hline");
-        return tableHead.toString();
-    }
-
-    private String makeTableEntry(SchoolCompetencyData schoolCompetency) {
-        StringBuilder tableLine = new StringBuilder();
-        if (schoolCompetency.schoolCompetency == "Werkstatt") {
-            tableLine.append(schoolCompetency.schoolCompetency).append(makeGrade(schoolCompetency.grade));
-        } else if (schoolCompetency.schoolSubCompetency.isEmpty()) {
-            tableLine.append(schoolCompetency.schoolCompetency).append("& & & & \\");
-            tableLine.append(schoolCompetency.description).append(makeGrade(schoolCompetency.grade));
-        } else {
-            tableLine.append(schoolCompetency.schoolCompetency).append("& & & & \\");
-            tableLine.append(schoolCompetency.schoolSubCompetency).append("& & & & \\");
-            tableLine.append(schoolCompetency.description).append(makeGrade(schoolCompetency.grade));
-        }
-        return tableLine.toString();
-    }
-
-    private String makeGrade(String grade) {
-        String tableGradeString = null;
-        switch (grade) {
-            case "1":
-                tableGradeString = "& \\textbf{X} & & & \\\\\n\\hline\n";
-                break;
-            case "2":
-                tableGradeString = "& & \\textbf{X} & & \\\\\n\\hline\n";
-                break;
-            case "3":
-                tableGradeString = "& & & \\textbf{X} & \\\\\n\\hline\n";
-                break;
-            case "4":
-                tableGradeString = "& & & & \\textbf{X} \\\\\n\\hline\n";
-                break;
-            default:
-                tableGradeString = "& & & & \\\\\n\\hline\n";
-                break;
-        }
-        return tableGradeString;
     }
 }
