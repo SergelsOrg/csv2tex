@@ -25,6 +25,48 @@ public class NoopPlaceholderReplacerTest {
     }
 
     @Test
+    public void makeGrade() {
+        SchoolReportData schoolReportData = generateSchoolReportData();
+        String grade = sut.makeGrade(schoolReportData.schoolCompetencies.get(0).grade);
+        String grade1 = sut.makeGrade("1");
+        String grade2 = sut.makeGrade("2");
+        String grade3 = sut.makeGrade("3");
+        String grade4 = sut.makeGrade("4");
+        String gradeNon = sut.makeGrade("");
+        String gradeFalse = sut.makeGrade("7");
+
+        assertThat(grade).isEqualTo("\\gradeOne");
+        assertThat(grade1).isEqualTo("\\gradeOne");
+        assertThat(grade2).isEqualTo("\\gradeTwo");
+        assertThat(grade3).isEqualTo("\\gradeThree");
+        assertThat(grade4).isEqualTo("\\gradeFour");
+        assertThat(gradeNon).isEqualTo("\\gradeNon");
+        assertThat(gradeFalse).isEqualTo("\\gradeNon");
+    }
+
+    @Test
+    public void makeLevel() {
+        SchoolReportData schoolReportData = generateSchoolReportData();
+        String level = sut.makeLevel(schoolReportData.schoolCompetencies.get(0).level);
+        String level1 = sut.makeLevel("1");
+        String level2 = sut.makeLevel("2");
+        String level3 = sut.makeLevel("3");
+        String level7 = sut.makeLevel("7");
+        String level8 = sut.makeLevel("8");
+        String levelNon = sut.makeLevel("");
+        String levelFalse = sut.makeLevel("10");
+
+        assertThat(level).isEqualTo("rot");
+        assertThat(level1).isEqualTo("rot");
+        assertThat(level2).isEqualTo("blau");
+        assertThat(level3).isEqualTo("grün");
+        assertThat(level7).isEqualTo("\\levelSeven");
+        assertThat(level8).isEqualTo("\\levelEight");
+        assertThat(levelNon).isEqualTo("");
+        assertThat(levelFalse).isEqualTo("");
+    }
+
+    @Test
     public void replaceBaseData() throws Exception {
         SchoolReportData schoolReportData = generateSchoolReportData();
         String texTemplate = "src/test/resources/placeholders/replace.tex";
@@ -42,6 +84,36 @@ public class NoopPlaceholderReplacerTest {
                 "Halbjahr\n" +
                 "\n" +
                 "#tables\n" +
+                "\n" +
+                "\\end{document}");
+    }
+
+    @Test
+    public void replacePlaceholdersInTexFile() throws Exception {
+        SchoolReportData schoolReportData = generateSchoolReportData();
+        String texTemplate = "src/test/resources/placeholders/replace.tex";
+        String tableEntries = sut.replacePlaceholdersInTexFile(texTemplate, schoolReportData);
+
+        assertThat(tableEntries).isEqualTo("\\documentclass[11pt,a4paper]{article}\n" +
+                "\n" +
+                "\\begin{document}\n" +
+                "Michael\n" +
+                "Pöhle\n" +
+                "29.12.1985\n" +
+                "5c\n" +
+                "2021/2022\n" +
+                "Halbjahr\n" +
+                "\n" +
+                "\\competencytableMS{Mathematik}{\\competencyMS{Rechnen\\\\\n" +
+                "Addition\\\\\n" +
+                "Kann addieren.}{\\gradeOne}\n" +
+                "\\competencyMS{Rechnen\\\\\n" +
+                "Subtraktion\\\\\n" +
+                "Kann subtrahieren.}{\\gradeTwo}\n" +
+                "}{rot}\n" +
+                "\\competencytable{Fremdsprache}{\\competencySS{Französisch}{\\gradeOne}{grün}\n" +
+                "}\n" +
+                "\n" +
                 "\n" +
                 "\\end{document}");
     }
