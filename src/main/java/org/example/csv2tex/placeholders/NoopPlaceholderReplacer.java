@@ -16,9 +16,6 @@ import java.util.List;
  * We have it in place until we have the real implementation.
  */
 public class NoopPlaceholderReplacer implements PlaceholderReplacer {
-
-
-//    @Override
     public String replacePlaceholdersInTexFile(String texTemplate, SchoolReportData schoolReportData) {
         String texFileTemplate = loadTexTemplate(texTemplate);
 
@@ -46,7 +43,7 @@ public class NoopPlaceholderReplacer implements PlaceholderReplacer {
         return texFileContent;
     }
 
-    private String makeTableEntry(List<SchoolCompetencyData> competencyList, String partOfYear) {
+    public String makeTableEntry(List<SchoolCompetencyData> competencyList, String partOfYear) {
         StringBuilder subjectTable = new StringBuilder();
         SchoolCompetencyData firstSchoolcompetencyData = competencyList.get(0);
         String competencytableMSCmd = "\\competencytableMS{#SUBJECT}{#COMPETENCIES}{#LEVEL}";
@@ -67,9 +64,10 @@ public class NoopPlaceholderReplacer implements PlaceholderReplacer {
                             .replace("#SUBJECT", firstSchoolcompetencyData.schoolSubject)
                             .replace("#COMPETENCIES", makeCompetencyEntriesSS(competencyList)));
         }
+        return subjectTable.toString();
     }
 
-    private String makeCompetencyEntriesSS(List<SchoolCompetencyData> competencyList) {
+    public String makeCompetencyEntriesSS(List<SchoolCompetencyData> competencyList) {
         String competencySSCmd = "\\competencySS{#COMPETENCY}{#GRADE}{#LEVEL}";
         StringBuilder competenciesTable = new StringBuilder();
 
@@ -81,7 +79,7 @@ public class NoopPlaceholderReplacer implements PlaceholderReplacer {
         return competenciesTable.toString();
     }
 
-    private String makeCompetencyEntriesMS(List<SchoolCompetencyData> competencyList) {
+    public String makeCompetencyEntriesMS(List<SchoolCompetencyData> competencyList) {
         String competencyMSCmd = "\\competencyMS{#COMPETENCY}{#GRADE}";
         StringBuilder competenciesTable = new StringBuilder();
 
@@ -92,7 +90,7 @@ public class NoopPlaceholderReplacer implements PlaceholderReplacer {
         return competenciesTable.toString();
     }
 
-    private String makeGrade(String grade) {
+    public String makeGrade(String grade) {
         switch (grade) {
             case "1": return "\\gradeOne";
             case "2": return "\\gradeTwo";
