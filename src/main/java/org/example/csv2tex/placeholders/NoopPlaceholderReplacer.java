@@ -101,7 +101,7 @@ public class NoopPlaceholderReplacer implements PlaceholderReplacer {
             String competencyReplaced = new String();
             competency.append(schoolCompetencyData.schoolCompetency);
             if (!schoolCompetencyData.schoolSubCompetency.isEmpty()) {
-                competency.append("\\\\\n").append(schoolCompetencyData.schoolSubCompetency).append("\n");
+                competency.append("\\\\\n").append(schoolCompetencyData.schoolSubCompetency);
             }
             if (!schoolCompetencyData.description.isEmpty()) {
                 competency.append("\\\\\n").append(schoolCompetencyData.description);
@@ -121,7 +121,9 @@ public class NoopPlaceholderReplacer implements PlaceholderReplacer {
             case "2": return "\\gradeTwo";
             case "3": return "\\gradeThree";
             case "4": return "\\gradeFour";
-            default: return "\\gradeNon";
+            case "hj": return "\\gradeHj";
+            case "nb": return "\\gradeNon";
+            default: return "";
         }
     }
 
@@ -132,6 +134,7 @@ public class NoopPlaceholderReplacer implements PlaceholderReplacer {
             case "3": return "grün";
             case "7": return "\\levelSeven";
             case "8": return "\\levelEight";
+            case "9": return "\\levelNine";
             default: return "";
         }
     }

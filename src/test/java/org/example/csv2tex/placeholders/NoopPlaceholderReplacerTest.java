@@ -15,8 +15,10 @@ public class NoopPlaceholderReplacerTest {
     @Test
     public void loadTexTemplate() throws Exception {
         String texTemplate = "src/test/resources/shellout/page1.tex";
+        String texNoTemplate = "src/test/resources/shellout/nopage.tex";
         String texFileContent = sut.loadTexTemplate(texTemplate);
 
+        assertThat(sut.loadTexTemplate(texNoTemplate)).isNullOrEmpty();
         assertThat(texFileContent).isEqualTo("\\documentclass[11pt,a4paper]{article}\n" +
                 "\n" +
                 "\\begin{document}\n" +
@@ -32,7 +34,8 @@ public class NoopPlaceholderReplacerTest {
         String grade2 = sut.makeGrade("2");
         String grade3 = sut.makeGrade("3");
         String grade4 = sut.makeGrade("4");
-        String gradeNon = sut.makeGrade("");
+        String gradeNon = sut.makeGrade("nb");
+        String gradeHj = sut.makeGrade("hj");
         String gradeFalse = sut.makeGrade("7");
 
         assertThat(grade).isEqualTo("\\gradeOne");
@@ -41,7 +44,8 @@ public class NoopPlaceholderReplacerTest {
         assertThat(grade3).isEqualTo("\\gradeThree");
         assertThat(grade4).isEqualTo("\\gradeFour");
         assertThat(gradeNon).isEqualTo("\\gradeNon");
-        assertThat(gradeFalse).isEqualTo("\\gradeNon");
+        assertThat(gradeHj).isEqualTo("\\gradeHj");
+        assertThat(gradeFalse).isEqualTo("");
     }
 
     @Test
@@ -53,6 +57,7 @@ public class NoopPlaceholderReplacerTest {
         String level3 = sut.makeLevel("3");
         String level7 = sut.makeLevel("7");
         String level8 = sut.makeLevel("8");
+        String level9 = sut.makeLevel("9");
         String levelNon = sut.makeLevel("");
         String levelFalse = sut.makeLevel("10");
 
@@ -62,6 +67,7 @@ public class NoopPlaceholderReplacerTest {
         assertThat(level3).isEqualTo("grün");
         assertThat(level7).isEqualTo("\\levelSeven");
         assertThat(level8).isEqualTo("\\levelEight");
+        assertThat(level9).isEqualTo("\\levelNine");
         assertThat(levelNon).isEqualTo("");
         assertThat(levelFalse).isEqualTo("");
     }
@@ -111,7 +117,9 @@ public class NoopPlaceholderReplacerTest {
                 "Subtraktion\\\\\n" +
                 "Kann subtrahieren.}{\\gradeTwo}\n" +
                 "}{rot}\n" +
-                "\\competencytable{Fremdsprache}{\\competencySS{Französisch}{\\gradeOne}{grün}\n" +
+                "\\competencytable{Fremdsprache}{\\competencySS{Französisch\\\\\n" +
+                "sc\\\\\n" +
+                "des}{\\gradeOne}{grün}\n" +
                 "}\n" +
                 "\n" +
                 "\n" +
@@ -164,8 +172,8 @@ public class NoopPlaceholderReplacerTest {
 
         schoolCompetencyData3.schoolSubject = "Fremdsprache";
         schoolCompetencyData3.schoolCompetency = "Französisch";
-        schoolCompetencyData3.schoolSubCompetency = "";
-        schoolCompetencyData3.description = "";
+        schoolCompetencyData3.schoolSubCompetency = "sc";
+        schoolCompetencyData3.description = "des";
         schoolCompetencyData3.grade = "1";
         schoolCompetencyData3.level = "3";
 
