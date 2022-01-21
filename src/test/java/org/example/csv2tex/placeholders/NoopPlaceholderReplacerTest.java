@@ -1,9 +1,12 @@
 package org.example.csv2tex.placeholders;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.example.csv2tex.data.SchoolCompetencyData;
 import org.example.csv2tex.data.SchoolReportData;
 
+import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,20 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class NoopPlaceholderReplacerTest {
     private final NoopPlaceholderReplacer sut = new NoopPlaceholderReplacer();
-
-    @Test
-    public void loadTexTemplate() throws Exception {
-        String texTemplate = "src/test/resources/shellout/page1.tex";
-        String texNoTemplate = "src/test/resources/shellout/nopage.tex";
-        String texFileContent = sut.loadTexTemplate(texTemplate);
-
-        assertThat(sut.loadTexTemplate(texNoTemplate)).isNullOrEmpty();
-        assertThat(texFileContent).isEqualTo("\\documentclass[11pt,a4paper]{article}\n" +
-                "\n" +
-                "\\begin{document}\n" +
-                "page1\n" +
-                "\\end{document}");
-    }
 
     @Test
     public void makeGrade() {
@@ -75,9 +64,9 @@ public class NoopPlaceholderReplacerTest {
     @Test
     public void replaceBaseData() throws Exception {
         SchoolReportData schoolReportData = generateSchoolReportData();
-        String texTemplate = "src/test/resources/placeholders/replace.tex";
-        String texFileContent = sut.loadTexTemplate(texTemplate);
-        String baseDataContent = sut.replaceBaseData(texFileContent, schoolReportData);
+        File texFile = new File("src/test/resources/placeholders/replace.tex");
+        String texTemplate = FileUtils.readFileToString(texFile, StandardCharsets.UTF_8);
+        String baseDataContent = sut.replaceBaseData(texTemplate, schoolReportData);
 
         assertThat(baseDataContent).isEqualTo("\\documentclass[11pt,a4paper]{article}\n" +
                 "\n" +
@@ -97,7 +86,8 @@ public class NoopPlaceholderReplacerTest {
     @Test
     public void replacePlaceholdersInTexFile() throws Exception {
         SchoolReportData schoolReportData = generateSchoolReportData();
-        String texTemplate = "src/test/resources/placeholders/replace.tex";
+        File texFile = new File("src/test/resources/placeholders/replace.tex");
+        String texTemplate = FileUtils.readFileToString(texFile, StandardCharsets.UTF_8);
         String tableEntries = sut.replacePlaceholdersInTexFile(texTemplate, schoolReportData);
 
         assertThat(tableEntries).isEqualTo("\\documentclass[11pt,a4paper]{article}\n" +

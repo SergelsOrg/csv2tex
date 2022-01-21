@@ -19,9 +19,8 @@ import java.util.List;
  */
 public class NoopPlaceholderReplacer implements PlaceholderReplacer {
     public String replacePlaceholdersInTexFile(String texTemplate, SchoolReportData schoolReportData) {
-        String texFileTemplate = loadTexTemplate(texTemplate);
 
-        String texFileContent = replaceBaseData(texFileTemplate, schoolReportData);
+        String texFileContent = replaceBaseData(texTemplate, schoolReportData);
 
         String partOfYear = schoolReportData.partOfYear;;
         String currentSubject = schoolReportData.schoolCompetencies.get(0).schoolSubject;
@@ -137,17 +136,6 @@ public class NoopPlaceholderReplacer implements PlaceholderReplacer {
             case "9": return "\\levelNine";
             default: return "";
         }
-    }
-
-    public String loadTexTemplate(String texTemplate) {
-        Path path = Paths.get(texTemplate);
-        String texFileContent = null;
-        try {
-            texFileContent = Files.readString(path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return texFileContent;
     }
 
     public String replaceBaseData(String texFileContent, SchoolReportData schoolReportData) {
