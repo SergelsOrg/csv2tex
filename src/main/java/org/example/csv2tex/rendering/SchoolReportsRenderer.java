@@ -5,7 +5,7 @@ import org.example.csv2tex.csv.CsvToSchoolReportDataParser;
 import org.example.csv2tex.data.SchoolReportData;
 import org.example.csv2tex.exception.InvalidCsvException;
 import org.example.csv2tex.exception.RenderingException;
-import org.example.csv2tex.placeholders.NoopPlaceholderReplacer;
+import org.example.csv2tex.placeholders.PlaceholderReplacerImpl;
 import org.example.csv2tex.placeholders.PlaceholderReplacer;
 import org.example.csv2tex.shellout.ShellCommandsUtil;
 
@@ -32,7 +32,7 @@ public class SchoolReportsRenderer {
 
     public SchoolReportsRenderer() {
         // FIXME: implement real placeholder replacement
-        placeholderReplacer = new NoopPlaceholderReplacer();
+        placeholderReplacer = new PlaceholderReplacerImpl();
 
         parser = new CsvToSchoolReportDataParser();
     }

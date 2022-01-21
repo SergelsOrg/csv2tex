@@ -7,13 +7,11 @@ import org.example.csv2tex.data.SchoolReportData;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class NoopPlaceholderReplacerTest {
-    private final NoopPlaceholderReplacer sut = new NoopPlaceholderReplacer();
+public class PlaceholderReplacerImplTest {
+    private final PlaceholderReplacerImpl sut = new PlaceholderReplacerImpl();
 
     @Test
     public void makeGrade() {

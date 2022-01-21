@@ -4,11 +4,7 @@ package org.example.csv2tex.placeholders;
 import org.example.csv2tex.data.SchoolCompetencyData;
 import org.example.csv2tex.data.SchoolReportData;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,12 +13,12 @@ import java.util.List;
  * <p>
  * We have it in place until we have the real implementation.
  */
-public class NoopPlaceholderReplacer implements PlaceholderReplacer {
+public class PlaceholderReplacerImpl implements PlaceholderReplacer {
     public String replacePlaceholdersInTexFile(String texTemplate, SchoolReportData schoolReportData) {
 
         String texFileContent = replaceBaseData(texTemplate, schoolReportData);
 
-        String partOfYear = schoolReportData.partOfYear;;
+        String partOfYear = schoolReportData.partOfYear;
         String currentSubject = schoolReportData.schoolCompetencies.get(0).schoolSubject;
         StringBuilder tables = new StringBuilder();
         List<SchoolCompetencyData> competencyList = new ArrayList<>();
@@ -32,6 +28,7 @@ public class NoopPlaceholderReplacer implements PlaceholderReplacer {
                 currentSubject = schoolCompetencyData.schoolSubject;
 
                 tables.append(makeTableEntry(competencyList, partOfYear));
+                //FIXME
                 competencyList.removeAll(competencyList);
                 competencyList.add(schoolCompetencyData);
             } else {
@@ -75,7 +72,6 @@ public class NoopPlaceholderReplacer implements PlaceholderReplacer {
 
         for (SchoolCompetencyData schoolCompetencyData : competencyList) {
             StringBuilder competency = new StringBuilder();
-            String competencyReplaced = new String();
             competency.append(schoolCompetencyData.schoolCompetency);
             if (!schoolCompetencyData.schoolSubCompetency.isEmpty()) {
                 competency.append("\\\\\n").append(schoolCompetencyData.schoolSubCompetency);
@@ -83,7 +79,7 @@ public class NoopPlaceholderReplacer implements PlaceholderReplacer {
             if (!schoolCompetencyData.description.isEmpty()) {
                 competency.append("\\\\\n").append(schoolCompetencyData.description);
             }
-            competencyReplaced = competencyMSCmd
+            String competencyReplaced = competencyMSCmd
                     .replace("#COMPETENCY", competency)
                     .replace("#GRADE", makeGrade(schoolCompetencyData.grade));
             competenciesTable.append(competencyReplaced);
@@ -97,7 +93,6 @@ public class NoopPlaceholderReplacer implements PlaceholderReplacer {
 
         for (SchoolCompetencyData schoolCompetencyData : competencyList) {
             StringBuilder competency = new StringBuilder();
-            String competencyReplaced = new String();
             competency.append(schoolCompetencyData.schoolCompetency);
             if (!schoolCompetencyData.schoolSubCompetency.isEmpty()) {
                 competency.append("\\\\\n").append(schoolCompetencyData.schoolSubCompetency);
@@ -105,7 +100,7 @@ public class NoopPlaceholderReplacer implements PlaceholderReplacer {
             if (!schoolCompetencyData.description.isEmpty()) {
                 competency.append("\\\\\n").append(schoolCompetencyData.description);
             }
-            competencyReplaced = competencySSCmd
+            String competencyReplaced = competencySSCmd
                     .replace("#COMPETENCY", competency)
                     .replace("#GRADE", makeGrade(schoolCompetencyData.grade))
                     .replace("#LEVEL", makeLevel(schoolCompetencyData.level));
