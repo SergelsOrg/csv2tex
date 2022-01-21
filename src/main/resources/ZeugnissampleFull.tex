@@ -10,14 +10,15 @@
 \input{ZeugnisTemplateCommands.tex}
 
 \newcommand{\zeugnisDay}{11.02.2022}
+
 \begin{document}
 	\pagestyle{plain}
 	\fcolorbox{egeblue}{white}{
 	\begin{minipage}[t][.98\textheight][t]{.97\textwidth}
 			~\vspace{2cm}\\
 			\begin{tabularx}{\linewidth}{@{}lX}
-				Versäumnisse: & #absenceDays  Tage (davon #absenceUDays Tage unentschuldigt) \\
-				&  #absenceHours Stunden (davon #absenceUHours Stunden unentschuldigt) \\
+				Versäumnisse: & 7 Tage (davon 5 Tage unentschuldigt) \\
+				&  9 Stunden (davon 5 Stunden unentschuldigt) \\
 			\end{tabularx}
 			\vspace{3cm}\\
 			Erfurt, den \zeugnisDay
@@ -49,22 +50,60 @@
 			\textbf{\Huge Zeugnis}\\
 			\textbf{\LARGE ~\\
 			Evangelischen Gemeinschaftsschule Erfurt\\\vspace{2cm}
-			#partOfYear #schoolYear}
+			Halbjahr 2021/2022}
 		\end{center}\vspace{3cm}
 		\begin{center}\LARGE
 			\begin{tabular}{ll}
-			\textbf{Klasse:} &  #schoolClass\vspace{1cm}\\
-			\textbf{Name:} &  #givenName #surName\\
-			& geb.: #birthDay
+			\textbf{Klasse:} &  5b\vspace{1cm}\\
+			\textbf{Name:} &  Karl Heinz Musterschüler\\
+			& geb.: 29.12.1985
 		\end{tabular}
 		\end{center}
 	\end{minipage}
 	}%
 	\newpagedefs
+	\competencytableMS{Deutsch}{
+		\competencyMS{Texte lesen und verstehen}{\gradeOne}
+		\competencyMS{Texte schreiben}{\gradeTwo}
+		\competencyMS{Rechtschreib- und Grammatikregeln beherrschen}{\gradeThree}
+	}{blau}
+	\competencytableMS{Mathematik}{
+		\competencyMS{mathematisch argumentieren}{\gradeOne}
+		\competencyMS{Probleme mathematisch lösen}{\gradeTwo}
+		\competencyMS{mathematische Darstellungen verwenden}{\gradeThree}
+		\competencyMS{mit mathematischen Symbolen und Elementen umgehen}{\gradeFour}
+	}{rot}
+	\competencytableMS{Englisch}{
+		\competencyMS{sich mündlich äußern}{\gradeOne}
+		\competencyMS{kurze Texte verstehen}{\gradeTwo}
+		\competencyMS{Wörter, Wortgruppen und kurze Texte schreiben}{\gradeThree}
+	}{grün}
+	\competencytable{2. Fremdsprache}{\competencySS{Französisch}{\gradeTwo}{\levelSeven}}
+	\competencytable{gesellschaftswissenschaftliche Fächer}{
+		\competencySS{Geographie}{\gradeTwo}{rot}
+		\competencySS{Geschichte}{\gradeOne}{grün}
+		\competencySS{Religion}{\gradeTwo}{blau}
+	}
+	\competencytable{musisch-künstlerische\,/\,sportwissenschaftliche Fächer}{
+		\competencySS{Musik}{\gradeTwo}{\levelEight}
+		\competencySS{Kunst}{\gradeOne}{\levelEight}
+		\competencySS{Sport}{\gradeTwo}{\levelEight}
+	}
+	\competencytable{naturwissenschaftliche Fächer}{
+		\competencySS{Projekt Lutherpark (MNT, technisches Werken)}{\gradeOne}{blau}
+	}
+	\competencytable{Sozialkompetenzen}{
+		\competencySS{respektvoller Umgang mit Anderen}{\gradeTwo}{}
+		\competencySS{regelkonformes Verhalten}{\gradeOne}{}
+		\competencySS{Reflexionsfähigkeit}{\gradeTwo}{}
+	}
+	\competencytable{Methodenkompetenzen und Arbeitsverhalten}{
+		\competencySS{Mitarbeit}{\gradeOne}{}
+		\competencySS{Arbeitsruhe}{\gradeOne}{}
+		\competencySS{selbstständiges Arbeiten\,/\,Arbeitsorganisation}{\gradeTwo}{}
+	}
 
-	#tables
-
-	\thispagestyle{mypagestyle}
+\thispagestyle{mypagestyle}
 \end{document}
 
 

@@ -1,0 +1,66 @@
+
+\newcommand\competencylevel{
+	\begin{tabularx}{\linewidth}{|X|C{.07\linewidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
+		\hline
+		\textbf{Lernziele\,/\,Kompetenzen des Fachbereiches} & \rot{\parbox{3cm}{\thead{Niveaustufe\\überwiegend}}} & \rot{\thead{sehr gut erfüllt}} & \rot{\thead{gut erfüllt}} & \rot{\thead{teilweise}} & \rot{\thead{nicht erfüllt}} \\
+		\hline
+	\end{tabularx}
+}
+
+
+
+\newcommand{\gradeOne}{& $\boxtimes$ & $\Box$ & $\Box$ & $\Box$\\\hline}
+\newcommand{\gradeTwo}{& $\Box$ & $\boxtimes$ & $\Box$ & $\Box$\\\hline}
+\newcommand{\gradeThree}{& $\Box$ & $\Box$ & $\boxtimes$ & $\Box$\\\hline}
+\newcommand{\gradeFour}{& $\Box$ & $\Box$ & $\Box$ & $\boxtimes$\\\hline}
+\newcommand{\gradeNon}{& \multicolumn{4}{c|}{nicht erteilt}\\\hline}
+\newcommand{\gradeHj}{& \multicolumn{4}{c|}{wird im 2. Halbjahr belegt}\\\hline}
+\newcommand{\gradeDefault}{&  &  &  & \\\hline}
+
+
+\newcommand\levelRow[1]{\phantom{PH} & \multicolumn{1}{m{.07\linewidth}|}{\centering #1} & \multicolumn{4}{c|}{}\\\hline}
+\newcommand{\levelSeven}{\multicolumn{1}{m{.07\linewidth}|}{\centering\tiny bis Klasse 7 ohne Niveau}}
+\newcommand{\levelEight}{\multicolumn{1}{m{.07\linewidth}|}{\centering\tiny bis Klasse 8 ohne Niveau}}
+\newcommand{\levelNine}{\multicolumn{1}{m{.07\linewidth}|}{\centering\tiny bis Klasse 9 ohne Niveau}}
+
+\newcommand\competencyMS[2]{\makecell[l]{#1} & #2}
+\newcommand\competencySS[3]{\makecell[l]{#1} & #3 #2}
+
+\newcommand\competencytableMS[3]{
+	\renewcommand{\arraystretch}{1.5}
+	\begin{tabularx}{\linewidth}{|K{X}|C{.07\linewidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
+		\hline
+		\multicolumn{6}{|>{\columncolor{egelightblue}}l|}{\textit{\textbf{#1}}} \\
+		\hline
+		#2
+		\levelRow{#3}
+	\end{tabularx}\vspace{2pt}
+}
+\newcommand\competencytable[2]{
+	\begin{tabularx}{\linewidth}{|K{X}|C{.07\linewidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
+		\hline
+		\multicolumn{6}{|>{\columncolor{egelightblue}}l|}{\textit{\textbf{#1}}} \\
+		\hline
+		#2
+	\end{tabularx}\vspace{2pt}
+}
+
+
+\newcommand{\newpagedefs}{
+	\newpage
+	\newgeometry{headheight=106pt,top=7cm,
+		bottom=2cm, 
+		inner=2cm,
+		outer=2cm}
+	\setlength{\headsep}{-0.4cm}
+	\pagestyle{fancy}
+}
+
+\pagestyle{fancy}
+\chead{\competencylevel}
+
+\fancypagestyle{mypagestyle}{%
+	\chead{\competencylevel}
+	\cfoot{\small\raggedright\textit{Legende}:	Niveau Grün = Hauptschule ( AE I ), Niveau Blau = Realschule ( AE II ), Niveau Rot = Gymnasium ( AE III ),	n.b. = nicht bewertet}
+}
+\renewcommand{\headrulewidth}{0pt}

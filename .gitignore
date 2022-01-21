@@ -29,3 +29,6 @@ hs_err_pid*
 # Gradle temporary files
 .gradle
 build
+/src/main/resources/ZeugnissampleFull.aux
+/src/main/resources/ZeugnissampleFull.pdf
+/src/main/resources/ZeugnissampleFull.synctex.gz
