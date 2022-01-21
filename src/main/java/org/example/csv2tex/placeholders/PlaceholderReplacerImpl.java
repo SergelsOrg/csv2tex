@@ -14,9 +14,9 @@ import java.util.List;
  * We have it in place until we have the real implementation.
  */
 public class PlaceholderReplacerImpl implements PlaceholderReplacer {
-    public String replacePlaceholdersInTexFile(String texTemplate, SchoolReportData schoolReportData) {
+    public String replacePlaceholdersInTexTemplate(String texTemplateAsString, SchoolReportData schoolReportData) {
 
-        String texFileContent = replaceBaseData(texTemplate, schoolReportData);
+        String texFileContent = replaceBaseData(texTemplateAsString, schoolReportData);
 
         String partOfYear = schoolReportData.partOfYear;
         String currentSubject = schoolReportData.schoolCompetencies.get(0).schoolSubject;

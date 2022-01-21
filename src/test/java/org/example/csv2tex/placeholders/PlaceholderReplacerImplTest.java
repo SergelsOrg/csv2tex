@@ -86,7 +86,7 @@ public class PlaceholderReplacerImplTest {
         SchoolReportData schoolReportData = generateSchoolReportData();
         File texFile = new File("src/test/resources/placeholders/replace.tex");
         String texTemplate = FileUtils.readFileToString(texFile, StandardCharsets.UTF_8);
-        String tableEntries = sut.replacePlaceholdersInTexFile(texTemplate, schoolReportData);
+        String tableEntries = sut.replacePlaceholdersInTexTemplate(texTemplate, schoolReportData);
 
         assertThat(tableEntries).isEqualTo("\\documentclass[11pt,a4paper]{article}\n" +
                 "\n" +

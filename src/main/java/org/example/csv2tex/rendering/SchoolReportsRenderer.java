@@ -78,7 +78,7 @@ public class SchoolReportsRenderer {
 
     private void renderSingleSchoolReportPdf(List<SchoolReportData> studentDataList, String texTemplate, Path temporaryDirectory,
                                              ShellCommandsUtil shellCommandsInTempDir, List<String> renderedPdfs, int fileNumber) throws IOException {
-        String texWithReplacedPlaceholders = placeholderReplacer.replacePlaceholdersInTexFile(texTemplate, studentDataList.get(fileNumber));
+        String texWithReplacedPlaceholders = placeholderReplacer.replacePlaceholdersInTexTemplate(texTemplate, studentDataList.get(fileNumber));
         Path temporaryTexFilePath = temporaryDirectory.resolve("schoolReport_" + fileNumber + ".tex").toAbsolutePath();
         Files.writeString(temporaryTexFilePath, texWithReplacedPlaceholders);
         runShellCommandThrowing(() -> shellCommandsInTempDir.runTexi2Pdf(temporaryTexFilePath.toString()));
