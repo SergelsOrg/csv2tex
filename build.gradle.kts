@@ -12,7 +12,7 @@ repositories {
     mavenCentral()
 }
 
-val javaFxVersion = "18-ea+9"
+val javaFxVersion = "18-ea+10"
 
 
 // separate integration testing module - cf https://docs.gradle.org/current/samples/sample_java_modules_multi_project.html
