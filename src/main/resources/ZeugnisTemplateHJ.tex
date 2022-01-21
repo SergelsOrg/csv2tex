@@ -1,85 +1,42 @@
-%
 \documentclass[11pt,a4paper]{article}
 \usepackage[top=2cm,
 bottom=2cm, 
-%headheight=0cm,
 inner=2cm,
 outer=2cm]{geometry}
-%\usepackage{afterpage}
 \usepackage{xcolor}
 \definecolor{egeblue}{RGB}{00, 99, 142}
 \definecolor{egelightblue}{RGB}{66, 144, 179}
-%\usepackage[a4,frame,center,noinfo,color=egeblue´]{crop}
-\usepackage{ragged2e}
 
 
-% Document settings
-%% language, last is primary language
 \usepackage[german]{babel}
-%% geometry is used for page scaling (top,bottom,left,right)
-%\usepackage[top=0cm,
-%bottom=0cm, 
-%headheight=0pt,
-%inner=0cm,
-%outer=0cm]{geometry}
-%% package for font encoding, needed for hyphenation etc.
 \usepackage[T1]{fontenc}
-%% input encoding for characters, use with utf8 to ensure ä,ö,ü etc. make sure you save the document in uft8 encoding
 \usepackage[utf8]{inputenc}
 
+\usepackage{ragged2e}
 \usepackage{titlesec}
 
-% font and style packages
-%% package for mathematical typesetting
 \usepackage{amsmath}
-%% additional ways to use math symbols
 \usepackage{amssymb}
+\usepackage{helvet}
 
-% tables and graphics
-%% package for \includegraphics
+\usepackage{fancyhdr}
 \usepackage{graphicx}
 
-%% package for longtable over multiple pages, can be used for single pages,too would recommend to use this as sole table type, has cool features if table is stretched over multiple pages
-%\usepackage{longtable, ltabptch}
-%%%% sets space before and after longtable
-%	\setlength{\LTpre}{0em}
-%	\setlength{\LTpost}{0.5em}
-
-\usepackage{array}
-\newcolumntype{v}[1]{>{\raggedright\hspace{0em}}p{#1}}
-
-
-
-% package to create tabular cells spanning multiple rows might be used instead of the custom macro
-\usepackage{multirow}
-
-% additional packagesfor better table layouts \toprule \midrule \bottemrule etc. best see reference
-\usepackage{tabularx,booktabs}
+\usepackage{array,multirow,tabularx,booktabs}
 \usepackage[column=K]{cellspace}
-\usepackage{makecell}
-\usepackage{colortbl}
-
+\usepackage{makecell,colortbl}
 \newcolumntype{Y}{>{\centering\arraybackslash}X}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
 \newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
 \newcolumntype{J}[1]{>{\justifying\arraybackslash}p{#1}}
+\newcolumntype{v}[1]{>{\raggedright\hspace{0em}}p{#1}}
 
-%\usepackage{pifont}
 \newcommand*\rot{\rotatebox{90}}
+
 
 \renewcommand\theadalign{l}
 \renewcommand\theadfont{\bfseries}
-%\renewcommand\theadgape{\Gape[4pt]}
-%\renewcommand\cellgape{\Gape[4pt]}
-
-%\usepackage{adjustbox}
-%\newcolumntype{R}[2]{%
-%	>{\adjustbox{angle=#1,lap=\width-(#2)}\bgroup}%
-%	l%
-%	<{\egroup}%
-%}
-%\newcommand*\rot{\multicolumn{1}{R{90}{1em}}}
 
 % package for linespacing \singlespacing \onehalfspacing \doublespacing and more
 \usepackage{setspace}
@@ -91,65 +48,49 @@ outer=2cm]{geometry}
 \usepackage{caption}
 %% setups for table and graphic captions
 % package sto change title styles (sections etc)
-\usepackage{titlesec}
-\titleformat*{\section}{\large\bfseries}
-\titleformat*{\subsection}{\bfseries}
-\titleformat{\subsubsection}[runin]{\itshape}{\thesubsubsection}{1em}{\addperiod}
-\titlespacing*{\subsubsection} {2em}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
-
-% package to color rows and columns, best see reference
-%\usepackage{colortbl}
-% package provides font helvetica
-\usepackage{helvet}
-
-% package for references
-\usepackage[german]{cleveref}
 
 % renews command to use sans font as default font
 \renewcommand*{\familydefault}{\sfdefault}
 
-\usepackage[nodayofweek]{datetime}
-\setlength\parindent{0pt}
 \pagenumbering{gobble}
-
-\setlength\cellspacetoplimit{10pt}
-\setlength\cellspacebottomlimit{10pt}
 \addparagraphcolumntypes{X}
 
+\setlength\parindent{0pt}
+\setlength\cellspacetoplimit{8pt}
+\setlength\cellspacebottomlimit{8pt}
+
+\newcommand{\tableGradeWidth}{.050\linewidth}
 
 \newcommand\competencylevel{
-	%	\renewcommand{\arraystretch}{1}
-	\begin{tabularx}{\linewidth}{|X|C{.07\linewidth}|C{.065\linewidth}|C{.065\linewidth}|C{.065\linewidth}|C{.065\linewidth}|}
+	\begin{tabularx}{\linewidth}{|X|C{.07\linewidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
 		\hline
 		\textbf{Lernziele\,/\,Kompetenzen des Fachbereiches} & \rot{\parbox{3cm}{\thead{Niveaustufe\\überwiegend}}} & \rot{\thead{sehr gut erfüllt}} & \rot{\thead{gut erfüllt}} & \rot{\thead{teilweise}} & \rot{\thead{nicht erfüllt}} \\
 		\hline
 	\end{tabularx}
 }
 
+\newcommand{\zeugnisDay}{11.02.2022}
+
 \newcommand{\gradeOne}{& $\boxtimes$ & $\Box$ & $\Box$ & $\Box$\\\hline}
 \newcommand{\gradeTwo}{& $\Box$ & $\boxtimes$ & $\Box$ & $\Box$\\\hline}
 \newcommand{\gradeThree}{& $\Box$ & $\Box$ & $\boxtimes$ & $\Box$\\\hline}
 \newcommand{\gradeFour}{& $\Box$ & $\Box$ & $\Box$ & $\boxtimes$\\\hline}
-\newcommand{\gradeNon}{& \multicolumn{4}{c}{nicht bewertet}\\\hline}
+\newcommand{\gradeNon}{& \multicolumn{4}{c|}{nicht erteilt}\\\hline}
+\newcommand{\gradeHj}{& \multicolumn{4}{c|}{wird im 2. Halbjahr belegt}\\\hline}
+\newcommand{\gradeDefault}{&  &  &  & \\\hline}
+
+
 \newcommand\levelRow[1]{\phantom{PH} & \multicolumn{1}{m{.07\linewidth}|}{\centering #1} & \multicolumn{4}{c|}{}\\\hline}
 \newcommand{\levelSeven}{\multicolumn{1}{m{.07\linewidth}|}{\centering\tiny bis Klasse 7 ohne Niveau}}
 \newcommand{\levelEight}{\multicolumn{1}{m{.07\linewidth}|}{\centering\tiny bis Klasse 8 ohne Niveau}}
+\newcommand{\levelNine}{\multicolumn{1}{m{.07\linewidth}|}{\centering\tiny bis Klasse 9 ohne Niveau}}
 
 \newcommand\competencyMS[2]{\makecell[l]{#1} & #2}
 \newcommand\competencySS[3]{\makecell[l]{#1} & #3 #2}
 
-\newcommand\competencytable[2]{
-	%	\renewcommand{\arraystretch}{1}
-	\begin{tabularx}{\linewidth}{|K{X}|C{.07\linewidth}|C{.065\linewidth}|C{.065\linewidth}|C{.065\linewidth}|C{.065\linewidth}|}
-		\hline
-		\multicolumn{6}{|>{\columncolor{egelightblue}}l|}{\textit{\textbf{#1}}} \\
-		\hline
-		#2
-	\end{tabularx}\vspace{2pt}
-}
 \newcommand\competencytableMS[3]{
 	\renewcommand{\arraystretch}{1.5}
-	\begin{tabularx}{\linewidth}{|K{X}|C{.07\linewidth}|C{.065\linewidth}|C{.065\linewidth}|C{.065\linewidth}|C{.065\linewidth}|}
+	\begin{tabularx}{\linewidth}{|K{X}|C{.07\linewidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
 		\hline
 		\multicolumn{6}{|>{\columncolor{egelightblue}}l|}{\textit{\textbf{#1}}} \\
 		\hline
@@ -157,6 +98,15 @@ outer=2cm]{geometry}
 		\levelRow{#3}
 	\end{tabularx}\vspace{2pt}
 }
+\newcommand\competencytable[2]{
+	\begin{tabularx}{\linewidth}{|K{X}|C{.07\linewidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
+		\hline
+		\multicolumn{6}{|>{\columncolor{egelightblue}}l|}{\textit{\textbf{#1}}} \\
+		\hline
+		#2
+	\end{tabularx}\vspace{2pt}
+}
+
 
 \newcommand{\newpagedefs}{
 	\newpage
@@ -168,10 +118,10 @@ outer=2cm]{geometry}
 	\pagestyle{fancy}
 }
 
-\usepackage{fancyhdr}
+
 \pagestyle{fancy}
-\chead{\competencylevel
-}
+\chead{\competencylevel}
+
 \fancypagestyle{mypagestyle}{%
 	\chead{\competencylevel}
 	\cfoot{\small\raggedright\textit{Legende}:	Niveau Grün = Hauptschule ( AE I ), Niveau Blau = Realschule ( AE II ), Niveau Rot = Gymnasium ( AE III ),	n.b. = nicht bewertet}
@@ -184,11 +134,11 @@ outer=2cm]{geometry}
 	\begin{minipage}[t][.98\textheight][t]{.97\textwidth}
 			~\vspace{2cm}\\
 			\begin{tabularx}{\linewidth}{@{}lX}
-				Versäumnisse: & #absenceDays  Tage (davon #absenceDaysU Tage unentschuldigt) \\
-				&  #absenceHours Stunden (davon #absenceHoursU Stunden unentschuldigt) \\
+				Versäumnisse: & #absenceDays  Tage (davon #absenceUDays Tage unentschuldigt) \\
+				&  #absenceHours Stunden (davon #absenceUHours Stunden unentschuldigt) \\
 			\end{tabularx}
 			\vspace{3cm}\\
-			Erfurt, den \today
+			Erfurt, den \zeugnisDay
 			\vspace{2.5cm}\\
 			\begin{tabularx}{\linewidth}{C{.4\linewidth}XC{.4\linewidth}}
 				\rule{\linewidth}{1pt} &  & \rule{\linewidth}{1pt} \\
@@ -196,7 +146,7 @@ outer=2cm]{geometry}
 			\end{tabularx}
 			\vspace{2.5cm}\\
 			\begin{tabularx}{\linewidth}{C{.4\linewidth}YC{.4\linewidth}}
-				\rule{\linewidth}{1pt} &  & \rule{\linewidth}{1pt} \\
+				\rule{\linewidth}{1pt} &  &  \\
 				\centering SchuleiterIn & \tiny Siegel & \\
 			\end{tabularx}
 			\vspace{2.5cm}\\
@@ -217,7 +167,7 @@ outer=2cm]{geometry}
 			\textbf{\Huge Zeugnis}\\
 			\textbf{\LARGE ~\\
 			Evangelischen Gemeinschaftsschule Erfurt\\\vspace{2cm}
-			#PartOfYear #schoolYear}
+			#partOfYear #schoolYear}
 		\end{center}\vspace{3cm}
 		\begin{center}\LARGE
 			\begin{tabular}{ll}
@@ -229,7 +179,8 @@ outer=2cm]{geometry}
 	\end{minipage}
 	}%
 	\newpagedefs
-	#TABLES
+
+	#tables
 
 	\thispagestyle{mypagestyle}
 \end{document}
