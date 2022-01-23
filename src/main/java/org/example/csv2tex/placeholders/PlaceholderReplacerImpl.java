@@ -57,6 +57,12 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
     private static final String TEX_TEMPLATE_PLACEHOLDER_TABLES = "#tables";
 
     private static final String TEX_NEWLINE = "\\\\\n";
+    private static final String SPECIAL_GRADE_VALUE_GRADE_NOT_GIVEN = "nb";
+    private static final String SPECIAL_GRADE_VALUE_GRADE_IN_SECOND_HALF_YEAR = "hj";
+    
+    private static final String GERMAN_LEVEL_RED = "rot";
+    private static final String GERMAN_LEVEL_BLUE = "blau";
+    private static final String GERMAN_LEVEL_GREEN = "grün";
 
     @Override
     public String replacePlaceholdersInTexTemplate(String texTemplateAsString, SchoolReportData schoolReportData) {
@@ -173,9 +179,9 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
                 return "\\gradeThree";
             case "4":
                 return "\\gradeFour";
-            case "hj":
-                return "\\gradeHalfYear";
-            case "nb":
+            case SPECIAL_GRADE_VALUE_GRADE_IN_SECOND_HALF_YEAR:
+                return "\\gradeComesWithSecondHalfYear";
+            case SPECIAL_GRADE_VALUE_GRADE_NOT_GIVEN:
                 return "\\gradeNotGiven";
             default:
                 return "";
@@ -186,11 +192,11 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
     String makeLevel(String level) {
         switch (level) {
             case "1":
-                return "rot";
+                return GERMAN_LEVEL_RED;
             case "2":
-                return "blau";
+                return GERMAN_LEVEL_BLUE;
             case "3":
-                return "grün";
+                return GERMAN_LEVEL_GREEN;
             case "7":
                 return "\\levelSeven";
             case "8":

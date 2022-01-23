@@ -22,7 +22,7 @@ public class PlaceholderReplacerImplTest {
         String grade3 = sut.makeGrade("3");
         String grade4 = sut.makeGrade("4");
         String gradeNotGiven = sut.makeGrade("nb");
-        String gradeHalfYear = sut.makeGrade("hj");
+        String gradeComesWithSecondHalfYear = sut.makeGrade("hj");
         String gradeFalse = sut.makeGrade("7");
 
         assertThat(grade).isEqualTo("\\gradeOne");
@@ -31,7 +31,7 @@ public class PlaceholderReplacerImplTest {
         assertThat(grade3).isEqualTo("\\gradeThree");
         assertThat(grade4).isEqualTo("\\gradeFour");
         assertThat(gradeNotGiven).isEqualTo("\\gradeNotGiven");
-        assertThat(gradeHalfYear).isEqualTo("\\gradeHalfYear");
+        assertThat(gradeComesWithSecondHalfYear).isEqualTo("\\gradeComesWithSecondHalfYear");
         assertThat(gradeFalse).isEqualTo("");
     }
 
