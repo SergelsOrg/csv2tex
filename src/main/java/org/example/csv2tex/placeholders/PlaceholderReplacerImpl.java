@@ -43,24 +43,24 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
     public String makeTableEntry(List<SchoolCompetencyData> competencyList, String partOfYear) {
         StringBuilder subjectTable = new StringBuilder();
         SchoolCompetencyData firstSchoolcompetencyData = competencyList.get(0);
-        String competencytableMSCmd = "\\competencytableMS{#SUBJECT}{#COMPETENCIES}{#LEVEL}\n";
-        String competencytableSSCmd = "\\competencytable{#SUBJECT}{#COMPETENCIES}\n";
+        String competencyTableMajorSubjectCmd = "\\competencyTableMajorSubject{#SUBJECT}{#COMPETENCIES}{#LEVEL}\n";
+        String competencyTableMinorSubjectCmd = "\\competencytable{#SUBJECT}{#COMPETENCIES}\n";
 
         if (partOfYear.equals("Endjahr") ||
                 firstSchoolcompetencyData.schoolSubject.equals("Mathematik") ||
                 firstSchoolcompetencyData.schoolSubject.equals("Deutsch") ||
                 firstSchoolcompetencyData.schoolSubject.equals("Englisch")) {
 
-            competencytableMSCmd = competencytableMSCmd
+            competencyTableMajorSubjectCmd = competencyTableMajorSubjectCmd
                     .replace("#SUBJECT", firstSchoolcompetencyData.schoolSubject)
                     .replace("#LEVEL", makeLevel(firstSchoolcompetencyData.level))
                     .replace("#COMPETENCIES", makeCompetencyEntriesMS(competencyList));
-            subjectTable.append(competencytableMSCmd);
+            subjectTable.append(competencyTableMajorSubjectCmd);
         } else {
-            competencytableSSCmd = competencytableSSCmd
+            competencyTableMinorSubjectCmd = competencyTableMinorSubjectCmd
                     .replace("#SUBJECT", firstSchoolcompetencyData.schoolSubject)
                     .replace("#COMPETENCIES", makeCompetencyEntriesSS(competencyList));
-            subjectTable.append(competencytableSSCmd);
+            subjectTable.append(competencyTableMinorSubjectCmd);
 
         }
         return subjectTable.toString();
@@ -115,8 +115,8 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
             case "2": return "\\gradeTwo";
             case "3": return "\\gradeThree";
             case "4": return "\\gradeFour";
-            case "hj": return "\\gradeHj";
-            case "nb": return "\\gradeNon";
+            case "hj": return "\\gradeHalfYear";
+            case "nb": return "\\gradeNotGiven";
             default: return "";
         }
     }

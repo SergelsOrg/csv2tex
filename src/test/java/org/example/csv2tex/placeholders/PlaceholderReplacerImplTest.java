@@ -21,8 +21,8 @@ public class PlaceholderReplacerImplTest {
         String grade2 = sut.makeGrade("2");
         String grade3 = sut.makeGrade("3");
         String grade4 = sut.makeGrade("4");
-        String gradeNon = sut.makeGrade("nb");
-        String gradeHj = sut.makeGrade("hj");
+        String gradeNotGiven = sut.makeGrade("nb");
+        String gradeHalfYear = sut.makeGrade("hj");
         String gradeFalse = sut.makeGrade("7");
 
         assertThat(grade).isEqualTo("\\gradeOne");
@@ -30,8 +30,8 @@ public class PlaceholderReplacerImplTest {
         assertThat(grade2).isEqualTo("\\gradeTwo");
         assertThat(grade3).isEqualTo("\\gradeThree");
         assertThat(grade4).isEqualTo("\\gradeFour");
-        assertThat(gradeNon).isEqualTo("\\gradeNon");
-        assertThat(gradeHj).isEqualTo("\\gradeHj");
+        assertThat(gradeNotGiven).isEqualTo("\\gradeNotGiven");
+        assertThat(gradeHalfYear).isEqualTo("\\gradeHalfYear");
         assertThat(gradeFalse).isEqualTo("");
     }
 
@@ -98,7 +98,7 @@ public class PlaceholderReplacerImplTest {
                 "2021/2022\n" +
                 "Halbjahr\n" +
                 "\n" +
-                "\\competencytableMS{Mathematik}{\\competencyMS{Rechnen\\\\\n" +
+                "\\competencyTableMajorSubject{Mathematik}{\\competencyMS{Rechnen\\\\\n" +
                 "Addition\\\\\n" +
                 "Kann addieren.}{\\gradeOne}\n" +
                 "\\competencyMS{Rechnen\\\\\n" +
