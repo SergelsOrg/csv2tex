@@ -90,10 +90,7 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
         StringBuilder subjectTable = new StringBuilder();
         SchoolCompetencyData firstSchoolCompetencyData = competencyList.get(0);
 
-        if (partOfYear.equals("Endjahr") ||
-                firstSchoolCompetencyData.schoolSubject.equals("Mathematik") ||
-                firstSchoolCompetencyData.schoolSubject.equals("Deutsch") ||
-                firstSchoolCompetencyData.schoolSubject.equals("Englisch")) {
+        if (shouldRenderAsMajorSubject(firstSchoolCompetencyData, partOfYear)) {
 
             String competencyTableMajorSubjectCmd = COMMAND_CALL_COMPETENCY_TABLE_MAJOR_SUBJECT
                     .replace(COMMAND_PLACEHOLDER_SUBJECT, firstSchoolCompetencyData.schoolSubject)
@@ -108,6 +105,18 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
 
         }
         return subjectTable.toString();
+    }
+
+    // This is a HACK - Michael needed to introduce it in hard-coded form for now
+    private boolean shouldRenderAsMajorSubject(SchoolCompetencyData firstSchoolCompetencyData, String partOfYear) {
+        return partOfYear.equals("Endjahr") ||
+                partOfYear.equalsIgnoreCase("End of year") ||
+                firstSchoolCompetencyData.schoolSubject.equals("Mathematik") ||
+                firstSchoolCompetencyData.schoolSubject.equalsIgnoreCase("Mathematics") ||
+                firstSchoolCompetencyData.schoolSubject.equals("Deutsch") ||
+                firstSchoolCompetencyData.schoolSubject.equals("German") ||
+                firstSchoolCompetencyData.schoolSubject.equals("Englisch") ||
+                firstSchoolCompetencyData.schoolSubject.equals("English");
     }
 
     @VisibleForTesting
