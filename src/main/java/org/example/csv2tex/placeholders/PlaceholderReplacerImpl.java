@@ -66,9 +66,24 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
 
     @Override
     public String replacePlaceholdersInTexTemplate(String texTemplateAsString, SchoolReportData schoolReportData) {
-
         String texFileContent = replaceBaseData(texTemplateAsString, schoolReportData);
+        texFileContent = replaceTableData(schoolReportData, texFileContent);
+        return texFileContent;
+    }
 
+    @VisibleForTesting
+    String replaceBaseData(String texFileContent, SchoolReportData schoolReportData) {
+        texFileContent = texFileContent
+                .replace(TEX_TEMPLATE_PLACEHOLDER_GIVEN_NAME, schoolReportData.givenName)
+                .replace(TEX_TEMPLATE_PLACEHOLDER_SURNAME, schoolReportData.surName)
+                .replace(TEX_TEMPLATE_PLACEHOLDER_BIRTHDAY, schoolReportData.birthDay)
+                .replace(TEX_TEMPLATE_PLACEHOLDER_SCHOOL_CLASS, schoolReportData.schoolClass)
+                .replace(TEX_TEMPLATE_PLACEHOLDER_SCHOOL_YEAR, schoolReportData.schoolYear)
+                .replace(TEX_TEMPLATE_PLACEHOLDER_PART_OF_YEAR, schoolReportData.partOfYear);
+        return texFileContent;
+    }
+
+    private String replaceTableData(SchoolReportData schoolReportData, String texFileContent) {
         String partOfYear = schoolReportData.partOfYear;
         StringBuilder tables = new StringBuilder();
 
@@ -77,19 +92,23 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
 
         for (SchoolCompetencyData schoolCompetencyData : schoolReportData.schoolCompetencies) {
             if (isStartOfNewSubject(currentSubject, schoolCompetencyData)) {
-                tables.append(makeTableEntry(currentSubjectCompetencyList, partOfYear));
+                renderCompletedCompetencyListOfCurrentsubject(partOfYear, tables, currentSubjectCompetencyList);
                 currentSubject = schoolCompetencyData.schoolSubject;
                 currentSubjectCompetencyList.clear();
             }
             currentSubjectCompetencyList.add(schoolCompetencyData);
         }
-        tables.append(makeTableEntry(currentSubjectCompetencyList, partOfYear));
+        renderCompletedCompetencyListOfCurrentsubject(partOfYear, tables, currentSubjectCompetencyList);
         texFileContent = texFileContent.replace(TEX_TEMPLATE_PLACEHOLDER_TABLES, tables);
         return texFileContent;
     }
 
     private boolean isStartOfNewSubject(String currentSubject, SchoolCompetencyData schoolCompetencyData) {
         return !currentSubject.equals(schoolCompetencyData.schoolSubject);
+    }
+
+    private void renderCompletedCompetencyListOfCurrentsubject(String partOfYear, StringBuilder tables, List<SchoolCompetencyData> currentSubjectCompetencyList) {
+        tables.append(makeTableEntry(currentSubjectCompetencyList, partOfYear));
     }
 
     @VisibleForTesting
@@ -207,17 +226,5 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
             default:
                 return "";
         }
-    }
-
-    @VisibleForTesting
-    String replaceBaseData(String texFileContent, SchoolReportData schoolReportData) {
-        texFileContent = texFileContent
-                .replace(TEX_TEMPLATE_PLACEHOLDER_GIVEN_NAME, schoolReportData.givenName)
-                .replace(TEX_TEMPLATE_PLACEHOLDER_SURNAME, schoolReportData.surName)
-                .replace(TEX_TEMPLATE_PLACEHOLDER_BIRTHDAY, schoolReportData.birthDay)
-                .replace(TEX_TEMPLATE_PLACEHOLDER_SCHOOL_CLASS, schoolReportData.schoolClass)
-                .replace(TEX_TEMPLATE_PLACEHOLDER_SCHOOL_YEAR, schoolReportData.schoolYear)
-                .replace(TEX_TEMPLATE_PLACEHOLDER_PART_OF_YEAR, schoolReportData.partOfYear);
-        return texFileContent;
     }
 }
