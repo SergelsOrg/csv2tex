@@ -8,11 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * Dummy implementation that does no transformation.
- * <p>
- * We have it in place until we have the real implementation.
- */
 public class PlaceholderReplacerImpl implements PlaceholderReplacer {
     public String replacePlaceholdersInTexTemplate(String texTemplateAsString, SchoolReportData schoolReportData) {
 
