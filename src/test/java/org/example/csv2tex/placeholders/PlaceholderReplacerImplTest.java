@@ -98,14 +98,14 @@ public class PlaceholderReplacerImplTest {
                 "2021/2022\n" +
                 "Halbjahr\n" +
                 "\n" +
-                "\\competencyTableMajorSubject{Mathematik}{\\competencyMS{Rechnen\\\\\n" +
+                "\\competencyTableMajorSubject{Mathematik}{\\competencyMajorSubject{Rechnen\\\\\n" +
                 "Addition\\\\\n" +
                 "Kann addieren.}{\\gradeOne}\n" +
-                "\\competencyMS{Rechnen\\\\\n" +
+                "\\competencyMajorSubject{Rechnen\\\\\n" +
                 "Subtraktion\\\\\n" +
                 "Kann subtrahieren.}{\\gradeTwo}\n" +
                 "}{rot}\n" +
-                "\\competencytable{Fremdsprache}{\\competencySS{Französisch\\\\\n" +
+                "\\competencytable{Fremdsprache}{\\competencyMinorSubject{Französisch\\\\\n" +
                 "sc\\\\\n" +
                 "des}{\\gradeOne}{grün}\n" +
                 "}\n" +

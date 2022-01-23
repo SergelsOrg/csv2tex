@@ -33,13 +33,13 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
                     COMMAND_PLACEHOLDER_LEVEL +
                     "}\n";
     private static final String COMMAND_CALL_COMPETENCY_MAJOR_SUBJECT =
-            "\\competencyMS{" +
+            "\\competencyMajorSubject{" +
                     COMMAND_PLACEHOLDER_COMPETENCY +
                     "}{" +
                     COMMAND_PLACEHOLDER_GRADE +
                     "}\n";
     private static final String COMMAND_CALL_COMPETENCY_MINOR_SUBJECT =
-            "\\competencySS{" +
+            "\\competencyMinorSubject{" +
                     COMMAND_PLACEHOLDER_COMPETENCY +
                     "}{" +
                     COMMAND_PLACEHOLDER_GRADE +
