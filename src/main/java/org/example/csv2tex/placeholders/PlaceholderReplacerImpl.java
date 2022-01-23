@@ -59,7 +59,7 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
     private static final String TEX_NEWLINE = "\\\\\n";
     private static final String SPECIAL_GRADE_VALUE_GRADE_NOT_GIVEN = "nb";
     private static final String SPECIAL_GRADE_VALUE_GRADE_IN_SECOND_HALF_YEAR = "hj";
-    
+
     private static final String GERMAN_LEVEL_RED = "rot";
     private static final String GERMAN_LEVEL_BLUE = "blau";
     private static final String GERMAN_LEVEL_GREEN = "grün";
@@ -70,25 +70,26 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
         String texFileContent = replaceBaseData(texTemplateAsString, schoolReportData);
 
         String partOfYear = schoolReportData.partOfYear;
-        String currentSubject = schoolReportData.schoolCompetencies.get(0).schoolSubject;
         StringBuilder tables = new StringBuilder();
-        List<SchoolCompetencyData> competencyList = new ArrayList<>();
+
+        String currentSubject = schoolReportData.schoolCompetencies.get(0).schoolSubject;
+        List<SchoolCompetencyData> currentSubjectCompetencyList = new ArrayList<>();
 
         for (SchoolCompetencyData schoolCompetencyData : schoolReportData.schoolCompetencies) {
-            if (!currentSubject.equals(schoolCompetencyData.schoolSubject)) {
+            if (isStartOfNewSubject(currentSubject, schoolCompetencyData)) {
+                tables.append(makeTableEntry(currentSubjectCompetencyList, partOfYear));
                 currentSubject = schoolCompetencyData.schoolSubject;
-
-                tables.append(makeTableEntry(competencyList, partOfYear));
-                //FIXME
-                competencyList.removeAll(competencyList);
-                competencyList.add(schoolCompetencyData);
-            } else {
-                competencyList.add(schoolCompetencyData);
+                currentSubjectCompetencyList.clear();
             }
+            currentSubjectCompetencyList.add(schoolCompetencyData);
         }
-        tables.append(makeTableEntry(competencyList, partOfYear));
+        tables.append(makeTableEntry(currentSubjectCompetencyList, partOfYear));
         texFileContent = texFileContent.replace(TEX_TEMPLATE_PLACEHOLDER_TABLES, tables);
         return texFileContent;
+    }
+
+    private boolean isStartOfNewSubject(String currentSubject, SchoolCompetencyData schoolCompetencyData) {
+        return !currentSubject.equals(schoolCompetencyData.schoolSubject);
     }
 
     @VisibleForTesting
