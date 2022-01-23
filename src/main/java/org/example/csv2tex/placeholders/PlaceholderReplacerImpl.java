@@ -1,6 +1,7 @@
 package org.example.csv2tex.placeholders;
 
 
+import com.google.common.annotations.VisibleForTesting;
 import org.example.csv2tex.data.SchoolCompetencyData;
 import org.example.csv2tex.data.SchoolReportData;
 
@@ -9,6 +10,55 @@ import java.util.List;
 
 
 public class PlaceholderReplacerImpl implements PlaceholderReplacer {
+
+
+    private static final String COMMAND_PLACEHOLDER_SUBJECT = "#SUBJECT";
+    private static final String COMMAND_PLACEHOLDER_COMPETENCIES = "#COMPETENCIES";
+    private static final String COMMAND_PLACEHOLDER_COMPETENCY = "#COMPETENCY";
+    private static final String COMMAND_PLACEHOLDER_LEVEL = "#LEVEL";
+    private static final String COMMAND_PLACEHOLDER_GRADE = "#GRADE";
+
+    private static final String COMMAND_CALL_COMPETENCY_TABLE =
+            "\\competencytable{" +
+                    COMMAND_PLACEHOLDER_SUBJECT +
+                    "}{" +
+                    COMMAND_PLACEHOLDER_COMPETENCIES +
+                    "}\n";
+    private static final String COMMAND_CALL_COMPETENCY_TABLE_MAJOR_SUBJECT =
+            "\\competencyTableMajorSubject{" +
+                    COMMAND_PLACEHOLDER_SUBJECT +
+                    "}{" +
+                    COMMAND_PLACEHOLDER_COMPETENCIES +
+                    "}{" +
+                    COMMAND_PLACEHOLDER_LEVEL +
+                    "}\n";
+    private static final String COMMAND_CALL_COMPETENCY_MAJOR_SUBJECT =
+            "\\competencyMS{" +
+                    COMMAND_PLACEHOLDER_COMPETENCY +
+                    "}{" +
+                    COMMAND_PLACEHOLDER_GRADE +
+                    "}\n";
+    private static final String COMMAND_CALL_COMPETENCY_MINOR_SUBJECT =
+            "\\competencySS{" +
+                    COMMAND_PLACEHOLDER_COMPETENCY +
+                    "}{" +
+                    COMMAND_PLACEHOLDER_GRADE +
+                    "}{" +
+                    COMMAND_PLACEHOLDER_LEVEL +
+                    "}\n";
+
+
+    private static final String TEX_TEMPLATE_PLACEHOLDER_GIVEN_NAME = "#givenName";
+    private static final String TEX_TEMPLATE_PLACEHOLDER_SURNAME = "#surName";
+    private static final String TEX_TEMPLATE_PLACEHOLDER_BIRTHDAY = "#birthDay";
+    private static final String TEX_TEMPLATE_PLACEHOLDER_SCHOOL_CLASS = "#schoolClass";
+    private static final String TEX_TEMPLATE_PLACEHOLDER_SCHOOL_YEAR = "#schoolYear";
+    private static final String TEX_TEMPLATE_PLACEHOLDER_PART_OF_YEAR = "#partOfYear";
+    private static final String TEX_TEMPLATE_PLACEHOLDER_TABLES = "#tables";
+
+    private static final String TEX_NEWLINE = "\\\\\n";
+
+    @Override
     public String replacePlaceholdersInTexTemplate(String texTemplateAsString, SchoolReportData schoolReportData) {
 
         String texFileContent = replaceBaseData(texTemplateAsString, schoolReportData);
@@ -31,111 +81,127 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
             }
         }
         tables.append(makeTableEntry(competencyList, partOfYear));
-        texFileContent = texFileContent.replace("#tables", tables);
+        texFileContent = texFileContent.replace(TEX_TEMPLATE_PLACEHOLDER_TABLES, tables);
         return texFileContent;
     }
 
-    public String makeTableEntry(List<SchoolCompetencyData> competencyList, String partOfYear) {
+    @VisibleForTesting
+    String makeTableEntry(List<SchoolCompetencyData> competencyList, String partOfYear) {
         StringBuilder subjectTable = new StringBuilder();
-        SchoolCompetencyData firstSchoolcompetencyData = competencyList.get(0);
-        String competencyTableMajorSubjectCmd = "\\competencyTableMajorSubject{#SUBJECT}{#COMPETENCIES}{#LEVEL}\n";
-        String competencyTableMinorSubjectCmd = "\\competencytable{#SUBJECT}{#COMPETENCIES}\n";
+        SchoolCompetencyData firstSchoolCompetencyData = competencyList.get(0);
 
         if (partOfYear.equals("Endjahr") ||
-                firstSchoolcompetencyData.schoolSubject.equals("Mathematik") ||
-                firstSchoolcompetencyData.schoolSubject.equals("Deutsch") ||
-                firstSchoolcompetencyData.schoolSubject.equals("Englisch")) {
+                firstSchoolCompetencyData.schoolSubject.equals("Mathematik") ||
+                firstSchoolCompetencyData.schoolSubject.equals("Deutsch") ||
+                firstSchoolCompetencyData.schoolSubject.equals("Englisch")) {
 
-            competencyTableMajorSubjectCmd = competencyTableMajorSubjectCmd
-                    .replace("#SUBJECT", firstSchoolcompetencyData.schoolSubject)
-                    .replace("#LEVEL", makeLevel(firstSchoolcompetencyData.level))
-                    .replace("#COMPETENCIES", makeCompetencyEntriesMS(competencyList));
+            String competencyTableMajorSubjectCmd = COMMAND_CALL_COMPETENCY_TABLE_MAJOR_SUBJECT
+                    .replace(COMMAND_PLACEHOLDER_SUBJECT, firstSchoolCompetencyData.schoolSubject)
+                    .replace(COMMAND_PLACEHOLDER_LEVEL, makeLevel(firstSchoolCompetencyData.level))
+                    .replace(COMMAND_PLACEHOLDER_COMPETENCIES, makeCompetencyEntriesMS(competencyList));
             subjectTable.append(competencyTableMajorSubjectCmd);
         } else {
-            competencyTableMinorSubjectCmd = competencyTableMinorSubjectCmd
-                    .replace("#SUBJECT", firstSchoolcompetencyData.schoolSubject)
-                    .replace("#COMPETENCIES", makeCompetencyEntriesSS(competencyList));
+            String competencyTableMinorSubjectCmd = COMMAND_CALL_COMPETENCY_TABLE
+                    .replace(COMMAND_PLACEHOLDER_SUBJECT, firstSchoolCompetencyData.schoolSubject)
+                    .replace(COMMAND_PLACEHOLDER_COMPETENCIES, makeCompetencyEntriesSS(competencyList));
             subjectTable.append(competencyTableMinorSubjectCmd);
 
         }
         return subjectTable.toString();
     }
 
-    public String makeCompetencyEntriesMS(List<SchoolCompetencyData> competencyList) {
-        String competencyMSCmd = "\\competencyMS{#COMPETENCY}{#GRADE}\n";
+    @VisibleForTesting
+    String makeCompetencyEntriesMS(List<SchoolCompetencyData> competencyList) {
         StringBuilder competenciesTable = new StringBuilder();
 
         for (SchoolCompetencyData schoolCompetencyData : competencyList) {
             StringBuilder competency = new StringBuilder();
             competency.append(schoolCompetencyData.schoolCompetency);
             if (!schoolCompetencyData.schoolSubCompetency.isEmpty()) {
-                competency.append("\\\\\n").append(schoolCompetencyData.schoolSubCompetency);
+                competency.append(TEX_NEWLINE).append(schoolCompetencyData.schoolSubCompetency);
             }
             if (!schoolCompetencyData.description.isEmpty()) {
-                competency.append("\\\\\n").append(schoolCompetencyData.description);
+                competency.append(TEX_NEWLINE).append(schoolCompetencyData.description);
             }
-            String competencyReplaced = competencyMSCmd
-                    .replace("#COMPETENCY", competency)
-                    .replace("#GRADE", makeGrade(schoolCompetencyData.grade));
+            String competencyReplaced = COMMAND_CALL_COMPETENCY_MAJOR_SUBJECT
+                    .replace(COMMAND_PLACEHOLDER_COMPETENCY, competency)
+                    .replace(COMMAND_PLACEHOLDER_GRADE, makeGrade(schoolCompetencyData.grade));
             competenciesTable.append(competencyReplaced);
         }
         return competenciesTable.toString();
     }
 
-    public String makeCompetencyEntriesSS(List<SchoolCompetencyData> competencyList) {
-        String competencySSCmd = "\\competencySS{#COMPETENCY}{#GRADE}{#LEVEL}\n";
+    @VisibleForTesting
+    String makeCompetencyEntriesSS(List<SchoolCompetencyData> competencyList) {
         StringBuilder competenciesTable = new StringBuilder();
 
         for (SchoolCompetencyData schoolCompetencyData : competencyList) {
             StringBuilder competency = new StringBuilder();
             competency.append(schoolCompetencyData.schoolCompetency);
             if (!schoolCompetencyData.schoolSubCompetency.isEmpty()) {
-                competency.append("\\\\\n").append(schoolCompetencyData.schoolSubCompetency);
+                competency.append(TEX_NEWLINE).append(schoolCompetencyData.schoolSubCompetency);
             }
             if (!schoolCompetencyData.description.isEmpty()) {
-                competency.append("\\\\\n").append(schoolCompetencyData.description);
+                competency.append(TEX_NEWLINE).append(schoolCompetencyData.description);
             }
-            String competencyReplaced = competencySSCmd
-                    .replace("#COMPETENCY", competency)
-                    .replace("#GRADE", makeGrade(schoolCompetencyData.grade))
-                    .replace("#LEVEL", makeLevel(schoolCompetencyData.level));
+            String competencyReplaced = COMMAND_CALL_COMPETENCY_MINOR_SUBJECT
+                    .replace(COMMAND_PLACEHOLDER_COMPETENCY, competency)
+                    .replace(COMMAND_PLACEHOLDER_GRADE, makeGrade(schoolCompetencyData.grade))
+                    .replace(COMMAND_PLACEHOLDER_LEVEL, makeLevel(schoolCompetencyData.level));
             competenciesTable.append(competencyReplaced);
         }
         return competenciesTable.toString();
     }
 
-    public String makeGrade(String grade) {
+    @VisibleForTesting
+    String makeGrade(String grade) {
         switch (grade) {
-            case "1": return "\\gradeOne";
-            case "2": return "\\gradeTwo";
-            case "3": return "\\gradeThree";
-            case "4": return "\\gradeFour";
-            case "hj": return "\\gradeHalfYear";
-            case "nb": return "\\gradeNotGiven";
-            default: return "";
+            case "1":
+                return "\\gradeOne";
+            case "2":
+                return "\\gradeTwo";
+            case "3":
+                return "\\gradeThree";
+            case "4":
+                return "\\gradeFour";
+            case "hj":
+                return "\\gradeHalfYear";
+            case "nb":
+                return "\\gradeNotGiven";
+            default:
+                return "";
         }
     }
 
-    public String makeLevel(String level) {
+    @VisibleForTesting
+    String makeLevel(String level) {
         switch (level) {
-            case "1": return "rot";
-            case "2": return "blau";
-            case "3": return "grün";
-            case "7": return "\\levelSeven";
-            case "8": return "\\levelEight";
-            case "9": return "\\levelNine";
-            default: return "";
+            case "1":
+                return "rot";
+            case "2":
+                return "blau";
+            case "3":
+                return "grün";
+            case "7":
+                return "\\levelSeven";
+            case "8":
+                return "\\levelEight";
+            case "9":
+                return "\\levelNine";
+            default:
+                return "";
         }
     }
 
-    public String replaceBaseData(String texFileContent, SchoolReportData schoolReportData) {
+    @VisibleForTesting
+    String replaceBaseData(String texFileContent, SchoolReportData schoolReportData) {
         texFileContent = texFileContent
-                .replace("#givenName", schoolReportData.givenName)
-                .replace("#surName", schoolReportData.surName)
-                .replace("#birthDay", schoolReportData.birthDay)
-                .replace("#schoolClass", schoolReportData.schoolClass)
-                .replace("#schoolYear", schoolReportData.schoolYear)
-                .replace("#partOfYear", schoolReportData.partOfYear);
+                .replace(TEX_TEMPLATE_PLACEHOLDER_GIVEN_NAME, schoolReportData.givenName)
+                .replace(TEX_TEMPLATE_PLACEHOLDER_SURNAME, schoolReportData.surName)
+                .replace(TEX_TEMPLATE_PLACEHOLDER_BIRTHDAY, schoolReportData.birthDay)
+                .replace(TEX_TEMPLATE_PLACEHOLDER_SCHOOL_CLASS, schoolReportData.schoolClass)
+                .replace(TEX_TEMPLATE_PLACEHOLDER_SCHOOL_YEAR, schoolReportData.schoolYear)
+                .replace(TEX_TEMPLATE_PLACEHOLDER_PART_OF_YEAR, schoolReportData.partOfYear);
         return texFileContent;
     }
 }
