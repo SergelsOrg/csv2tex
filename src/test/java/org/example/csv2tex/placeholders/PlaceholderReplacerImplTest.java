@@ -9,6 +9,7 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 public class PlaceholderReplacerImplTest {
     private final PlaceholderReplacerImpl sut = new PlaceholderReplacerImpl();
@@ -112,6 +113,20 @@ public class PlaceholderReplacerImplTest {
                 "\n" +
                 "\n" +
                 "\\end{document}");
+    }
+
+    @Test
+    public void replacePlaceholdersInTexFile_withoutCompetencies_doesNotFail() throws Exception {
+        SchoolReportData schoolReportDataWithoutCompetencies = schoolReportDataWithoutCompetencies();
+
+        assertThatCode(() -> sut.replacePlaceholdersInTexTemplate("", schoolReportDataWithoutCompetencies))
+                .doesNotThrowAnyException();
+    }
+
+    private SchoolReportData schoolReportDataWithoutCompetencies() {
+        SchoolReportData schoolReportData = generateSchoolReportData();
+        schoolReportData.schoolCompetencies.clear();
+        return schoolReportData;
     }
 
     private SchoolReportData generateSchoolReportData() {
