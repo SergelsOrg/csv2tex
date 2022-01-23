@@ -87,6 +87,10 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
         String partOfYear = schoolReportData.partOfYear;
         StringBuilder tables = new StringBuilder();
 
+        if (schoolReportData.schoolCompetencies.isEmpty()) {
+            return texFileContent;
+        }
+
         String currentSubject = schoolReportData.schoolCompetencies.get(0).schoolSubject;
         List<SchoolCompetencyData> currentSubjectCompetencyList = new ArrayList<>();
 
