@@ -208,7 +208,7 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
             case SPECIAL_GRADE_VALUE_GRADE_NOT_GIVEN:
                 return "\\gradeNotGiven";
             default:
-                return "";
+                return "\\gradeDefault";
         }
     }
 
