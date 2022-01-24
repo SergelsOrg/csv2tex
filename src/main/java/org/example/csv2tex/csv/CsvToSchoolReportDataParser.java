@@ -59,18 +59,22 @@ public class CsvToSchoolReportDataParser {
 
     private SchoolReportData createBaseData(CSVRecord rawData) {
         SchoolReportData singleStudentData = new SchoolReportData();
-        singleStudentData.schoolClass = rawData.get(0);
-        singleStudentData.schoolYear = rawData.get(1);
-        singleStudentData.partOfYear = rawData.get(2);
-        singleStudentData.givenName = rawData.get(3);
-        singleStudentData.surName = rawData.get(4);
+        singleStudentData.surName = rawData.get(0);
+        singleStudentData.givenName = rawData.get(1);
+        singleStudentData.schoolClass = rawData.get(2);
+        singleStudentData.schoolYear = rawData.get(3);
+        singleStudentData.partOfYear = rawData.get(4);
         singleStudentData.birthDay = rawData.get(5);
+        singleStudentData.absenceDaysExcused = rawData.get(6);
+        singleStudentData.absenceDaysUnexcused = rawData.get(7);
+        singleStudentData.absenceHoursExcused = rawData.get(8);
+        singleStudentData.absenceHoursUnexcused = rawData.get(9);
         return singleStudentData;
     }
 
     private void addCompetencyData(SchoolReportData singleStudentData, List<String> headers, CSVRecord rawData) {
         String currentLevel = "";
-        for (int i = 6; i < rawData.size(); i++) {
+        for (int i = 10; i < rawData.size(); i++) {
             String columnHeader = headers.get(i);
             String cellValue = rawData.get(i);
 
