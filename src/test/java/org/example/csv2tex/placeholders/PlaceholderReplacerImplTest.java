@@ -52,6 +52,10 @@ public class PlaceholderReplacerImplTest extends AbstractReplacerTest {
                 "5c\n" +
                 "2021/2022\n" +
                 "Halbjahr\n" +
+                "8\n" +
+                "5\n" +
+                "7\n" +
+                "3\n" +
                 "\n" +
                 "\\competencyTableMajorSubject{Mathematik}{\\competencyMajorSubject{Rechnen\\\\\n" +
                 "Addition\\\\\n" +
