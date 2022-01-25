@@ -33,7 +33,7 @@ public class PlaceholderReplacerImplTest {
         assertThat(grade4).isEqualTo("\\gradeFour");
         assertThat(gradeNotGiven).isEqualTo("\\gradeNotGiven");
         assertThat(gradeComesWithSecondHalfYear).isEqualTo("\\gradeComesWithSecondHalfYear");
-        assertThat(gradeFalse).isEqualTo("");
+        assertThat(gradeFalse).isEqualTo("\\gradeDefault");
     }
 
     @Test
