@@ -48,7 +48,7 @@ class SchoolReportsRendererTest {
         assertThatThrownBy(() -> sut.renderSchoolReportsForGivenFiles(NONEXISTENT_CSV_FILE, NO_PLACEHOLDERS_TEX_FILE))
                 .describedAs("As the UI prevents the user from selecting a nonexistent file, we expect a generic exception")
                 .isInstanceOf(RenderingException.class)
-                .hasMessageContaining("No such file")
+                .hasMessageMatching(".*(No such file|nicht gefunden).*")
                 .extracting(e -> ((RenderingException) e).getErrorCode())
                 .isEqualTo(RenderingExceptionCause.UNEXPECTED)
         ;
@@ -70,7 +70,7 @@ class SchoolReportsRendererTest {
         assertThatThrownBy(() -> sut.renderSchoolReportsForGivenFiles(NONEXISTENT_TEX_FILE, NO_PLACEHOLDERS_TEX_FILE))
                 .describedAs("As the UI prevents the user from selecting a nonexistent file, we expect a generic exception")
                 .isInstanceOf(RenderingException.class)
-                .hasMessageContaining("No such file")
+                .hasMessageMatching(".*(No such file|nicht gefunden).*")
                 .extracting(e -> ((RenderingException) e).getErrorCode())
                 .isEqualTo(RenderingExceptionCause.UNEXPECTED)
         ;
