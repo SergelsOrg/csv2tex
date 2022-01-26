@@ -62,7 +62,7 @@ dependencies {
 
     // ############################ Logging ###########################################
 
-    implementation("org.slf4j:slf4j-api:1.7.34")
+    implementation("org.slf4j:slf4j-api:1.7.35")
 
     // slf4j bindings:
     implementation("ch.qos.logback:logback-core:1.2.10")
