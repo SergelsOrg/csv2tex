@@ -20,6 +20,8 @@ public class SchoolReportData {
 
     /**
      * E.g., if your school does half terms, it could be 1 or 2
+     *
+     * In the current version, will be expected as "Endjahr" for end of year
      */
     public String partOfYear;
 
@@ -29,6 +31,6 @@ public class SchoolReportData {
 
     public String birthDay;
 
-    public List<SchoolCompetencyData> schoolCompetencies = new ArrayList<SchoolCompetencyData>();
+    public List<SchoolCompetencyData> schoolCompetencies = new ArrayList<>();
 
 }

@@ -29,3 +29,8 @@ hs_err_pid*
 # Gradle temporary files
 .gradle
 build
+
+# local rendering artifacts
+**/*.aux
+**/*.synctex.gz
+/sample templates/**/*.pdf

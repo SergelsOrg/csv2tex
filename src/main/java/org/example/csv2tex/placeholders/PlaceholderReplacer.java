@@ -3,9 +3,9 @@ package org.example.csv2tex.placeholders;
 import org.example.csv2tex.data.SchoolReportData;
 
 /**
- * Replace placeholders in a given tex file.
+ * Replace placeholders in a given-as-String tex file.
  */
 public interface PlaceholderReplacer {
 
-    String replacePlaceholdersInTexFile(String texTemplate, SchoolReportData schoolReportData);
+    String replacePlaceholdersInTexTemplate(String texTemplateAsString, SchoolReportData schoolReportData);
 }

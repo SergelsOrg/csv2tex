@@ -5,7 +5,7 @@ import org.example.csv2tex.csv.CsvToSchoolReportDataParser;
 import org.example.csv2tex.data.SchoolReportData;
 import org.example.csv2tex.exception.InvalidCsvException;
 import org.example.csv2tex.exception.RenderingException;
-import org.example.csv2tex.placeholders.NoopPlaceholderReplacer;
+import org.example.csv2tex.placeholders.PlaceholderReplacerImpl;
 import org.example.csv2tex.placeholders.PlaceholderReplacer;
 import org.example.csv2tex.shellout.ShellCommandsUtil;
 
@@ -32,7 +32,7 @@ public class SchoolReportsRenderer {
 
     public SchoolReportsRenderer() {
         // FIXME: implement real placeholder replacement
-        placeholderReplacer = new NoopPlaceholderReplacer();
+        placeholderReplacer = new PlaceholderReplacerImpl();
 
         parser = new CsvToSchoolReportDataParser();
     }
@@ -78,7 +78,7 @@ public class SchoolReportsRenderer {
 
     private void renderSingleSchoolReportPdf(List<SchoolReportData> studentDataList, String texTemplate, Path temporaryDirectory,
                                              ShellCommandsUtil shellCommandsInTempDir, List<String> renderedPdfs, int fileNumber) throws IOException {
-        String texWithReplacedPlaceholders = placeholderReplacer.replacePlaceholdersInTexFile(texTemplate, studentDataList.get(fileNumber));
+        String texWithReplacedPlaceholders = placeholderReplacer.replacePlaceholdersInTexTemplate(texTemplate, studentDataList.get(fileNumber));
         Path temporaryTexFilePath = temporaryDirectory.resolve("schoolReport_" + fileNumber + ".tex").toAbsolutePath();
         Files.writeString(temporaryTexFilePath, texWithReplacedPlaceholders);
         runShellCommandThrowing(() -> shellCommandsInTempDir.runTexi2Pdf(temporaryTexFilePath.toString()));
