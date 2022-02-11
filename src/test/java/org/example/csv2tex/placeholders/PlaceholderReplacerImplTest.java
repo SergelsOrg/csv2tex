@@ -11,54 +11,8 @@ import java.nio.charset.StandardCharsets;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
-public class PlaceholderReplacerImplTest {
+public class PlaceholderReplacerImplTest extends AbstractReplacerTest {
     private final PlaceholderReplacerImpl sut = new PlaceholderReplacerImpl();
-
-    @Test
-    public void makeGrade() {
-        SchoolReportData schoolReportData = generateSchoolReportData();
-        String grade = sut.makeGrade(schoolReportData.schoolCompetencies.get(0).grade);
-        String grade1 = sut.makeGrade("1");
-        String grade2 = sut.makeGrade("2");
-        String grade3 = sut.makeGrade("3");
-        String grade4 = sut.makeGrade("4");
-        String gradeNotGiven = sut.makeGrade("nb");
-        String gradeComesWithSecondHalfYear = sut.makeGrade("hj");
-        String gradeFalse = sut.makeGrade("7");
-
-        assertThat(grade).isEqualTo("\\gradeOne");
-        assertThat(grade1).isEqualTo("\\gradeOne");
-        assertThat(grade2).isEqualTo("\\gradeTwo");
-        assertThat(grade3).isEqualTo("\\gradeThree");
-        assertThat(grade4).isEqualTo("\\gradeFour");
-        assertThat(gradeNotGiven).isEqualTo("\\gradeNotGiven");
-        assertThat(gradeComesWithSecondHalfYear).isEqualTo("\\gradeComesWithSecondHalfYear");
-        assertThat(gradeFalse).isEqualTo("\\gradeDefault");
-    }
-
-    @Test
-    public void makeLevel() {
-        SchoolReportData schoolReportData = generateSchoolReportData();
-        String level = sut.makeLevel(schoolReportData.schoolCompetencies.get(0).level);
-        String level1 = sut.makeLevel("1");
-        String level2 = sut.makeLevel("2");
-        String level3 = sut.makeLevel("3");
-        String level7 = sut.makeLevel("7");
-        String level8 = sut.makeLevel("8");
-        String level9 = sut.makeLevel("9");
-        String levelNon = sut.makeLevel("");
-        String levelFalse = sut.makeLevel("10");
-
-        assertThat(level).isEqualTo("rot");
-        assertThat(level1).isEqualTo("rot");
-        assertThat(level2).isEqualTo("blau");
-        assertThat(level3).isEqualTo("grün");
-        assertThat(level7).isEqualTo("\\levelSeven");
-        assertThat(level8).isEqualTo("\\levelEight");
-        assertThat(level9).isEqualTo("\\levelNine");
-        assertThat(levelNon).isEqualTo("");
-        assertThat(levelFalse).isEqualTo("");
-    }
 
     @Test
     public void replaceBaseData() throws Exception {
@@ -129,57 +83,4 @@ public class PlaceholderReplacerImplTest {
         return schoolReportData;
     }
 
-    private SchoolReportData generateSchoolReportData() {
-        SchoolReportData schoolReportData = new SchoolReportData();
-        schoolReportData.birthDay = "29.12.1985";
-        schoolReportData.schoolClass = "5c";
-        schoolReportData.schoolYear = "2021/2022";
-        schoolReportData.givenName = "Michael";
-        schoolReportData.surName = "Pöhle";
-        schoolReportData.partOfYear = "Halbjahr";
-        schoolReportData.schoolCompetencies.add(generateSchoolCompetencyData1());
-        schoolReportData.schoolCompetencies.add(generateSchoolCompetencyData2());
-        schoolReportData.schoolCompetencies.add(generateSchoolCompetencyData3());
-
-        return schoolReportData;
-    }
-
-    private SchoolCompetencyData generateSchoolCompetencyData1() {
-        SchoolCompetencyData schoolCompetencyData1 = new SchoolCompetencyData();
-
-        schoolCompetencyData1.schoolSubject = "Mathematik";
-        schoolCompetencyData1.schoolCompetency = "Rechnen";
-        schoolCompetencyData1.schoolSubCompetency = "Addition";
-        schoolCompetencyData1.description = "Kann addieren.";
-        schoolCompetencyData1.grade = "1";
-        schoolCompetencyData1.level = "1";
-
-        return schoolCompetencyData1;
-    }
-
-    private SchoolCompetencyData generateSchoolCompetencyData2() {
-        SchoolCompetencyData schoolCompetencyData2 = new SchoolCompetencyData();
-
-        schoolCompetencyData2.schoolSubject = "Mathematik";
-        schoolCompetencyData2.schoolCompetency = "Rechnen";
-        schoolCompetencyData2.schoolSubCompetency = "Subtraktion";
-        schoolCompetencyData2.description = "Kann subtrahieren.";
-        schoolCompetencyData2.grade = "2";
-        schoolCompetencyData2.level = "1";
-
-        return schoolCompetencyData2;
-    }
-
-    private SchoolCompetencyData generateSchoolCompetencyData3() {
-        SchoolCompetencyData schoolCompetencyData3 = new SchoolCompetencyData();
-
-        schoolCompetencyData3.schoolSubject = "Fremdsprache";
-        schoolCompetencyData3.schoolCompetency = "Französisch";
-        schoolCompetencyData3.schoolSubCompetency = "sc";
-        schoolCompetencyData3.description = "des";
-        schoolCompetencyData3.grade = "1";
-        schoolCompetencyData3.level = "3";
-
-        return schoolCompetencyData3;
-    }
 }
