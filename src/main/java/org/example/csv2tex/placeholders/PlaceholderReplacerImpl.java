@@ -32,9 +32,9 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
                 .replace(TEX_TEMPLATE_PLACEHOLDER_SCHOOL_YEAR, schoolReportData.schoolYear)
                 .replace(TEX_TEMPLATE_PLACEHOLDER_PART_OF_YEAR, schoolReportData.partOfYear)
                 .replace("#absenceDays", schoolReportData.absenceDaysTotal)
-                .replace("#absenceUDays", schoolReportData.absenceDaysUnexcused)
+                .replace("#absenceDaysUnauthorized", schoolReportData.absenceDaysUnexcused)
                 .replace("#absenceHours", schoolReportData.absenceHoursTotal)
-                .replace("#absenceUHours", schoolReportData.absenceHoursUnexcused);
+                .replace("#absenceHoursUnauthorized", schoolReportData.absenceHoursUnexcused);
 
         return texFileContent;
     }
