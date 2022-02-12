@@ -31,11 +31,11 @@ public class SchoolReportData {
 
     public String birthDay;
 
-    public String absenceDaysExcused;
+    public String absenceDaysTotal;
 
     public String absenceDaysUnexcused;
 
-    public String absenceHoursExcused;
+    public String absenceHoursTotal;
 
     public String absenceHoursUnexcused;
 
