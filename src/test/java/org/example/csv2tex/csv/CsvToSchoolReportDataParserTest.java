@@ -473,7 +473,7 @@ public class CsvToSchoolReportDataParserTest {
         assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
                 .isInstanceOf(InvalidCsvException.class)
                 .hasMessageContaining("competency definitions in the header are incomplete")
-                .hasMessageMatching(".*\\b8\\b.*");
+                .hasMessageMatching(".*\\b12\\b.*"); // fault is identified in column 12
     }
 
     @Test
