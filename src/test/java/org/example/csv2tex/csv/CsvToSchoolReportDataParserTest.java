@@ -184,36 +184,48 @@ public class CsvToSchoolReportDataParserTest {
     }
 
     private void assertStudent1BaseData(SchoolReportData schoolReportData) {
-        // Klasse,Schuljahr,Halbjahr,Vorname,Name,Geburtstag
-        // 5a,2019/2020,1,Karl,Otto,27.12.85
+        // Name,Vorname,Klasse,Schuljahr,Halbjahr,Geburtstag,Fehltage,Fehltage unentschuldigt,Fehlstunden,Fehlstunden unentschuldigt
+        // Otto,Karl,5a,2019/2020,1,27.12.85,7,5,5,4
         assertThat(schoolReportData.birthDay).isEqualTo("27.12.85");
         assertThat(schoolReportData.givenName).isEqualTo("Karl");
         assertThat(schoolReportData.schoolClass).isEqualTo("5a");
         assertThat(schoolReportData.schoolYear).isEqualTo("2019/2020");
         assertThat(schoolReportData.partOfYear).isEqualTo("1");
         assertThat(schoolReportData.surName).isEqualTo("Otto");
+        assertThat(schoolReportData.absenceDaysTotal).isEqualTo("7");
+        assertThat(schoolReportData.absenceDaysUnauthorized).isEqualTo("5");
+        assertThat(schoolReportData.absenceHoursTotal).isEqualTo("5");
+        assertThat(schoolReportData.absenceHoursUnauthorized).isEqualTo("4");
     }
 
     private void assertStudent2BaseData(SchoolReportData schoolReportData) {
-        // Klasse,Schuljahr,Halbjahr,Vorname,Name,Geburtstag
-        // 5b,2020/2021,2,Ottokar,Domma,28.12.85
+        // Name,Vorname,Klasse,Schuljahr,Halbjahr,Geburtstag,Fehltage,Fehltage unentschuldigt,Fehlstunden,Fehlstunden unentschuldigt
+        // Domma,Ottokar,5b,2020/2021,2,28.12.85,8,7,4,3
         assertThat(schoolReportData.birthDay).isEqualTo("28.12.85");
         assertThat(schoolReportData.givenName).isEqualTo("Ottokar");
         assertThat(schoolReportData.schoolClass).isEqualTo("5b");
         assertThat(schoolReportData.schoolYear).isEqualTo("2020/2021");
         assertThat(schoolReportData.partOfYear).isEqualTo("2");
         assertThat(schoolReportData.surName).isEqualTo("Domma");
+        assertThat(schoolReportData.absenceDaysTotal).isEqualTo("8");
+        assertThat(schoolReportData.absenceDaysUnauthorized).isEqualTo("7");
+        assertThat(schoolReportData.absenceHoursTotal).isEqualTo("4");
+        assertThat(schoolReportData.absenceHoursUnauthorized).isEqualTo("3");
     }
 
     private void assertStudent3BaseData(SchoolReportData schoolReportData) {
-        // Klasse,Schuljahr,Halbjahr,Vorname,Name,Geburtstag
-        // 6c,2021/2022,1,Klara,Schein,29.12.85
+        // Name,Vorname,Klasse,Schuljahr,Halbjahr,Geburtstag,Fehltage,Fehltage unentschuldigt,Fehlstunden,Fehlstunden unentschuldigt
+        // Schein,Klara,6c,2021/2022,1,29.1.85,9,8,3,2
         assertThat(schoolReportData.birthDay).isEqualTo("29.1.85");
         assertThat(schoolReportData.givenName).isEqualTo("Klara");
         assertThat(schoolReportData.schoolClass).isEqualTo("6c");
         assertThat(schoolReportData.schoolYear).isEqualTo("2021/2022");
         assertThat(schoolReportData.partOfYear).isEqualTo("1");
         assertThat(schoolReportData.surName).isEqualTo("Schein");
+        assertThat(schoolReportData.absenceDaysTotal).isEqualTo("9");
+        assertThat(schoolReportData.absenceDaysUnauthorized).isEqualTo("8");
+        assertThat(schoolReportData.absenceHoursTotal).isEqualTo("3");
+        assertThat(schoolReportData.absenceHoursUnauthorized).isEqualTo("2");
     }
 
     private void assertStudent1Competencies(List<SchoolCompetencyData> studentCompetencies) {
@@ -473,7 +485,7 @@ public class CsvToSchoolReportDataParserTest {
         assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
                 .isInstanceOf(InvalidCsvException.class)
                 .hasMessageContaining("competency definitions in the header are incomplete")
-                .hasMessageMatching(".*\\b8\\b.*");
+                .hasMessageMatching(".*\\b12\\b.*"); // fault is identified in column 12
     }
 
     @Test

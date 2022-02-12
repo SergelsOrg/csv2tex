@@ -1,9 +1,8 @@
 package org.example.csv2tex.placeholders;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.jupiter.api.Test;
-import org.example.csv2tex.data.SchoolCompetencyData;
 import org.example.csv2tex.data.SchoolReportData;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -30,6 +29,10 @@ public class PlaceholderReplacerImplTest extends AbstractReplacerTest {
                 "5c\n" +
                 "2021/2022\n" +
                 "Halbjahr\n" +
+                "8\n" +
+                "5\n" +
+                "7\n" +
+                "3\n" +
                 "\n" +
                 "#tables\n" +
                 "\n" +
@@ -52,6 +55,10 @@ public class PlaceholderReplacerImplTest extends AbstractReplacerTest {
                 "5c\n" +
                 "2021/2022\n" +
                 "Halbjahr\n" +
+                "8\n" +
+                "5\n" +
+                "7\n" +
+                "3\n" +
                 "\n" +
                 "\\competencyTableMajorSubject{Mathematik}{\\competencyMajorSubject{Rechnen\\\\\n" +
                 "Addition\\\\\n" +

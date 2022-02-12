@@ -31,6 +31,14 @@ public class SchoolReportData {
 
     public String birthDay;
 
+    public String absenceDaysTotal;
+
+    public String absenceDaysUnauthorized;
+
+    public String absenceHoursTotal;
+
+    public String absenceHoursUnauthorized;
+
     public List<SchoolCompetencyData> schoolCompetencies = new ArrayList<>();
 
 }

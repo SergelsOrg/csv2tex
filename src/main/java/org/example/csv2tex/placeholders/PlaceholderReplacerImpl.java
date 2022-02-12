@@ -13,6 +13,10 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
     private static final String TEX_TEMPLATE_PLACEHOLDER_SCHOOL_CLASS = "#schoolClass";
     private static final String TEX_TEMPLATE_PLACEHOLDER_SCHOOL_YEAR = "#schoolYear";
     private static final String TEX_TEMPLATE_PLACEHOLDER_PART_OF_YEAR = "#partOfYear";
+    private static final String TEX_TEMPLATE_PLACEHOLDER_ABSENCE_DAYS_TOTAL = "#absenceDaysTotal";
+    private static final String TEX_TEMPLATE_PLACEHOLDER_ABSENCE_DAYS_UNAUTHORIZED = "#absenceDaysUnauthorized";
+    private static final String TEX_TEMPLATE_PLACEHOLDER_ABSENCE_HOURS_TOTAL = "#absenceHoursTotal";
+    private static final String TEX_TEMPLATE_PLACEHOLDER_ABSENCE_HOURS_UNAUTHORIZED = "#absenceHoursUnauthorized";
 
     @Override
     public String replacePlaceholdersInTexTemplate(String texTemplateAsString, SchoolReportData schoolReportData) {
@@ -30,7 +34,12 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
                 .replace(TEX_TEMPLATE_PLACEHOLDER_BIRTHDAY, schoolReportData.birthDay)
                 .replace(TEX_TEMPLATE_PLACEHOLDER_SCHOOL_CLASS, schoolReportData.schoolClass)
                 .replace(TEX_TEMPLATE_PLACEHOLDER_SCHOOL_YEAR, schoolReportData.schoolYear)
-                .replace(TEX_TEMPLATE_PLACEHOLDER_PART_OF_YEAR, schoolReportData.partOfYear);
+                .replace(TEX_TEMPLATE_PLACEHOLDER_PART_OF_YEAR, schoolReportData.partOfYear)
+                .replace(TEX_TEMPLATE_PLACEHOLDER_ABSENCE_DAYS_TOTAL, schoolReportData.absenceDaysTotal)
+                .replace(TEX_TEMPLATE_PLACEHOLDER_ABSENCE_DAYS_UNAUTHORIZED, schoolReportData.absenceDaysUnauthorized)
+                .replace(TEX_TEMPLATE_PLACEHOLDER_ABSENCE_HOURS_TOTAL, schoolReportData.absenceHoursTotal)
+                .replace(TEX_TEMPLATE_PLACEHOLDER_ABSENCE_HOURS_UNAUTHORIZED, schoolReportData.absenceHoursUnauthorized);
+
         return texFileContent;
     }
 
