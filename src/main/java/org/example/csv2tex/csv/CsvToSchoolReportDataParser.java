@@ -66,9 +66,9 @@ public class CsvToSchoolReportDataParser {
         singleStudentData.partOfYear = rawData.get(4);
         singleStudentData.birthDay = rawData.get(5);
         singleStudentData.absenceDaysTotal = rawData.get(6);
-        singleStudentData.absenceDaysUnexcused = rawData.get(7);
+        singleStudentData.absenceDaysUnauthorized = rawData.get(7);
         singleStudentData.absenceHoursTotal = rawData.get(8);
-        singleStudentData.absenceHoursUnexcused = rawData.get(9);
+        singleStudentData.absenceHoursUnauthorized = rawData.get(9);
         return singleStudentData;
     }
 

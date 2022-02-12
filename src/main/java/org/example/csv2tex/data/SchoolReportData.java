@@ -33,11 +33,11 @@ public class SchoolReportData {
 
     public String absenceDaysTotal;
 
-    public String absenceDaysUnexcused;
+    public String absenceDaysUnauthorized;
 
     public String absenceHoursTotal;
 
-    public String absenceHoursUnexcused;
+    public String absenceHoursUnauthorized;
 
     public List<SchoolCompetencyData> schoolCompetencies = new ArrayList<>();
 

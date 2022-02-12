@@ -15,9 +15,9 @@ public abstract class AbstractReplacerTest {
         schoolReportData.surName = "Pöhle";
         schoolReportData.partOfYear = "Halbjahr";
         schoolReportData.absenceDaysTotal = "8";
-        schoolReportData.absenceDaysUnexcused = "5";
+        schoolReportData.absenceDaysUnauthorized = "5";
         schoolReportData.absenceHoursTotal = "7";
-        schoolReportData.absenceHoursUnexcused = "3";
+        schoolReportData.absenceHoursUnauthorized = "3";
         schoolReportData.schoolCompetencies.add(generateSchoolCompetencyData1());
         schoolReportData.schoolCompetencies.add(generateSchoolCompetencyData2());
         schoolReportData.schoolCompetencies.add(generateSchoolCompetencyData3());
