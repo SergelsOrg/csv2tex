@@ -5,8 +5,8 @@ import org.example.csv2tex.csv.CsvToSchoolReportDataParser;
 import org.example.csv2tex.data.SchoolReportData;
 import org.example.csv2tex.exception.InvalidCsvException;
 import org.example.csv2tex.exception.RenderingException;
-import org.example.csv2tex.placeholders.PlaceholderReplacerImpl;
 import org.example.csv2tex.placeholders.PlaceholderReplacer;
+import org.example.csv2tex.placeholders.PlaceholderReplacerImpl;
 import org.example.csv2tex.shellout.ShellCommandsUtil;
 
 import java.io.File;
@@ -31,9 +31,7 @@ public class SchoolReportsRenderer {
 
 
     public SchoolReportsRenderer() {
-        // FIXME: implement real placeholder replacement
         placeholderReplacer = new PlaceholderReplacerImpl();
-
         parser = new CsvToSchoolReportDataParser();
     }
 
@@ -61,6 +59,8 @@ public class SchoolReportsRenderer {
 
     private Path renderSchoolReportsForGivenFiles(List<SchoolReportData> studentDataList, String texTemplate) throws IOException {
         Path temporaryDirectory = Files.createTempDirectory(getClass().getSimpleName());
+
+        // running directly in the output temporary directory, because texi2pdf does not allow specifying an output directory
         ShellCommandsUtil shellCommandsInTempDir = new ShellCommandsUtil(temporaryDirectory.toFile());
         List<String> renderedPdfs = renderStudentReports(studentDataList, texTemplate, temporaryDirectory, shellCommandsInTempDir);
         Path outputFile = mergePdfs(temporaryDirectory, shellCommandsInTempDir, renderedPdfs);
@@ -98,7 +98,7 @@ public class SchoolReportsRenderer {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        if (!result.successfulExit || !result.exitCode.isPresent() || result.exitCode.get() != 0) {
+        if (!result.successfulExit || result.exitCode.isEmpty() || result.exitCode.get() != 0) {
             throw new RenderingException(SHELL_COMMAND_FAILED, result.toString());
         }
     }
