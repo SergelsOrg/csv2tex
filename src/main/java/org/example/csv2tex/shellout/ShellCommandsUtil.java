@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
+import static org.example.csv2tex.shellout.ErrorMessage.TEX_PACKAGES_NOT_INSTALLED;
 
 public class ShellCommandsUtil {
 
@@ -69,10 +70,11 @@ public class ShellCommandsUtil {
     }
 
     private Optional<ErrorMessage> ensureLatexPackagesAreInstalled() {
-        // FIXME implement me
-
-        // return Optional.of(TEX_PACKAGES_NOT_INSTALLED);
-        return Optional.empty();
+        ShellResult result = runTexi2Pdf("src/main/resources/packagesTest.tex");
+        if (result.isSuccessfulExecution()) {
+            return Optional.empty();
+        }
+        return Optional.of(TEX_PACKAGES_NOT_INSTALLED);
     }
 
     public ShellResult runPdfUnite(String outputFile, List<String> filesToMerge) {
@@ -88,7 +90,7 @@ public class ShellCommandsUtil {
 
     public boolean doesCommandExitSuccessfully(String... commandAndArguments) {
         ShellResult result = runShellCommand(commandAndArguments);
-        return result.successfulExit && result.exitCode.orElse(-1) == 0;
+        return result.isSuccessfulExecution();
     }
 
     public ShellResult runShellCommand(String... commandAndArguments) {
@@ -146,6 +148,10 @@ public class ShellCommandsUtil {
             this.stderr = stderr;
             this.exitCode = exitCode;
             this.successfulExit = successfulExit;
+        }
+
+        public boolean isSuccessfulExecution() {
+            return successfulExit && exitCode.orElse(-1) == 0;
         }
 
         @Override

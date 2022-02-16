@@ -49,7 +49,7 @@ class ShellCommandsUtilTest {
     @Test
     @Tag("texPackagesNotInstalled")
     public void ensureCommandsExist_withMissingPackages() {
-        assertThat(shellCommands.ensureCommandsExist())
+        assertThat(shellCommandsInTmpFolder.ensureCommandsExist())
                 .describedAs("should return some error codes on a system where some TeX packages are missing")
                 .containsExactly(TEX_PACKAGES_NOT_INSTALLED);
     }
