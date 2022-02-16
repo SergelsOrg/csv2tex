@@ -44,6 +44,7 @@ val integrationTestTask = tasks.register("integrationTest", commonIntegrationTes
 integrationTestTask {
     useJUnitPlatform {
         excludeTags("toolsNotInstalled")
+        excludeTags("texPackagesNotInstalled")
     }
 }
 
@@ -102,16 +103,23 @@ dependencies {
 
 }
 
-// runs all tests except "toolsNotInstalled"
+// runs all tests except "toolsNotInstalled" and "texPackagesNotInstalled"
 tasks.getByName<Test>("test") {
     useJUnitPlatform {
         excludeTags("toolsNotInstalled")
+        excludeTags("texPackagesNotInstalled")
     }
 }
 // runs only "toolsNotInstalled" tests
 tasks.register<Test>("testToolsNotInstalled") {
     useJUnitPlatform {
         includeTags("toolsNotInstalled")
+    }
+}
+// runs only "texPackagesNotInstalled" tests
+tasks.register<Test>("testTexPackagesNotInstalled") {
+    useJUnitPlatform {
+        includeTags("texPackagesNotInstalled")
     }
 }
 
