@@ -14,7 +14,7 @@ public class GlobalState {
     private static final Supplier<GlobalState> INSTANCE = memoize(GlobalState::new);
 
     // NB: If you change the default here, do also update the preselected radio button in the FXML file
-    private Locale locale = Locale.ENGLISH;
+    private Locale locale = Locale.GERMAN;
 
     private GlobalState() {
         // must not be called directly, call getInstance() on the class instead
