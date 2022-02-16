@@ -2,6 +2,7 @@ package org.example.csv2tex.integrationtest;
 
 import javafx.scene.Node;
 import javafx.scene.control.DialogPane;
+import org.example.csv2tex.globalstate.GlobalState;
 import org.example.csv2tex.ui.Csv2TexApplication;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,8 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import java.util.Locale;
+
 import static org.testfx.assertions.api.Assertions.assertThat;
 
 @ExtendWith(ApplicationExtension.class)
@@ -20,6 +23,7 @@ public class Csv2TexApplicationNoSoftwareInstalledTest {
     @BeforeAll
     public static void setupForHeadlessTesting() {
         HeadlessTestsHelper.setupForHeadlessTesting();
+        GlobalState.getInstance().setLocale(Locale.ENGLISH);
     }
 
     @BeforeEach
