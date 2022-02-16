@@ -7,11 +7,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 public class ShellCommandsUtil {
@@ -34,10 +36,16 @@ public class ShellCommandsUtil {
      * the condition that one required command does not exist.
      */
     public List<ErrorMessage> ensureCommandsExist() {
-        return Stream.of(ensurePdfUniteExists(), ensureTexLiveExists())
+        List<ErrorMessage> errorMessages = Stream.of(ensurePdfUniteExists(), ensureTexLiveExists())
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(toList());
+        if (errorMessages.isEmpty()) {
+            return ensureLatexPackagesAreInstalled()
+                    .map(Collections::singletonList)
+                    .orElse(emptyList());
+        }
+        return errorMessages;
     }
 
     private Optional<ErrorMessage> ensurePdfUniteExists() {
@@ -58,6 +66,13 @@ public class ShellCommandsUtil {
                 return Optional.of(ErrorMessage.TEX_LIVE_NOT_INSTALLED);
             }
         }
+    }
+
+    private Optional<ErrorMessage> ensureLatexPackagesAreInstalled() {
+        // FIXME implement me
+
+        // return Optional.of(TEX_PACKAGES_NOT_INSTALLED);
+        return Optional.empty();
     }
 
     public ShellResult runPdfUnite(String outputFile, List<String> filesToMerge) {
