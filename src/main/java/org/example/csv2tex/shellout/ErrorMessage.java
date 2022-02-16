@@ -8,6 +8,9 @@ public enum ErrorMessage {
 
     // texi2pdf and / or tex not installed
     TEX_LIVE_NOT_INSTALLED("exception.shellcommands.missing_software.tex"),
+
+    // tex packages not installed
+    TEX_PACKAGES_NOT_INSTALLED("exception.shellcommands.missing_software.tex_packages"),
     ;
 
     private final String messageKey;

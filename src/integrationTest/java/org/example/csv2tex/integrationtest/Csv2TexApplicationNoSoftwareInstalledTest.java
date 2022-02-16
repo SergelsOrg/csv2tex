@@ -34,7 +34,7 @@ public class Csv2TexApplicationNoSoftwareInstalledTest {
         DialogPane dialogPane = assertAndLookUpAlert(robot);
         assertThat(dialogPane.getHeaderText()).contains("missing software");
         assertThat(dialogPane.getContentText()).contains("install the packages");
-        assertThat(dialogPane.getContentText()).contains("texlive");
+        assertThat(dialogPane.getContentText()).contains("texlive-full");
         assertThat(dialogPane.getContentText()).contains("texinfo");
         assertThat(dialogPane.getContentText()).contains("pdfunite");
     }
