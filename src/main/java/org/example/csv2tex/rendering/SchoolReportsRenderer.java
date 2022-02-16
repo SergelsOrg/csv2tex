@@ -1,5 +1,6 @@
 package org.example.csv2tex.rendering;
 
+import com.google.common.io.PatternFilenameFilter;
 import org.apache.commons.io.FileUtils;
 import org.example.csv2tex.csv.CsvToSchoolReportDataParser;
 import org.example.csv2tex.data.SchoolReportData;
@@ -49,7 +50,12 @@ public class SchoolReportsRenderer {
                 throw new RenderingException(NO_DATA);
             }
             String texTemplate = FileUtils.readFileToString(texFile, StandardCharsets.UTF_8);
-            return renderSchoolReportsForGivenFiles(studentDataList, texTemplate);
+
+            // running directly in the output temporary directory, because texi2pdf does not allow specifying an output directory
+            Path temporaryDirectory = Files.createTempDirectory(getClass().getSimpleName());
+            ShellCommandsUtil shellCommandsInTempDir = new ShellCommandsUtil(temporaryDirectory.toFile());
+            moveAllTexFilesInSameFolderToTemporaryDirectory(texFile.getParentFile(), temporaryDirectory);
+            return renderSchoolReportsForGivenFiles(studentDataList, texTemplate, temporaryDirectory, shellCommandsInTempDir);
         } catch (RenderingException | InvalidCsvException e) {
             throw e;
         } catch (Throwable t) {
@@ -57,13 +63,22 @@ public class SchoolReportsRenderer {
         }
     }
 
-    private Path renderSchoolReportsForGivenFiles(List<SchoolReportData> studentDataList, String texTemplate) throws IOException {
-        Path temporaryDirectory = Files.createTempDirectory(getClass().getSimpleName());
+    private void moveAllTexFilesInSameFolderToTemporaryDirectory(File folder, Path temporaryDirectory) {
+        File[] texFiles = folder.listFiles(new PatternFilenameFilter("(?i)^.*\\.(tex|png|jpg|jpeg|bmp|svg)$"));
+        if (texFiles != null) {
+            for (File fileToMove : texFiles) {
+                try {
+                    Files.copy(fileToMove.toPath(), temporaryDirectory.resolve(fileToMove.getName()));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
 
-        // running directly in the output temporary directory, because texi2pdf does not allow specifying an output directory
-        ShellCommandsUtil shellCommandsInTempDir = new ShellCommandsUtil(temporaryDirectory.toFile());
+    private Path renderSchoolReportsForGivenFiles(List<SchoolReportData> studentDataList, String texTemplate, Path temporaryDirectory, ShellCommandsUtil shellCommandsInTempDir) throws IOException {
         List<String> renderedPdfs = renderStudentReports(studentDataList, texTemplate, temporaryDirectory, shellCommandsInTempDir);
-        Path outputFile = mergePdfs(temporaryDirectory, shellCommandsInTempDir, renderedPdfs);
+        Path outputFile = mergePdfs(renderedPdfs, temporaryDirectory, shellCommandsInTempDir);
         return outputFile;
     }
 
@@ -85,7 +100,7 @@ public class SchoolReportsRenderer {
         renderedPdfs.add("schoolReport_" + fileNumber + ".pdf");
     }
 
-    private Path mergePdfs(Path temporaryDirectory, ShellCommandsUtil shellCommandsInTempDir, List<String> renderedPdfs) {
+    private Path mergePdfs(List<String> renderedPdfs, Path temporaryDirectory, ShellCommandsUtil shellCommandsInTempDir) {
         Path outputFile = temporaryDirectory.resolve("schoolReports.pdf").toAbsolutePath();
         runShellCommandThrowing(() -> shellCommandsInTempDir.runPdfUnite(outputFile.toString(), renderedPdfs));
         return outputFile;
