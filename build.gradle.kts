@@ -1,7 +1,7 @@
 plugins {
     id("java")
     id("application")
-    id("org.openjfx.javafxplugin") version "0.0.11"
+    id("org.openjfx.javafxplugin") version "0.0.12"
     id("org.beryx.jlink") version "2.24.4"
 }
 
