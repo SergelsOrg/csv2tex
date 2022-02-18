@@ -35,6 +35,16 @@ commands:
           # contains the pango font. Without it, there is this error: 
           # "java.util.concurrent.ExecutionException: java.lang.UnsatisfiedLinkError: no javafx_font_pango in java.library.path"
           sudo apt-get install libpangoft2-1.0-0
+
+  store_test_results_and_artifacts:
+    steps:
+      - store_test_results:
+          path: build/test-results
+      - store_artifacts:
+          path: build/test-results
+      - store_artifacts:
+          path: build/reports
+
 jobs:
   run_tests_java:
     docker:
@@ -44,10 +54,7 @@ jobs:
       - install_pdf_tools
       - run: |
           ./gradlew :test -i
-      - store_test_results:
-          path: build/test-results
-      - store_artifacts:
-          path: build/test-results
+      - store_test_results_and_artifacts
 
   run_tests_tools_not_installed_java:
     docker:
@@ -56,10 +63,7 @@ jobs:
       - checkout
       - run: |
           ./gradlew clean :testToolsNotInstalled -i
-      - store_test_results:
-          path: build/test-results
-      - store_artifacts:
-          path: build/test-results
+      - store_test_results_and_artifacts
 
   run_tests_tex_packages_not_installed_java:
     docker:
@@ -69,10 +73,7 @@ jobs:
       - install_pdf_tools_without_packages
       - run: |
           ./gradlew clean :testTexPackagesNotInstalled -i
-      - store_test_results:
-          path: build/test-results
-      - store_artifacts:
-          path: build/test-results
+      - store_test_results_and_artifacts
 
   run_integration_tests_java:
     docker:
@@ -86,10 +87,7 @@ jobs:
           # So this is a workaround.
           export JAVA_TOOL_OPTIONS="-DCI=true"
           ./gradlew :integrationTest -i
-      - store_test_results:
-          path: build/test-results
-      - store_artifacts:
-          path: build/test-results
+      - store_test_results_and_artifacts
 
   run_integration_tests_tools_not_installed_java:
     docker:
@@ -102,10 +100,7 @@ jobs:
           # So this is a workaround.
           export JAVA_TOOL_OPTIONS="-DCI=true"
           ./gradlew clean :integrationTestToolsNotInstalled -i
-      - store_test_results:
-          path: build/test-results
-      - store_artifacts:
-          path: build/test-results
+      - store_test_results_and_artifacts
 
 workflows:
   version: 2
