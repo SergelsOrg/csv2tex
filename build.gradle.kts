@@ -28,7 +28,6 @@ val integrationTestJarTask = tasks.register<Jar>(integrationTest.jarTaskName) {
 
 val commonIntegrationTestConfiguration: Test.() -> Unit = {
     description = "Runs integration tests."
-    group = "verification"
     jvmArgs = listOf("--add-exports", "javafx.graphics/com.sun.javafx.application=org.testfx",
             "--add-exports", "javafx.graphics/com.sun.glass.ui=ALL-UNNAMED",
             "--add-opens", "javafx.graphics/com.sun.glass.ui=org.testfx",
@@ -153,13 +152,17 @@ jacoco {
 }
 
 tasks.withType(Test::class.java) {
-    extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(layout.buildDirectory.file("jacoco/test.exec").get().asFile)
-    }
+    group = "verification"
     finalizedBy(tasks.jacocoTestReport)
 }
 tasks.jacocoTestReport {
-    executionData.from(layout.buildDirectory.file("jacoco/test.exec"))
+    executionData.from(
+            layout.buildDirectory.file("jacoco/test.exec"),
+            layout.buildDirectory.file("jacoco/testToolsNotInstalled.exec"),
+            layout.buildDirectory.file("jacoco/testTexPackagesNotInstalled.exec"),
+            layout.buildDirectory.file("jacoco/integrationTest.exec"),
+            layout.buildDirectory.file("jacoco/integrationTestToolsNotInstalled.exec")
+    )
 }
 
 // ######################################### JavaFX #########################################
