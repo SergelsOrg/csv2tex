@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
@@ -54,13 +55,14 @@ public class Csv2TexController {
     private File csvFile;
 
     // called by JAVAFX using reflection
-    public void initialize() {
+    public void initialize() throws IOException {
         LOGGER.info("Initializing controller");
         showWarningIfSoftwareIsMissing();
     }
 
-    private void showWarningIfSoftwareIsMissing() {
-        List<ErrorMessage> missingShellCommandsErrors = new ShellCommandsUtil().ensureCommandsExist();
+    private void showWarningIfSoftwareIsMissing() throws IOException {
+        File temporaryDirectory = Files.createTempDirectory(getClass().getSimpleName()).toFile();
+        List<ErrorMessage> missingShellCommandsErrors = new ShellCommandsUtil(temporaryDirectory).ensureCommandsExist();
         if (!missingShellCommandsErrors.isEmpty()) {
             String title = GlobalState.getInstance().getTranslations().getString("exception.shellcommands.missing_software");
             String message = missingShellCommandsErrors.stream()
