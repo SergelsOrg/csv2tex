@@ -7,12 +7,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
+import static org.example.csv2tex.shellout.ErrorMessage.TEX_PACKAGES_NOT_INSTALLED;
 
 public class ShellCommandsUtil {
 
@@ -34,10 +37,16 @@ public class ShellCommandsUtil {
      * the condition that one required command does not exist.
      */
     public List<ErrorMessage> ensureCommandsExist() {
-        return Stream.of(ensurePdfUniteExists(), ensureTexLiveExists())
+        List<ErrorMessage> errorMessages = Stream.of(ensurePdfUniteExists(), ensureTexLiveExists())
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(toList());
+        if (errorMessages.isEmpty()) {
+            return ensureLatexPackagesAreInstalled()
+                    .map(Collections::singletonList)
+                    .orElse(emptyList());
+        }
+        return errorMessages;
     }
 
     private Optional<ErrorMessage> ensurePdfUniteExists() {
@@ -60,6 +69,14 @@ public class ShellCommandsUtil {
         }
     }
 
+    private Optional<ErrorMessage> ensureLatexPackagesAreInstalled() {
+        ShellResult result = runTexi2Pdf("src/main/resources/packagesTest.tex");
+        if (result.isSuccessfulExecution()) {
+            return Optional.empty();
+        }
+        return Optional.of(TEX_PACKAGES_NOT_INSTALLED);
+    }
+
     public ShellResult runPdfUnite(String outputFile, List<String> filesToMerge) {
         List<String> shellCommand = new ArrayList(filesToMerge);
         shellCommand.add(0, "pdfunite");
@@ -73,7 +90,7 @@ public class ShellCommandsUtil {
 
     public boolean doesCommandExitSuccessfully(String... commandAndArguments) {
         ShellResult result = runShellCommand(commandAndArguments);
-        return result.successfulExit && result.exitCode.orElse(-1) == 0;
+        return result.isSuccessfulExecution();
     }
 
     public ShellResult runShellCommand(String... commandAndArguments) {
@@ -131,6 +148,10 @@ public class ShellCommandsUtil {
             this.stderr = stderr;
             this.exitCode = exitCode;
             this.successfulExit = successfulExit;
+        }
+
+        public boolean isSuccessfulExecution() {
+            return successfulExit && exitCode.orElse(-1) == 0;
         }
 
         @Override

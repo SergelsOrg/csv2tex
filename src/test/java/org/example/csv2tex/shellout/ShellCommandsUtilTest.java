@@ -14,8 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.example.csv2tex.shellout.ErrorMessage.PDF_UNITE_NOT_INSTALLED;
-import static org.example.csv2tex.shellout.ErrorMessage.TEX_LIVE_NOT_INSTALLED;
+import static org.example.csv2tex.shellout.ErrorMessage.*;
 
 
 class ShellCommandsUtilTest {
@@ -45,6 +44,14 @@ class ShellCommandsUtilTest {
         assertThat(shellCommands.ensureCommandsExist())
                 .describedAs("should return some error codes on a system where some utilities are missing")
                 .containsExactly(PDF_UNITE_NOT_INSTALLED, TEX_LIVE_NOT_INSTALLED);
+    }
+
+    @Test
+    @Tag("texPackagesNotInstalled")
+    public void ensureCommandsExist_withMissingPackages() {
+        assertThat(shellCommandsInTmpFolder.ensureCommandsExist())
+                .describedAs("should return some error codes on a system where some TeX packages are missing")
+                .containsExactly(TEX_PACKAGES_NOT_INSTALLED);
     }
 
     @Test

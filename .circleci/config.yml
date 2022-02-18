@@ -16,6 +16,16 @@ commands:
           sudo apt-get install poppler-utils
           # contains texi2pdf
           sudo apt-get install texinfo
+          sudo apt-get install texlive-full
+
+  install_pdf_tools_without_packages:
+    steps:
+      - run: |
+          sudo apt-get update
+          # contains pdfunite
+          sudo apt-get install poppler-utils
+          # contains texi2pdf
+          sudo apt-get install texinfo
           sudo apt-get install texlive
 
   install_needed_font_package:
@@ -46,6 +56,19 @@ jobs:
       - checkout
       - run: |
           ./gradlew clean :testToolsNotInstalled -i
+      - store_test_results:
+          path: build/test-results
+      - store_artifacts:
+          path: build/test-results
+
+  run_tests_tex_packages_not_installed_java:
+    docker:
+      - image: *test_docker_image
+    steps:
+      - checkout
+      - install_pdf_tools_without_packages
+      - run: |
+          ./gradlew clean :testTexPackagesNotInstalled -i
       - store_test_results:
           path: build/test-results
       - store_artifacts:
@@ -91,5 +114,6 @@ workflows:
       - renovate/validate-config
       - run_tests_java
       - run_tests_tools_not_installed_java
+      - run_tests_tex_packages_not_installed_java
       - run_integration_tests_java
       - run_integration_tests_tools_not_installed_java
