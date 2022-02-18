@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Window;
+import org.example.csv2tex.globalstate.GlobalState;
 import org.example.csv2tex.ui.Csv2TexApplication;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
@@ -46,6 +48,7 @@ public class Csv2TexApplicationTest {
     @BeforeAll
     public static void setupForHeadlessTesting() {
         HeadlessTestsHelper.setupForHeadlessTesting();
+        GlobalState.getInstance().setLocale(Locale.ENGLISH);
     }
 
     @BeforeEach

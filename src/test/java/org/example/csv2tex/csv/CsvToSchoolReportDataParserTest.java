@@ -4,10 +4,13 @@ import org.example.csv2tex.data.SchoolCompetencyData;
 import org.example.csv2tex.data.SchoolReportData;
 import org.example.csv2tex.exception.InvalidCsvCause;
 import org.example.csv2tex.exception.InvalidCsvException;
+import org.example.csv2tex.globalstate.GlobalState;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -18,6 +21,11 @@ public class CsvToSchoolReportDataParserTest {
     private CsvToSchoolReportDataParser sut = new CsvToSchoolReportDataParser();
 
     private static final String FILE_PATH_PREFIX = "src/test/resources/";
+
+    @BeforeAll
+    public static void setUp() {
+        GlobalState.getInstance().setLocale(Locale.ENGLISH);
+    }
 
     @Test
     public void parseCsvFileToReportDataList_parsesEmptyFile() throws Exception {

@@ -49,7 +49,7 @@
     <VBox alignment="CENTER" prefHeight="100.0" prefWidth="660.0">
         <!-- If you change the preselected language, do also change GlobalState#locale -->
         <RadioButton id="languageSelectEn" maxWidth="200.0" minWidth="200.0"
-                     mnemonicParsing="false" prefWidth="200.0" selected="true" text="English"
+                     mnemonicParsing="false" prefWidth="200.0" selected="false" text="English"
                      onAction="#updateLanguage">
             <toggleGroup>
                 <ToggleGroup fx:id="language"/>
@@ -61,7 +61,7 @@
             </graphic>
         </RadioButton>
         <RadioButton id="languageSelectDe" maxWidth="200.0" minWidth="200.0"
-                     mnemonicParsing="false" prefWidth="200.0" text="Deutsch" toggleGroup="$language"
+                     mnemonicParsing="false" prefWidth="200.0" selected="true" text="Deutsch" toggleGroup="$language"
                      onAction="#updateLanguage">
             <graphic>
                 <ImageView fitHeight="150.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
