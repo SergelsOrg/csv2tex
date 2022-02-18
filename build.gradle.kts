@@ -109,7 +109,7 @@ dependencies {
 }
 
 // runs all tests except "toolsNotInstalled" and "texPackagesNotInstalled"
-tasks.getByName<Test>("test") {
+tasks.test {
     useJUnitPlatform {
         excludeTags("toolsNotInstalled")
         excludeTags("texPackagesNotInstalled")
@@ -121,6 +121,9 @@ tasks.register<Test>("testToolsNotInstalled") {
     useJUnitPlatform {
         includeTags("toolsNotInstalled")
     }
+    extensions.configure(JacocoTaskExtension::class) {
+        setDestinationFile(layout.buildDirectory.file("jacoco/test.exec").get().asFile)
+    }
     finalizedBy(tasks.jacocoTestReport)
 }
 // runs only "texPackagesNotInstalled" tests
@@ -128,7 +131,14 @@ tasks.register<Test>("testTexPackagesNotInstalled") {
     useJUnitPlatform {
         includeTags("texPackagesNotInstalled")
     }
+    extensions.configure(JacocoTaskExtension::class) {
+        setDestinationFile(layout.buildDirectory.file("jacoco/test.exec").get().asFile)
+    }
     finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    executionData.from(layout.buildDirectory.file("jacoco/test.exec"))
 }
 
 // don't run the "not installed" tests by default
