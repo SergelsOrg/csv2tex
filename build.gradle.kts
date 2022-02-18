@@ -114,23 +114,21 @@ tasks.test {
         excludeTags("toolsNotInstalled")
         excludeTags("texPackagesNotInstalled")
     }
-    finalizedBy(tasks.jacocoTestReport)
 }
 // runs only "toolsNotInstalled" tests
 tasks.register<Test>("testToolsNotInstalled") {
     useJUnitPlatform {
         includeTags("toolsNotInstalled")
     }
-    extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(layout.buildDirectory.file("jacoco/test.exec").get().asFile)
-    }
-    finalizedBy(tasks.jacocoTestReport)
 }
 // runs only "texPackagesNotInstalled" tests
 tasks.register<Test>("testTexPackagesNotInstalled") {
     useJUnitPlatform {
         includeTags("texPackagesNotInstalled")
     }
+}
+
+tasks.withType(Test::class.java) {
     extensions.configure(JacocoTaskExtension::class) {
         setDestinationFile(layout.buildDirectory.file("jacoco/test.exec").get().asFile)
     }
