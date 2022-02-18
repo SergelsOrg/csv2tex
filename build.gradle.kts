@@ -3,6 +3,7 @@ plugins {
     id("application")
     id("org.openjfx.javafxplugin") version "0.0.12"
     id("org.beryx.jlink") version "2.24.4"
+    id("jacoco")
 }
 
 group = "org.example"
@@ -13,6 +14,10 @@ repositories {
 }
 
 val javaFxVersion = "19-ea+3"
+
+jacoco {
+    toolVersion = "0.8.7"
+}
 
 
 // separate integration testing module - cf https://docs.gradle.org/current/samples/sample_java_modules_multi_project.html
@@ -109,18 +114,21 @@ tasks.getByName<Test>("test") {
         excludeTags("toolsNotInstalled")
         excludeTags("texPackagesNotInstalled")
     }
+    finalizedBy(tasks.jacocoTestReport)
 }
 // runs only "toolsNotInstalled" tests
 tasks.register<Test>("testToolsNotInstalled") {
     useJUnitPlatform {
         includeTags("toolsNotInstalled")
     }
+    finalizedBy(tasks.jacocoTestReport)
 }
 // runs only "texPackagesNotInstalled" tests
 tasks.register<Test>("testTexPackagesNotInstalled") {
     useJUnitPlatform {
         includeTags("texPackagesNotInstalled")
     }
+    finalizedBy(tasks.jacocoTestReport)
 }
 
 // don't run the "not installed" tests by default
