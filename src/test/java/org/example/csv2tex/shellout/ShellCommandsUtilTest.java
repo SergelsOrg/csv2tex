@@ -33,7 +33,7 @@ class ShellCommandsUtilTest {
 
     @Test
     public void ensureCommandsExist() {
-        assertThat(shellCommands.ensureCommandsExist())
+        assertThat(shellCommandsInTmpFolder.ensureCommandsExist())
                 .describedAs("should not return any error codes on a system where all utilities are installed")
                 .isEmpty();
     }
@@ -41,7 +41,7 @@ class ShellCommandsUtilTest {
     @Test
     @Tag("toolsNotInstalled")
     public void ensureCommandsExist_withMissingCommands() {
-        assertThat(shellCommands.ensureCommandsExist())
+        assertThat(shellCommandsInTmpFolder.ensureCommandsExist())
                 .describedAs("should return some error codes on a system where some utilities are missing")
                 .containsExactly(PDF_UNITE_NOT_INSTALLED, TEX_LIVE_NOT_INSTALLED);
     }
