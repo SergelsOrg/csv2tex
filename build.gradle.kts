@@ -156,13 +156,13 @@ tasks.withType(Test::class.java) {
     finalizedBy(tasks.jacocoTestReport)
 }
 tasks.jacocoTestReport {
-    executionData.from(
-            layout.buildDirectory.file("jacoco/test.exec"),
-            layout.buildDirectory.file("jacoco/testToolsNotInstalled.exec"),
-            layout.buildDirectory.file("jacoco/testTexPackagesNotInstalled.exec"),
-            layout.buildDirectory.file("jacoco/integrationTest.exec"),
-            layout.buildDirectory.file("jacoco/integrationTestToolsNotInstalled.exec")
-    )
+    val fileNameFilter: (File, String) -> Boolean = { _: File, name: String -> name.endsWith(".exec") }
+    val lazyFromFilesProvider: () -> Array<File>? = {
+        layout.buildDirectory.dir("jacoco")
+                .map { it.asFile.listFiles(fileNameFilter) }
+                .orNull
+    }
+    executionData.from(lazyFromFilesProvider)
 }
 
 // ######################################### JavaFX #########################################
