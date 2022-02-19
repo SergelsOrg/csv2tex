@@ -2,6 +2,9 @@
 
 # csv2tex
 
+[![CircleCI](https://circleci.com/gh/SergelsOrg/csv2tex/tree/main.svg?style=shield)](https://circleci.com/gh/SergelsOrg/csv2tex/tree/main)
+
+
 Ein Software-Tool, um Platzhalter in Tex-Dateien mit Inhalten aus einem CSV zu ersetzen. 
 
 Konkreter Anwendnugsfall: Automatisierte Generierung von Schulzeugnissen als PDF.

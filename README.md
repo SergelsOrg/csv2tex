@@ -2,6 +2,9 @@
 
 # csv2tex
 
+[![CircleCI](https://circleci.com/gh/SergelsOrg/csv2tex/tree/main.svg?style=shield)](https://circleci.com/gh/SergelsOrg/csv2tex/tree/main)
+
+
 A tool to replace placeholders in tex files with content from a given csv file.
 
 Concrete use case: Automated generation of school reports as PDF.
