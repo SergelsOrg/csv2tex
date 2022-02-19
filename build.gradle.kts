@@ -157,11 +157,10 @@ tasks.withType(Test::class.java) {
 }
 tasks.jacocoTestReport {
     val fileNameFilter: (File, String) -> Boolean = { _: File, name: String -> name.endsWith(".exec") }
-    val lazyFromFilesProvider: () -> Array<File>? = {
+    val lazyFromFilesProvider: Provider<Array<File>> =
         layout.buildDirectory.dir("jacoco")
                 .map { it.asFile.listFiles(fileNameFilter) }
-                .orNull
-    }
+                .orElse(emptyArray())
     executionData.from(lazyFromFilesProvider)
 }
 
