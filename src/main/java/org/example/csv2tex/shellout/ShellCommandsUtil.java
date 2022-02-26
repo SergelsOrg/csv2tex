@@ -70,7 +70,8 @@ public class ShellCommandsUtil {
     }
 
     private Optional<ErrorMessage> ensureLatexPackagesAreInstalled() {
-        ShellResult result = runTexi2Pdf("src/main/resources/packagesTest.tex");
+        File packagesTestFile = new File("src/main/resources/packagesTest.tex");
+        ShellResult result = runTexi2Pdf(packagesTestFile.getAbsolutePath());
         if (result.isSuccessfulExecution()) {
             return Optional.empty();
         }
