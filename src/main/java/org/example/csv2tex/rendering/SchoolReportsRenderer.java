@@ -58,8 +58,8 @@ public class SchoolReportsRenderer {
             return renderSchoolReportsForGivenFiles(studentDataList, texTemplate, temporaryDirectory, shellCommandsInTempDir);
         } catch (RenderingException | InvalidCsvException e) {
             throw e;
-        } catch (Throwable t) {
-            throw new RenderingException(t);
+        } catch (Exception e) {
+            throw new RenderingException(e);
         }
     }
 
