@@ -132,8 +132,6 @@ dependencies {
 
 // ######################################### Java application #########################################
 
-val javaFxVersion = "19-ea+3"
-
 java {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
@@ -166,12 +164,12 @@ tasks.jacocoTestReport {
 
 // ######################################### JavaFX #########################################
 
+val javaFxVersion = "19-ea+3"
+
 javafx {
     version = javaFxVersion
     modules("javafx.controls", "javafx.fxml")
 }
-
-
 
 jlink {
     imageZip.set(project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip"))
