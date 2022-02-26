@@ -13,12 +13,7 @@ repositories {
     mavenCentral()
 }
 
-val javaFxVersion = "19-ea+3"
-
-jacoco {
-    toolVersion = "0.8.7"
-}
-
+// ######################################### Tests #########################################
 
 // separate integration testing module - cf https://docs.gradle.org/current/samples/sample_java_modules_multi_project.html
 val integrationTest = sourceSets.create("integrationTest")
@@ -59,6 +54,34 @@ integrationTestToolsNotInstalledTask {
         includeTags("toolsNotInstalled")
     }
 }
+
+// runs all tests except "toolsNotInstalled" and "texPackagesNotInstalled"
+tasks.test {
+    useJUnitPlatform {
+        excludeTags("toolsNotInstalled")
+        excludeTags("texPackagesNotInstalled")
+    }
+}
+// runs only "toolsNotInstalled" tests
+tasks.register<Test>("testToolsNotInstalled") {
+    useJUnitPlatform {
+        includeTags("toolsNotInstalled")
+    }
+}
+// runs only "texPackagesNotInstalled" tests
+tasks.register<Test>("testTexPackagesNotInstalled") {
+    useJUnitPlatform {
+        includeTags("texPackagesNotInstalled")
+    }
+}
+
+// don't run the "not installed" tests by default
+tasks.check {
+    dependsOn(tasks.test)
+    dependsOn(integrationTestTask)
+}
+
+// ######################################### Dependencies #########################################
 
 dependencies {
     implementation("com.google.guava:guava:31.0.1-jre")
@@ -108,42 +131,9 @@ dependencies {
 
 }
 
-// runs all tests except "toolsNotInstalled" and "texPackagesNotInstalled"
-tasks.test {
-    useJUnitPlatform {
-        excludeTags("toolsNotInstalled")
-        excludeTags("texPackagesNotInstalled")
-    }
-}
-// runs only "toolsNotInstalled" tests
-tasks.register<Test>("testToolsNotInstalled") {
-    useJUnitPlatform {
-        includeTags("toolsNotInstalled")
-    }
-}
-// runs only "texPackagesNotInstalled" tests
-tasks.register<Test>("testTexPackagesNotInstalled") {
-    useJUnitPlatform {
-        includeTags("texPackagesNotInstalled")
-    }
-}
+// ######################################### Java application #########################################
 
-tasks.withType(Test::class.java) {
-    extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(layout.buildDirectory.file("jacoco/test.exec").get().asFile)
-    }
-    finalizedBy(tasks.jacocoTestReport)
-}
-
-tasks.jacocoTestReport {
-    executionData.from(layout.buildDirectory.file("jacoco/test.exec"))
-}
-
-// don't run the "not installed" tests by default
-tasks.check {
-    dependsOn(tasks.test)
-    dependsOn(integrationTestTask)
-}
+val javaFxVersion = "19-ea+3"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -155,6 +145,24 @@ application {
     mainModule.set("org.example.csv2tex")
     mainClass.set("org.example.csv2tex.ui.Csv2TexApplication")
 }
+
+// ######################################### JaCoCo test coverage #########################################
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+tasks.withType(Test::class.java) {
+    extensions.configure(JacocoTaskExtension::class) {
+        setDestinationFile(layout.buildDirectory.file("jacoco/test.exec").get().asFile)
+    }
+    finalizedBy(tasks.jacocoTestReport)
+}
+tasks.jacocoTestReport {
+    executionData.from(layout.buildDirectory.file("jacoco/test.exec"))
+}
+
+// ######################################### JavaFX #########################################
 
 javafx {
     version = javaFxVersion
