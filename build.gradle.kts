@@ -3,6 +3,7 @@ plugins {
     id("application")
     id("org.openjfx.javafxplugin") version "0.0.12"
     id("org.beryx.jlink") version "2.24.4"
+    id("jacoco")
 }
 
 group = "org.example"
@@ -12,8 +13,7 @@ repositories {
     mavenCentral()
 }
 
-val javaFxVersion = "19-ea+3"
-
+// ######################################### Tests #########################################
 
 // separate integration testing module - cf https://docs.gradle.org/current/samples/sample_java_modules_multi_project.html
 val integrationTest = sourceSets.create("integrationTest")
@@ -28,7 +28,6 @@ val integrationTestJarTask = tasks.register<Jar>(integrationTest.jarTaskName) {
 
 val commonIntegrationTestConfiguration: Test.() -> Unit = {
     description = "Runs integration tests."
-    group = "verification"
     jvmArgs = listOf("--add-exports", "javafx.graphics/com.sun.javafx.application=org.testfx",
             "--add-exports", "javafx.graphics/com.sun.glass.ui=ALL-UNNAMED",
             "--add-opens", "javafx.graphics/com.sun.glass.ui=org.testfx",
@@ -54,6 +53,34 @@ integrationTestToolsNotInstalledTask {
         includeTags("toolsNotInstalled")
     }
 }
+
+// runs all tests except "toolsNotInstalled" and "texPackagesNotInstalled"
+tasks.test {
+    useJUnitPlatform {
+        excludeTags("toolsNotInstalled")
+        excludeTags("texPackagesNotInstalled")
+    }
+}
+// runs only "toolsNotInstalled" tests
+tasks.register<Test>("testToolsNotInstalled") {
+    useJUnitPlatform {
+        includeTags("toolsNotInstalled")
+    }
+}
+// runs only "texPackagesNotInstalled" tests
+tasks.register<Test>("testTexPackagesNotInstalled") {
+    useJUnitPlatform {
+        includeTags("texPackagesNotInstalled")
+    }
+}
+
+// don't run the "not installed" tests by default
+tasks.check {
+    dependsOn(tasks.test)
+    dependsOn(integrationTestTask)
+}
+
+// ######################################### Dependencies #########################################
 
 dependencies {
     implementation("com.google.guava:guava:31.0.1-jre")
@@ -103,31 +130,7 @@ dependencies {
 
 }
 
-// runs all tests except "toolsNotInstalled" and "texPackagesNotInstalled"
-tasks.getByName<Test>("test") {
-    useJUnitPlatform {
-        excludeTags("toolsNotInstalled")
-        excludeTags("texPackagesNotInstalled")
-    }
-}
-// runs only "toolsNotInstalled" tests
-tasks.register<Test>("testToolsNotInstalled") {
-    useJUnitPlatform {
-        includeTags("toolsNotInstalled")
-    }
-}
-// runs only "texPackagesNotInstalled" tests
-tasks.register<Test>("testTexPackagesNotInstalled") {
-    useJUnitPlatform {
-        includeTags("texPackagesNotInstalled")
-    }
-}
-
-// don't run the "not installed" tests by default
-tasks.check {
-    dependsOn(tasks.test)
-    dependsOn(integrationTestTask)
-}
+// ######################################### Java application #########################################
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -140,12 +143,33 @@ application {
     mainClass.set("org.example.csv2tex.ui.Csv2TexApplication")
 }
 
+// ######################################### JaCoCo test coverage #########################################
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+tasks.withType(Test::class.java) {
+    group = "verification"
+    finalizedBy(tasks.jacocoTestReport)
+}
+tasks.jacocoTestReport {
+    val fileNameFilter: (File, String) -> Boolean = { _: File, name: String -> name.endsWith(".exec") }
+    val lazyFromFilesProvider: Provider<Array<File>> =
+        layout.buildDirectory.dir("jacoco")
+                .map { it.asFile.listFiles(fileNameFilter) }
+                .orElse(emptyArray())
+    executionData.from(lazyFromFilesProvider)
+}
+
+// ######################################### JavaFX #########################################
+
+val javaFxVersion = "19-ea+3"
+
 javafx {
     version = javaFxVersion
     modules("javafx.controls", "javafx.fxml")
 }
-
-
 
 jlink {
     imageZip.set(project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip"))
