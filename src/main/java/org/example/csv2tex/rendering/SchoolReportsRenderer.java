@@ -54,25 +54,12 @@ public class SchoolReportsRenderer {
             // running directly in the output temporary directory, because texi2pdf does not allow specifying an output directory
             Path temporaryDirectory = Files.createTempDirectory(getClass().getSimpleName());
             ShellCommandsUtil shellCommandsInTempDir = new ShellCommandsUtil(temporaryDirectory.toFile());
-            moveAllTexFilesInSameFolderToTemporaryDirectory(texFile.getParentFile(), temporaryDirectory);
+            new MoveFilesForRenderingHelper().moveAllTexFilesInSameFolderToTemporaryDirectory(texFile.getParentFile(), temporaryDirectory);
             return renderSchoolReportsForGivenFiles(studentDataList, texTemplate, temporaryDirectory, shellCommandsInTempDir);
         } catch (RenderingException | InvalidCsvException e) {
             throw e;
         } catch (Exception e) {
             throw new RenderingException(e);
-        }
-    }
-
-    private void moveAllTexFilesInSameFolderToTemporaryDirectory(File folder, Path temporaryDirectory) {
-        File[] texFiles = folder.listFiles(new PatternFilenameFilter("(?i)^.*\\.(tex|png|jpg|jpeg|bmp|svg)$"));
-        if (texFiles != null) {
-            for (File fileToMove : texFiles) {
-                try {
-                    Files.copy(fileToMove.toPath(), temporaryDirectory.resolve(fileToMove.getName()));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
         }
     }
 
