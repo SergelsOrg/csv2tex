@@ -10,9 +10,9 @@ Open + edit [the underlying file](images_and_data/high_level_workflow.bpmn) to u
 
 ## Details: UML Object diagram  
 
-<img src="https://raw.githubusercontent.com/SergelsOrg/csv2tex/images_and_data/uml_object.puml.svg" title="High-level BPMN diagram including user and system actions" style="max-width: 100%;" />
+<img src="https://raw.githubusercontent.com/SergelsOrg/csv2tex/images_and_data/uml_sequence.txt.svg" title="High-level BPMN diagram including user and system actions" style="max-width: 100%;" />
 
-The notation used is [the UML's](https://en.wikipedia.org/wiki/Unified_Modeling_Language) [Object Diagram](https://en.wikipedia.org/wiki/Object_diagram).
-Open + edit [the underlying file](images_and_data/uml_object.puml) to update this image, e.g. the editor on [this website](https://www.plantuml.com/plantuml/uml/) is available free of charge. 
+The notation used is [the UML's](https://en.wikipedia.org/wiki/Unified_Modeling_Language) [Sequence Diagram](https://en.wikipedia.org/wiki/Sequence_diagram).
+Open + edit [the underlying file](images_and_data/uml_sequence.txt) to update this image, e.g. the editor on [this website](https://sequencediagram.org/) is available free of charge. 
 
 

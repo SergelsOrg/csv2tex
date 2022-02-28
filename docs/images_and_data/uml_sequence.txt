@@ -1,0 +1,46 @@
+activate Csv2TexController
+Csv2TexController->SchoolReportsRenderer:renderSchoolReportsForGivenFiles(csvFile, texFile)
+
+activate SchoolReportsRenderer
+
+SchoolReportsRenderer->CsvToSchoolReportDataParser:parseCsvFileToReportDataList(csvFile)
+activate CsvToSchoolReportDataParser
+CsvToSchoolReportDataParser-->SchoolReportsRenderer:List<SchoolReportData> studentDataList
+deactivate CsvToSchoolReportDataParser
+
+
+
+SchoolReportsRenderer->MoveFilesForRenderingHelper:moveAllTexFilesInSameFolderToTemporaryDirectory(...)
+activate MoveFilesForRenderingHelper
+MoveFilesForRenderingHelper-->SchoolReportsRenderer:
+deactivate MoveFilesForRenderingHelper
+
+
+loop
+
+
+SchoolReportsRenderer->PlaceholderReplacer:replacePlaceholdersInTexTemplate(...)
+activate PlaceholderReplacer
+PlaceholderReplacer-->SchoolReportsRenderer:String texWithReplacedPlaceholders
+deactivate PlaceholderReplacer
+
+
+SchoolReportsRenderer->ShellCommandsUtil: runTexi2Pdf(...)
+activate ShellCommandsUtil
+ShellCommandsUtil-->SchoolReportsRenderer:
+deactivate ShellCommandsUtil
+
+end
+
+SchoolReportsRenderer->ShellCommandsUtil: runPdfUnite(..., renderedPdfs)
+activate ShellCommandsUtil
+ShellCommandsUtil-->SchoolReportsRenderer:
+deactivate ShellCommandsUtil
+
+SchoolReportsRenderer-->Csv2TexController:
+
+
+
+deactivate SchoolReportsRenderer
+
+Csv2TexController->Csv2TexController:show info message to user
