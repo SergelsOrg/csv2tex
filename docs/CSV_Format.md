@@ -29,14 +29,14 @@ The first 10 columns are **fixed columns, regardless of the column titles** (so-
 1. school class (e.g. 5a for "a-class of the fifth-year students") (`5a`)
 1. school year (reflecting the calendar years spanned by the school year) (`2019/2020`)
 1. part of year (whether it is the 1st half of the year or the 2nd half) (`1`, but could be something like (`End of year`))
-1. student's birth date (`27.12.85`, but there are no restrictions on the date format)
+1. student's birth date (`27.12.85`, but there are no restrictions on the date format - `12/27/85` works just as well)
 1. total absence days - How many days the student was absent from school in the school report's time frame. (`7`)
 1. unauthorized absence days - How many of the aforementioned absence days were not authorized (e.g. there was no doctor's certificate of an illness). (`5`)
 1. total absence hours - How many hours the student was absent from school in the school report's time frame. (`5`)
 1. unauthorized absence hours - How many of the aforementioned absence hours were not authorized (e.g. there was no doctor's certificate of an illness). (`4`)
 
 At the time of writing this, the program will not do "sanity checks" on the semantics of the data, 
-i.e. there is no validation that the total number of absence days / hours is bigger than the unauthorized number.
+i.e. there is no validation that the total number of absence days / hours is greater than or equal the unauthorized number.
 
 ### Level and subject data 
 
@@ -51,7 +51,7 @@ By the programming logic, one such column will be enough. The value will be reme
 another level column sets a different value.
 
 To mark a column as a level column, it must be named "Niveau" or "Level" (ignoring if letters are capital letters or not).  
-(This may change over time, please confer `org.example.csv2tex.csv.CsvParsingUtil.isLevelSettingColumn`for the latest implementation.)
+(This may change over time, please confer `org.example.csv2tex.csv.CsvParsingUtil#isLevelSettingColumn`for the latest implementation.)
 
 #### Subject data - multi-line header cells 
 
@@ -64,7 +64,8 @@ The subject data can have various forms.
 To make this easy to process in the program and as easy as possible for the user to enter, 
 the parts of these different forms must be separated by "new line" characters in the CSV. 
 If you are using a spreadsheet application (e.g. LibreOffice Calc, Microsoft Excel), you can add newline characters 
-by holding the `Control` key, then pressing `Enter` (this may differ depending on operating system and spreadsheet tool).
+within cells by holding the `Control` key, then pressing `Enter` (this may differ depending on operating system and 
+spreadsheet tool).
 
 In our example, we have the 3rd form:
 * subject (`German`)
@@ -78,4 +79,4 @@ The implementers of this program spent **a lot of time** making sure that in som
 prompted with an error message of what is not correct about the data.  
 We hope the program can be used out-of-the-box, without much of a need to go through a lot of documentation.  
 
-Tell us how that went on GitHub by filing any issues you have as described in the main [README.md](../README.md).
+Let us know how that went by filing any issues you have as GitHub issues as described in the main [README.md](../README.md).
