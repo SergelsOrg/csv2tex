@@ -26,6 +26,21 @@ The Gradle build tool will download all necessary libraries and launch the grahp
 As runtime environment, it is assumed that **Java version 11** or higher is installed.  
 This may change in the future - it is the project's goal to be directly executable on a recent version of Ubuntu Linux. 
 
+## Input data
+
+### CSV file
+
+One part of the required input data is the school report data in a CSV file.
+
+This format is documented in [docs/CSV_Format.md](docs/CSV_Format.md).
+
+### TEX template
+
+Another required part of the input is a `.tex` file with placeholders that will be replaced by the program with data 
+from the CSV. 
+
+These placeholders are documented in [docs/TEX_Placeholders_Format.md](docs/TEX_Placeholders_Format.md).
+
 ## "It's broken for me" / "I found a bug" / "This feature is missing"
 
 For any such issues, please create an issue in the public GitHub repository 
