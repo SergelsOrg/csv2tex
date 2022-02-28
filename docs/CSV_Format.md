@@ -53,6 +53,10 @@ another level column sets a different value.
 To mark a column as a level column, it must be named "Niveau" or "Level" (ignoring if letters are capital letters or not).  
 (This may change over time, please confer `org.example.csv2tex.csv.CsvParsingUtil#isLevelSettingColumn`for the latest implementation.)
 
+##### Current restrictions
+
+The code for the pilot project in Erfurt assumes that the values are "1", "2", "3", "7", "8", "9" or will not do any output. |
+
 #### Subject data - multi-line header cells 
 
 The subject data can have various forms. 
@@ -72,6 +76,11 @@ In our example, we have the 3rd form:
 * competency (`textual reception`)
 * sub-competency (`reading and aural comprehension`)
 * detailed description (`I can extract and reflect information ...`)
+
+##### Current restrictions
+
+The code for the pilot project in Erfurt assumes that the values are "1", "2", "3", "4", 
+and allows special values "hj" (grade comes later, with the 2nd half-year) and "nb" (no grade was given / not graded).
 
 ## "I can't remember all that, what are you thinking?"
 

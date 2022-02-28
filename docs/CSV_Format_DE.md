@@ -57,6 +57,11 @@ Großschreibung).
 (Das kann sich über die Zeit ändern, `org.example.csv2tex.csv.CsvParsingUtil#isLevelSettingColumn` sollte die aktuelle 
 Implementierung beinhalten.)
 
+##### Aktuelle Einschränkungen
+
+Der aktuelle Code für das Pilotprojekt in Erfurt nimmt an, dass es nur folgende Werte gibt: "1", "2", "3", "7", "8", "9"; 
+ansonsten wird später Ausgabe generiert.
+
 #### Fach-spezifische Daten - mehrzeilige Kopfzeile 
 
 Die Daten für Fächer können verschieden aussehen.
@@ -77,6 +82,10 @@ In unserem Beispiel haben wir die 3. Form:
 * Unter-Kompetenz (`Lese- und Hörverstehen`)
 * detaillierte Beschreibung (`Ich kann Informationen aus Texten ...`)
   
+##### Aktuelle Einschränkungen
+
+Der Code für das Pilotprojekt in Erfurt nimmt an, dass es nur folgende Werte für die Schulnoten in den Datenzellen gibt: 
+"1", "2", "3", "4", und spezielle Werte "hj" (wird im 2. Halbjahr belegt) and "nb" (nicht erteilt).
 
 ## "Wer soll sich das alles merken, was denkt ihr euch eigentlich?"
 
