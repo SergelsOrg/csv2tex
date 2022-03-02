@@ -27,6 +27,21 @@ Das mag sich in Zukunft ändern - Ziel ist, dass das Projekt auf einer aktuellen
 ausgeführt werden kann.
 
 
+## Eingabe-Daten
+
+### CSV-Datei
+
+Ein Teil der benötigten Eingabedaten ist eine `.csv`-Datei mit den Daten für die Zeugnisse.
+
+Das Format der Datei wird in [docs/CSV_Format_DE.md](docs/CSV_Format_DE.md) beschrieben.
+
+### TEX-Template-Datei
+
+Ein weiterer Teil der benötigten Eingabedaten ist eine `.tex`-Datei mit Platzhaltern, die das Programm letztendlich mit 
+den CSV-Daten ersetzt.
+
+Die Platzhalter werden in [docs/TEX_Placeholders_Format_DE.md](docs/TEX_Placeholders_Format_DE.md) beschrieben.
+
 ## "Es läuft bei mir nicht" / "Ich habe einen Bug (Fehler) gefunden" / "Es fehlt eine Funktionalität"
 
 Für solche Anfragen bitte ein Issue im öffentlichen GitHub-Repository des Projekts anlegen
