@@ -107,7 +107,7 @@ public class ShellCommandsUtil {
         }
 
         try {
-            boolean terminatedCorrectly = process.waitFor(1, TimeUnit.SECONDS);
+            boolean terminatedCorrectly = process.waitFor(30, TimeUnit.SECONDS);
             return new ShellResult(getContentFromStream(process.getInputStream()),
                     getContentFromStream(process.getErrorStream()),
                     getExitValue(process), terminatedCorrectly);
