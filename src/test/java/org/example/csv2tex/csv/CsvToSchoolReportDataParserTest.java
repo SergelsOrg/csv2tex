@@ -175,19 +175,19 @@ public class CsvToSchoolReportDataParserTest {
         SchoolReportData student1 = actual.get(0);
         assertStudent1BaseData(student1);
         List<SchoolCompetencyData> student1Competencies = student1.schoolCompetencies;
-        assertThat(student1Competencies).hasSize(9);
+        assertThat(student1Competencies).hasSize(8);
         assertStudent1Competencies(student1Competencies);
 
         SchoolReportData student2 = actual.get(1);
         assertStudent2BaseData(student2);
         List<SchoolCompetencyData> student2Competencies = student2.schoolCompetencies;
-        assertThat(student2Competencies).hasSize(9);
+        assertThat(student2Competencies).hasSize(8);
         assertStudent2Competencies(student2Competencies);
 
         SchoolReportData student3 = actual.get(2);
         assertStudent3BaseData(student3);
         List<SchoolCompetencyData> student3Competencies = student3.schoolCompetencies;
-        assertThat(student3Competencies).hasSize(9);
+        assertThat(student3Competencies).hasSize(8);
         assertStudent3Competencies(student3Competencies);
     }
 
@@ -245,7 +245,6 @@ public class CsvToSchoolReportDataParserTest {
         assertCompetency6Data(studentCompetencies.get(5));
         assertCompetency7Data(studentCompetencies.get(6));
         assertCompetency8Data(studentCompetencies.get(7));
-        assertCompetency9Data(studentCompetencies.get(8));
 
         assertThat(studentCompetencies.get(0).level).isEqualTo("1");
         assertThat(studentCompetencies.get(1).level).isEqualTo("1");
@@ -255,7 +254,6 @@ public class CsvToSchoolReportDataParserTest {
         assertThat(studentCompetencies.get(5).level).isEqualTo("3");
         assertThat(studentCompetencies.get(6).level).isEqualTo("3");
         assertThat(studentCompetencies.get(7).level).isEqualTo("3");
-        assertThat(studentCompetencies.get(8).level).isEqualTo("3");
 
         assertThat(studentCompetencies.get(0).grade).isEqualTo("1");
         assertThat(studentCompetencies.get(1).grade).isEqualTo("2");
@@ -265,7 +263,6 @@ public class CsvToSchoolReportDataParserTest {
         assertThat(studentCompetencies.get(5).grade).isEqualTo("3");
         assertThat(studentCompetencies.get(6).grade).isEqualTo("3");
         assertThat(studentCompetencies.get(7).grade).isEqualTo("2");
-        assertThat(studentCompetencies.get(8).grade).isEqualTo("2");
     }
 
     private void assertStudent2Competencies(List<SchoolCompetencyData> studentCompetencies) {
@@ -277,7 +274,6 @@ public class CsvToSchoolReportDataParserTest {
         assertCompetency6Data(studentCompetencies.get(5));
         assertCompetency7Data(studentCompetencies.get(6));
         assertCompetency8Data(studentCompetencies.get(7));
-        assertCompetency9Data(studentCompetencies.get(8));
 
         assertThat(studentCompetencies.get(0).level).isEqualTo("2");
         assertThat(studentCompetencies.get(1).level).isEqualTo("2");
@@ -287,7 +283,6 @@ public class CsvToSchoolReportDataParserTest {
         assertThat(studentCompetencies.get(5).level).isEqualTo("2");
         assertThat(studentCompetencies.get(6).level).isEqualTo("2");
         assertThat(studentCompetencies.get(7).level).isEqualTo("2");
-        assertThat(studentCompetencies.get(8).level).isEqualTo("2");
 
         assertThat(studentCompetencies.get(0).grade).isEqualTo("4");
         assertThat(studentCompetencies.get(1).grade).isEqualTo("4");
@@ -297,7 +292,6 @@ public class CsvToSchoolReportDataParserTest {
         assertThat(studentCompetencies.get(5).grade).isEqualTo("4");
         assertThat(studentCompetencies.get(6).grade).isEqualTo("4");
         assertThat(studentCompetencies.get(7).grade).isEqualTo("4");
-        assertThat(studentCompetencies.get(8).grade).isEqualTo("4");
     }
 
     private void assertStudent3Competencies(List<SchoolCompetencyData> studentCompetencies) {
@@ -309,7 +303,6 @@ public class CsvToSchoolReportDataParserTest {
         assertCompetency6Data(studentCompetencies.get(5));
         assertCompetency7Data(studentCompetencies.get(6));
         assertCompetency8Data(studentCompetencies.get(7));
-        assertCompetency9Data(studentCompetencies.get(8));
 
         assertThat(studentCompetencies.get(0).level).isEqualTo("3");
         assertThat(studentCompetencies.get(1).level).isEqualTo("3");
@@ -319,7 +312,6 @@ public class CsvToSchoolReportDataParserTest {
         assertThat(studentCompetencies.get(5).level).isEqualTo("1");
         assertThat(studentCompetencies.get(6).level).isEqualTo("1");
         assertThat(studentCompetencies.get(7).level).isEqualTo("1");
-        assertThat(studentCompetencies.get(8).level).isEqualTo("1");
 
         assertThat(studentCompetencies.get(0).grade).isEqualTo("1");
         assertThat(studentCompetencies.get(1).grade).isEqualTo("2");
@@ -329,7 +321,6 @@ public class CsvToSchoolReportDataParserTest {
         assertThat(studentCompetencies.get(5).grade).isEqualTo("3");
         assertThat(studentCompetencies.get(6).grade).isEqualTo("3");
         assertThat(studentCompetencies.get(7).grade).isEqualTo("2");
-        assertThat(studentCompetencies.get(8).grade).isEqualTo("2");
     }
 
     private void assertStudent1FirstCompetency(SchoolCompetencyData studentCompetency) {
@@ -351,14 +342,19 @@ public class CsvToSchoolReportDataParserTest {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Deutsch");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Texte rezipieren");
         assertThat(studentCompetency.schoolSubCompetency).isEqualTo("Lese- und Hörverstehen");
-        assertThat(studentCompetency.description).isEqualTo("Ich kann Informationen aus Texten entnehmen und wiedergeben. Ich kann Inhalt und Aussage von Texten wiedergeben. Ich kenne die Gattungsmerkmale von Märchen und Sagen.");
+        assertThat(studentCompetency.description).isEqualTo("Ich kann Informationen aus Texten entnehmen und wiedergeben.\n" +
+                "Ich kann Inhalt und Aussage von Texten wiedergeben.\n" +
+                "Ich kenne die Gattungsmerkmale von Märchen und Sagen.");
     }
 
     private void assertCompetency2Data(SchoolCompetencyData studentCompetency) {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Deutsch");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Texte produzieren");
         assertThat(studentCompetency.schoolSubCompetency).isEqualTo("Sprechen");
-        assertThat(studentCompetency.description).isEqualTo("Ich kann mich an Gesprächen und Diskussionen beteiligen. Ich besitze Sicherheit im einfachen Berichten und im Beschreiben. Ich kann freie Redebeiträge (Vorträge), ggf. mit Stichwortzettel, leisten. Ich kann Texte / Textpassagen fließend und gestaltend vorlesen (sinnbetont vortragen).");
+        assertThat(studentCompetency.description).isEqualTo("Ich kann mich an Gesprächen und Diskussionen beteiligen.\n" +
+                "Ich besitze Sicherheit im einfachen Berichten und im Beschreiben.\n" +
+                "Ich kann freie Redebeiträge (Vorträge), ggf. mit Stichwortzettel, leisten.\n" +
+                "Ich kann Texte / Textpassagen fließend und gestaltend vorlesen (sinnbetont vortragen).");
     }
 
     private void assertCompetency3Data(SchoolCompetencyData studentCompetency) {
@@ -372,49 +368,52 @@ public class CsvToSchoolReportDataParserTest {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Deutsch");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Über Sprache, Sprachverwendung und Sprachenlernen reflektieren");
         assertThat(studentCompetency.schoolSubCompetency).isEqualTo("Wortebene");
-        assertThat(studentCompetency.description).isEqualTo("Ich kann einen Grundbestand an Rechtschreibregeln sicher anwenden. Ich kann die Wortarten benennen. Ich kann Rechtschreibstrategien erkennen und sicher anwenden.");
+        assertThat(studentCompetency.description).isEqualTo("Ich kann einen Grundbestand an Rechtschreibregeln sicher anwenden.\n" +
+                "Ich kann die Wortarten benennen.\n" +
+                "Ich kann Rechtschreibstrategien erkennen und sicher anwenden.");
     }
 
     private void assertCompetency5Data(SchoolCompetencyData studentCompetency) {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Mathe");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Rechenoperationen");
         assertThat(studentCompetency.schoolSubCompetency).isEmpty();
-        assertThat(studentCompetency.description).isEqualTo("Ich kann die Grundrechenoperationen im Bereich der natürlichen im Kopf und schriftlich ausführen und an Beispielen den Zusammenhang zwischen Rechenoperationen und deren Umkehroperationen erläutern. Ich kann Teiler und Vielfache natürlicher Zahlen bestimmen. Ich kann ein Verfahren zur Bestimmung von Primzahlen anwenden.");
+        assertThat(studentCompetency.description).isEqualTo("Ich kann die Grundrechenoperationen im Bereich der natürlichen im Kopf und schriftlich ausführen und an Beispielen den Zusammenhang zwischen Rechenoperationen und deren Umkehroperationen erläutern.\n" +
+                "Ich kann Teiler und Vielfache natürlicher Zahlen bestimmen.\n" +
+                "Ich kann ein Verfahren zur Bestimmung von Primzahlen anwenden.");
     }
 
     private void assertCompetency6Data(SchoolCompetencyData studentCompetency) {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Mathe");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Mathematik mit Alltagsbezug");
         assertThat(studentCompetency.schoolSubCompetency).isEmpty();
-        assertThat(studentCompetency.description).isEqualTo("Ich kann Größen der Zeit, der Länge, der Masse, des Geldes, vergleichen, ordnen und umrechnen. Ich kann einfache Probleme aus dem Alltag lösen, in denen mehrere Rechenoperationen miteinander zu verknüpfen sind und negative Zahlen vorkommen (z. B. Temperaturänderungen).");
+        assertThat(studentCompetency.description).isEqualTo("Ich kann Größen der Zeit, der Länge, der Masse, des Geldes, vergleichen, ordnen und umrechnen.\n" +
+                "Ich kann einfache Probleme aus dem Alltag lösen, in denen mehrere Rechenoperationen miteinander zu verknüpfen sind und negative Zahlen vorkommen (z. B. Temperaturänderungen).");
     }
 
     private void assertCompetency7Data(SchoolCompetencyData studentCompetency) {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Mathe");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Rationale Zahlen");
         assertThat(studentCompetency.schoolSubCompetency).isEmpty();
-        assertThat(studentCompetency.description).isEqualTo("Ich kann natürliche und gebrochene Zahlen in verschiedenen Situationen lesen, im mündlichen und schriftlichen Sprachgebrauch sicher und sachgemäß verwenden. Ich kann Bruchteile zeichnerisch darstellen, aus geometrischen Darstellungen ablesen, gebrochene Zahlen der Situation angemessen darstellen. Ich kann natürliche Zahlen und einfache gemeine Brüche aus Alltagssituationen ordnen und vergleichen.");
+        assertThat(studentCompetency.description).isEqualTo("Ich kann natürliche und gebrochene Zahlen in verschiedenen Situationen lesen, im mündlichen und schriftlichen Sprachgebrauch sicher und sachgemäß verwenden.\n" +
+                "Ich kann Bruchteile zeichnerisch darstellen, aus geometrischen Darstellungen ablesen, gebrochene Zahlen der Situation angemessen darstellen.\n" +
+                "Ich kann natürliche Zahlen und einfache gemeine Brüche aus Alltagssituationen ordnen und vergleichen.");
     }
 
     private void assertCompetency8Data(SchoolCompetencyData studentCompetency) {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Mathe");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Geometrie");
         assertThat(studentCompetency.schoolSubCompetency).isEmpty();
-        assertThat(studentCompetency.description).isEqualTo("Ich kann die Begriffe Strecke, Strahl, Gerade unterscheiden. Ich kann die Lagebeziehung von Geraden beschreiben.");
-    }
-
-    private void assertCompetency9Data(SchoolCompetencyData studentCompetency) {
-        assertThat(studentCompetency.schoolSubject).isEqualTo("Mathe");
-        assertThat(studentCompetency.schoolCompetency).isEqualTo("Texte rezipieren");
-        assertThat(studentCompetency.schoolSubCompetency).isEmpty();
-        assertThat(studentCompetency.description).isEqualTo("Hör-/Hör-Sehverstehen Ich kann vertraute Wörter und einfache Sätze verstehen, die sich um mich selbst, meine eigene Familie oder auf konkrete Dinge um mich herum beziehen.");
+        assertThat(studentCompetency.description).isEqualTo("Ich kann die Begriffe Strecke, Strahl, Gerade unterscheiden.\n" +
+                "Ich kann die Lagebeziehung von Geraden beschreiben.");
     }
 
     private void assertAlternateCompetency1Data(SchoolCompetencyData studentCompetency) {
         assertThat(studentCompetency.schoolSubject).isEqualTo("Mathe");
         assertThat(studentCompetency.schoolCompetency).isEqualTo("Rechenoperationen");
         assertThat(studentCompetency.schoolSubCompetency).isEmpty();
-        assertThat(studentCompetency.description).isEqualTo("Ich kann die Grundrechenoperationen im Bereich der natürlichen im Kopf und schriftlich ausführen und an Beispielen den Zusammenhang zwischen Rechenoperationen und deren Umkehroperationen erläutern. Ich kann Teiler und Vielfache natürlicher Zahlen bestimmen. Ich kann ein Verfahren zur Bestimmung von Primzahlen anwenden.");
+        assertThat(studentCompetency.description).isEqualTo("Ich kann die Grundrechenoperationen im Bereich der natürlichen im Kopf und schriftlich ausführen und an Beispielen den Zusammenhang zwischen Rechenoperationen und deren Umkehroperationen erläutern.\n" +
+                "Ich kann Teiler und Vielfache natürlicher Zahlen bestimmen.\n" +
+                "Ich kann ein Verfahren zur Bestimmung von Primzahlen anwenden.");
     }
 
 
