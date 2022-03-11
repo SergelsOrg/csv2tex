@@ -1,0 +1,51 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[top=2cm,
+bottom=2cm, 
+inner=2cm,
+outer=2cm]{geometry}
+\usepackage{xcolor}
+\definecolor{egeblue}{RGB}{00, 99, 142}
+\definecolor{egelightblue}{RGB}{66, 144, 179}
+
+
+\usepackage[german]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{ragged2e}
+\usepackage{titlesec}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{helvet}
+
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{ulem}
+
+\usepackage{array,multirow,tabularx,booktabs}
+\usepackage[column=K]{cellspace}
+\usepackage{makecell,colortbl}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+\newcolumntype{J}[1]{>{\justifying\arraybackslash}p{#1}}
+\newcolumntype{v}[1]{>{\raggedright\hspace{0em}}p{#1}}
+
+\newcommand*\rot{\rotatebox{90}}
+
+
+\renewcommand\theadalign{l}
+\renewcommand\theadfont{\bfseries}
+
+% package for linespacing \singlespacing \onehalfspacing \doublespacing and more
+\usepackage{setspace}
+% provides enumarate environment
+\usepackage{enumitem}
+
+% renews command to use sans font as default font
+\renewcommand*{\familydefault}{\sfdefault}
+\renewcommand{\ULdepth}{1.8pt}
+
+\addparagraphcolumntypes{X}
