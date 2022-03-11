@@ -8,6 +8,6 @@ public class CsvParsingUtil {
 
     public static String[] splitCompetencyColumnHeader(String columnHeader) {
         // limit 4: will keep all lines after the 4th as part of the 4th split
-        return columnHeader.split("[\r\n]+", 4);
+        return columnHeader.split("[\r?\n|\r]", 4);
     }
 }
