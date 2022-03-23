@@ -77,13 +77,13 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
 
         for (SchoolCompetencyData schoolCompetencyData : schoolReportData.schoolCompetencies) {
             if (isStartOfNewSubject(currentSubject, schoolCompetencyData)) {
-                renderCompletedCompetencyListOfCurrentsubject(partOfYear, tables, currentSubjectCompetencyList);
+                renderCompletedCompetencyListOfCurrentSubject(partOfYear, tables, currentSubjectCompetencyList);
                 currentSubject = schoolCompetencyData.schoolSubject;
                 currentSubjectCompetencyList.clear();
             }
             currentSubjectCompetencyList.add(schoolCompetencyData);
         }
-        renderCompletedCompetencyListOfCurrentsubject(partOfYear, tables, currentSubjectCompetencyList);
+        renderCompletedCompetencyListOfCurrentSubject(partOfYear, tables, currentSubjectCompetencyList);
         texFileContent = texFileContent.replace(TEX_TEMPLATE_PLACEHOLDER_TABLES, tables);
         return texFileContent;
     }
@@ -92,7 +92,7 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
         return !currentSubject.equals(schoolCompetencyData.schoolSubject);
     }
 
-    private void renderCompletedCompetencyListOfCurrentsubject(String partOfYear, StringBuilder tables, List<SchoolCompetencyData> currentSubjectCompetencyList) {
+    private void renderCompletedCompetencyListOfCurrentSubject(String partOfYear, StringBuilder tables, List<SchoolCompetencyData> currentSubjectCompetencyList) {
         tables.append(makeTableEntry(currentSubjectCompetencyList, partOfYear));
     }
 
