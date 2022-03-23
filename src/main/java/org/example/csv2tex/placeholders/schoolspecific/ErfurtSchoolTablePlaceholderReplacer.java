@@ -135,15 +135,14 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
 
         for (SchoolCompetencyData schoolCompetencyData : competencyList) {
             StringBuilder competency = new StringBuilder();
-            competency.append(COMMAND_CALL_BOLD
-                    .replace(COMMAND_PLACEHOLDER_TEXT, schoolCompetencyData.schoolCompetency));
+            appendBold(competency, schoolCompetencyData.schoolCompetency);
             if (!schoolCompetencyData.schoolSubCompetency.isEmpty()) {
-                competency.append(TEX_TABLE_LINE_BREAK)
-                        .append(COMMAND_CALL_UNDERLINE
-                                .replace(COMMAND_PLACEHOLDER_TEXT, schoolCompetencyData.schoolSubCompetency));
+                competency.append(TEX_TABLE_LINE_BREAK);
+                appendUnderlined(competency, schoolCompetencyData.schoolSubCompetency);
             }
             if (!schoolCompetencyData.description.isEmpty()) {
-                competency.append(TEX_TABLE_LINE_BREAK).append(schoolCompetencyData.description.replaceAll("\r\n|\r|\n", "\\" + TEX_TABLE_LINE_BREAK));
+                String temp = schoolCompetencyData.description.replaceAll("\r\n|\r|\n", "\\" + TEX_TABLE_LINE_BREAK);
+                competency.append(TEX_TABLE_LINE_BREAK).append(temp);
             }
             String competencyReplaced = COMMAND_CALL_COMPETENCY_MAJOR_SUBJECT
                     .replace(COMMAND_PLACEHOLDER_COMPETENCY, competency)
@@ -151,6 +150,16 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
             competenciesTable.append(competencyReplaced);
         }
         return competenciesTable.toString();
+    }
+
+    private void appendUnderlined(StringBuilder text, String valueToAppend) {
+        String temp = COMMAND_CALL_UNDERLINE.replace(COMMAND_PLACEHOLDER_TEXT, valueToAppend);
+        text.append(temp);
+    }
+
+    private void appendBold(StringBuilder text, String valueToAppend) {
+        String temp = COMMAND_CALL_BOLD.replace(COMMAND_PLACEHOLDER_TEXT, valueToAppend);
+        text.append(temp);
     }
 
     @VisibleForTesting
@@ -164,7 +173,7 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
                 competency.append(TEX_TABLE_LINE_BREAK).append(schoolCompetencyData.schoolSubCompetency);
             }
             if (!schoolCompetencyData.description.isEmpty()) {
-                competency.append(TEX_TABLE_LINE_BREAK).append(schoolCompetencyData.description.replaceAll("\\r\\n|\\r|\\n",TEX_TABLE_LINE_BREAK));
+                competency.append(TEX_TABLE_LINE_BREAK).append(schoolCompetencyData.description.replaceAll("\\r\\n|\\r|\\n", TEX_TABLE_LINE_BREAK));
             }
             String competencyReplaced = COMMAND_CALL_COMPETENCY_MINOR_SUBJECT
                     .replace(COMMAND_PLACEHOLDER_COMPETENCY, competency)
