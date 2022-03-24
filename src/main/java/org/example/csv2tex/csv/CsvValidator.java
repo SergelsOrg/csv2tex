@@ -1,6 +1,5 @@
 package org.example.csv2tex.csv;
 
-import org.apache.commons.csv.CSVRecord;
 import org.example.csv2tex.exception.InvalidCsvException;
 
 import java.util.ArrayList;
@@ -15,10 +14,10 @@ import static org.example.csv2tex.exception.InvalidCsvCause.*;
 
 public class CsvValidator {
 
-    public void ensureCorrectFormat(List<String> headers, List<CSVRecord> recordList) {
+    public void ensureCorrectFormat(List<String> headers, List<List<String>> rowList) {
         ensureBaseColumns(headers);
         ensureLevelColumn(headers);
-        ensureRowLengths(headers, recordList);
+        ensureRowLengths(headers, rowList);
         ensureCompleteCompetencyHeaders(headers);
     }
 
@@ -43,27 +42,27 @@ public class CsvValidator {
         }
     }
 
-    private void ensureRowLengths(List<String> headers, List<CSVRecord> recordList) {
-        if (recordList.isEmpty()) {
+    private void ensureRowLengths(List<String> headers, List<List<String>> rowList) {
+        if (rowList.isEmpty()) {
             return;
         }
 
         int headerRowLength = headers.size();
-        Map<Integer, Integer> rowLengths = countRowLengths(recordList);
+        Map<Integer, Integer> rowLengths = countRowLengths(rowList);
 
         boolean lengthChecksPassed = checkForSystematicFaults(headerRowLength, rowLengths);
         if (lengthChecksPassed) {
             return;
         }
-        checkFaultsWithHeuristics(headerRowLength, rowLengths, recordList);
+        checkFaultsWithHeuristics(headerRowLength, rowLengths, rowList);
     }
 
     // checks cases where all content rows differ from header row
 
-    private Map<Integer, Integer> countRowLengths(List<CSVRecord> recordList) {
+    private Map<Integer, Integer> countRowLengths(List<List<String>> rowList) {
         Map<Integer, Integer> rowLengths = new HashMap<>();
-        recordList.forEach(record -> {
-            int rowLength = record.size();
+        rowList.forEach(row -> {
+            int rowLength = row.size();
             Integer existingValue = rowLengths.getOrDefault(rowLength, 0);
             rowLengths.put(rowLength, existingValue + 1);
         });
@@ -88,7 +87,7 @@ public class CsvValidator {
     /**
      * Heuristic: determine whether to show "some data rows are wrong" or "the header row is wrong"
      */
-    private void checkFaultsWithHeuristics(float headerRowLength, Map<Integer, Integer> rowLengths, List<CSVRecord> recordList) {
+    private void checkFaultsWithHeuristics(float headerRowLength, Map<Integer, Integer> rowLengths, List<List<String>> rowList) {
         float contentRowsShorterThanHeader = 0f;
         float contentRowsLongerThanHeader = 0f;
         for (Map.Entry<Integer, Integer> entry : rowLengths.entrySet()) {
@@ -100,27 +99,27 @@ public class CsvValidator {
         }
 
         // more than 20% / at least 10 rows off --> assume header error
-        float ratioWrongLengthRows = (contentRowsLongerThanHeader + contentRowsShorterThanHeader) / recordList.size();
+        float ratioWrongLengthRows = (contentRowsLongerThanHeader + contentRowsShorterThanHeader) / rowList.size();
         if (ratioWrongLengthRows > 0.20f || contentRowsShorterThanHeader + contentRowsLongerThanHeader > 9) {
             if (contentRowsLongerThanHeader > contentRowsShorterThanHeader) {
-                throw new InvalidCsvException(HEADER_SHORTER_THAN_CONTENT, getListOfLongerRows(headerRowLength, recordList));
+                throw new InvalidCsvException(HEADER_SHORTER_THAN_CONTENT, getListOfLongerRows(headerRowLength, rowList));
             } else {
-                throw new InvalidCsvException(HEADER_LONGER_THAN_CONTENT, getListOfShorterRows(headerRowLength, recordList));
+                throw new InvalidCsvException(HEADER_LONGER_THAN_CONTENT, getListOfShorterRows(headerRowLength, rowList));
             }
         } else { // assume content error
             if (contentRowsLongerThanHeader > contentRowsShorterThanHeader) {
-                throw new InvalidCsvException(CONTENT_ROW_LONGER_THAN_HEADER, getListOfLongerRows(headerRowLength, recordList));
+                throw new InvalidCsvException(CONTENT_ROW_LONGER_THAN_HEADER, getListOfLongerRows(headerRowLength, rowList));
             } else {
-                throw new InvalidCsvException(CONTENT_ROW_SHORTER_THAN_HEADER, getListOfShorterRows(headerRowLength, recordList));
+                throw new InvalidCsvException(CONTENT_ROW_SHORTER_THAN_HEADER, getListOfShorterRows(headerRowLength, rowList));
             }
         }
     }
 
-    private String getListOfLongerRows(float headerRowLength, List<CSVRecord> recordList) {
+    private String getListOfLongerRows(float headerRowLength, List<List<String>> rowList) {
         StringBuilder sb = new StringBuilder("");
-        for (int i = 0; i < recordList.size(); i++) {
-            CSVRecord record = recordList.get(i);
-            if (isLongerThanHeader(headerRowLength, record)) {
+        for (int i = 0; i < rowList.size(); i++) {
+            List<String> row = rowList.get(i);
+            if (isLongerThanHeader(headerRowLength, row)) {
                 if (sb.length() > 0) {
                     sb.append(",");
                 }
@@ -130,15 +129,15 @@ public class CsvValidator {
         return sb.toString();
     }
 
-    private boolean isLongerThanHeader(float headerRowLength, CSVRecord record) {
-        return record.size() > headerRowLength;
+    private boolean isLongerThanHeader(float headerRowLength, List<String> row) {
+        return row.size() > headerRowLength;
     }
 
-    private String getListOfShorterRows(float headerRowLength, List<CSVRecord> recordList) {
+    private String getListOfShorterRows(float headerRowLength, List<List<String>> rowList) {
         StringBuilder sb = new StringBuilder("");
-        for (int i = 0; i < recordList.size(); i++) {
-            CSVRecord record = recordList.get(i);
-            if (isShorterThanHeader(headerRowLength, record)) {
+        for (int i = 0; i < rowList.size(); i++) {
+            List<String> row = rowList.get(i);
+            if (isShorterThanHeader(headerRowLength, row)) {
                 if (sb.length() > 0) {
                     sb.append(",");
                 }
@@ -148,8 +147,8 @@ public class CsvValidator {
         return sb.toString();
     }
 
-    private boolean isShorterThanHeader(float headerRowLength, CSVRecord record) {
-        return record.size() < headerRowLength;
+    private boolean isShorterThanHeader(float headerRowLength, List<String> row) {
+        return row.size() < headerRowLength;
     }
 
 
