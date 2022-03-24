@@ -2,6 +2,7 @@ package org.example.csv2tex.csv;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.example.csv2tex.data.SchoolCompetencyData;
 import org.example.csv2tex.data.SchoolReportData;
@@ -51,6 +52,7 @@ public class CsvToSchoolReportDataParser {
                 stringListLines.add(toStringList(line));
             }
         }
+        stripEmptyColumnsRight(stringListLines);
         // skip but save first row - header
         List<String> headerRow = stringListLines.remove(0);
         return Pair.of(headerRow, stringListLines);
@@ -64,6 +66,29 @@ public class CsvToSchoolReportDataParser {
         return stringLine;
     }
 
+
+    private void stripEmptyColumnsRight(List<List<String>> stringListLines) {
+        int lastColumnIndex = stringListLines.get(0).size() - 1;
+
+        outer:
+        while (lastColumnIndex >= 0) {
+            for (List<String> row : stringListLines) {
+                if (!isLastCellEmpty(row)) {
+                    break outer;
+                }
+            }
+            stringListLines.forEach(this::removeLastCell);
+            lastColumnIndex--;
+        }
+    }
+
+    private boolean isLastCellEmpty(List<String> row) {
+        return StringUtils.isEmpty(row.get(row.size() - 1));
+    }
+
+    private void removeLastCell(List<String> row) {
+        row.remove(row.size() - 1);
+    }
 
     private SchoolReportData createReportDataFromRow(List<String> headers, List<String> rawRowData) {
         SchoolReportData singleStudentData = createBaseData(rawRowData);
