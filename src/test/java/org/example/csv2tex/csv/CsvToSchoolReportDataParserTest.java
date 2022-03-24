@@ -55,6 +55,18 @@ public class CsvToSchoolReportDataParserTest {
     }
 
     @Test
+    public void parseCsvFileToReportDataList_ignoresTrailingEmptyColumns() throws Exception {
+        File file = getFile("csv/student_data_example_trailing_empty_columns.csv");
+
+        List<SchoolReportData> actual = sut.parseCsvFileToReportDataList(file);
+
+        assertThat(actual).hasSize(3);
+        assertThat(actual.get(0).schoolCompetencies).hasSize(1);
+        assertThat(actual.get(1).schoolCompetencies).hasSize(1);
+        assertThat(actual.get(2).schoolCompetencies).hasSize(1);
+    }
+
+    @Test
     public void parseCsvFileToReportDataList_parsesSingleCompetencyData() throws Exception {
         File file = getFile("csv/student_data_example_one_competency.csv");
 
