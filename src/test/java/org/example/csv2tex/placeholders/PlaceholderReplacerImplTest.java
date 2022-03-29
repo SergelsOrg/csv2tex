@@ -60,20 +60,25 @@ public class PlaceholderReplacerImplTest extends AbstractReplacerTest {
                 "7\n" +
                 "3\n" +
                 "\n" +
-                "\\competencyTableMajorSubject{Mathematik}{\\competencyMajorSubject{Rechnen\\\\\n" +
-                "Addition\\\\\n" +
+                "\\competencyTableMajorSubject{Mathematik}{\\competencyMajorSubject{\\textbf{Rechnen}\n" +
+                "\\tableLineBreak\n" +
+                "\\uline{Addition}\n" +
+                "\\tableLineBreak\n" +
                 "Kann addieren.}{\\gradeOne}\n" +
-                "\\competencyMajorSubject{Rechnen\\\\\n" +
-                "Subtraktion\\\\\n" +
+                "\\competencyMajorSubject{\\textbf{Rechnen}\n" +
+                "\\tableLineBreak\n" +
+                "\\uline{Subtraktion}\n" +
+                "\\tableLineBreak\n" +
                 "Kann subtrahieren.}{\\gradeTwo}\n" +
                 "}{rot}\n" +
-                "\\competencytable{Fremdsprache}{\\competencyMinorSubject{Französisch\\\\\n" +
-                "sc\\\\\n" +
+                "\\competencytable{Fremdsprache}{\\competencyMinorSubject{Französisch\\tableLineBreak\n" +
+                "sc\\tableLineBreak\n" +
                 "des}{\\gradeOne}{grün}\n" +
                 "}\n" +
                 "\n" +
                 "\n" +
-                "\\end{document}");
+                "\\end{document}"
+        );
     }
 
     @Test

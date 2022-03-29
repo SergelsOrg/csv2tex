@@ -6,7 +6,8 @@ import org.assertj.core.description.LazyTextDescription;
 import org.example.csv2tex.exception.RenderingException;
 import org.example.csv2tex.rendering.SchoolReportsRenderer;
 import org.example.csv2tex.shellout.ShellCommandsUtil;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -21,13 +22,17 @@ import static org.example.csv2tex.exception.RenderingExceptionCause.SHELL_COMMAN
 public class ErfurtSchoolReportSmokeTest {
 
     private static final Pattern TEX_PLACEHOLDER_PATTERN = Pattern.compile("\\b\\s+(#[A-Za-z0-9-]+)\\b");
-    private static final String EXAMPLE_TEMPLATE_FILE_PATH_PREFIX = "sample templates/half_year/";
+    private static final String EXAMPLE_TEMPLATE_FILE_PATH_PREFIX = "sample templates/";
 
-    @Test
-    public void testThatRenderingOfRealReportSucceeds() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            EXAMPLE_TEMPLATE_FILE_PATH_PREFIX + "half_year/SchoolReportTemplate_HalfYear__ZeugnisTemplate_Halbjahr.tex",
+            EXAMPLE_TEMPLATE_FILE_PATH_PREFIX + "end_year/SchoolReportTemplate_SchoolYear__ZeugnisTemplate_Schuljahr.tex",
+    })
+    public void testThatRenderingOfRealReportSucceeds(String texFilePath) throws Exception {
         SchoolReportsRenderer renderer = new SchoolReportsRenderer();
         File csvFile = getFullCsvFile();
-        File texFile = getTexFile();
+        File texFile = new File(texFilePath);
         assertThat(csvFile).exists();
         assertThat(texFile).exists();
 
@@ -36,10 +41,6 @@ public class ErfurtSchoolReportSmokeTest {
         doSanityCheck(result);
     }
 
-
-    private File getTexFile() {
-        return new File(EXAMPLE_TEMPLATE_FILE_PATH_PREFIX + "SchoolReportTemplate_HalfYear__ZeugnisTemplate_Halbjahr.tex");
-    }
 
     private File getFullCsvFile() {
         return new File("src/test/resources/rendering/student_data_example_full.csv");

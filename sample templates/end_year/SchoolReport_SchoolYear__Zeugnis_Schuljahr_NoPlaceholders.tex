@@ -1,0 +1,105 @@
+\input{SchoolReportTemplate_ZeugnisTemplate_Packages.tex}
+
+\pagenumbering{gobble}
+\setlength\parindent{0pt}
+\setlength\cellspacetoplimit{8pt}
+\setlength\cellspacebottomlimit{8pt}
+
+\input{SchoolReportTemplate_ZeugnisTemplate_Commands.tex}
+
+\newcommand{\schoolReportDay}{11.02.2022}
+
+\begin{document}
+	\pagestyle{plain}
+	\fcolorbox{egeblue}{white}{
+	\begin{minipage}[t][.98\textheight][t]{.97\textwidth}
+			~\vspace{2cm}\\
+			\begin{tabularx}{\linewidth}{@{}lX}
+				Versäumnisse: & 7 Tage (davon 5 Tage unentschuldigt) \\
+				&  9 Stunden (davon 5 Stunden unentschuldigt) \\
+			\end{tabularx}
+			\vspace{3cm}\\
+			Erfurt, den \schoolReportDay
+			\vspace{2.5cm}\\
+			\begin{tabularx}{\linewidth}{C{.4\linewidth}XC{.4\linewidth}}
+				\rule{\linewidth}{1pt} &  & \rule{\linewidth}{1pt} \\
+				\centering KlassenleiterIn &  & KlassenleiterIn \\
+			\end{tabularx}
+			\vspace{2.5cm}\\
+			\begin{tabularx}{\linewidth}{C{.4\linewidth}YC{.4\linewidth}}
+				\rule{\linewidth}{1pt} &  &  \\
+				\centering SchuleiterIn & \tiny Siegel & \\
+			\end{tabularx}
+			\vspace{2.5cm}\\
+			\begin{tabularx}{\linewidth}{C{.4\linewidth}XC{.4\linewidth}}
+			\rule{\linewidth}{1pt} &  & \rule{\linewidth}{1pt} \\
+			\centering Erziehungsberechtigte &  & SchülerIn \\
+			\end{tabularx}
+		\end{minipage}
+	}%
+	\newpage
+	\fcolorbox{egeblue}{white}{
+		\begin{minipage}[t][.98\textheight][t]{.97\textwidth}
+		\begin{center}\vspace{1cm}
+			\includegraphics[width=.9\linewidth]{Logotop_mit_ESM_zeugnis}
+		\end{center}
+		\vspace{3cm}
+		\begin{center}\setstretch{1.5}
+			\textbf{\Huge Zeugnis}\\
+			\textbf{\LARGE ~\\
+			Evangelischen Gemeinschaftsschule Erfurt\\\vspace{2cm}
+			Halbjahr 2021/2022}
+		\end{center}\vspace{3cm}
+		\begin{center}\LARGE
+			\begin{tabular}{ll}
+			\textbf{Klasse:} &  5b\vspace{1cm}\\
+			\textbf{Name:} &  Karl Heinz Musterschüler\\
+			& geb.: 29.12.1985
+		\end{tabular}
+		\end{center}
+	\end{minipage}
+	}%
+	\newpagedefs
+	\competencyTableMajorSubject{Deutsch}{
+		\competencyMajorSubject{Texte lesen und verstehen}{\gradeOne}
+		\competencyMajorSubject{Texte schreiben}{\gradeTwo}
+		\competencyMajorSubject{Rechtschreib- und Grammatikregeln beherrschen}{\gradeThree}
+	}{blau}
+	\competencyTableMajorSubject{Mathematik}{
+		\competencyMajorSubject{mathematisch argumentieren}{\gradeOne}
+		\competencyMajorSubject{Probleme mathematisch lösen}{\gradeTwo}
+		\competencyMajorSubject{mathematische Darstellungen verwenden}{\gradeThree}
+		\competencyMajorSubject{mit mathematischen Symbolen und Elementen umgehen}{\gradeFour}
+	}{rot}
+	\competencyTableMajorSubject{Englisch}{
+		\competencyMajorSubject{sich mündlich äußern}{\gradeOne}
+		\competencyMajorSubject{kurze Texte verstehen}{\gradeTwo}
+		\competencyMajorSubject{Wörter, Wortgruppen und kurze Texte schreiben}{\gradeThree}
+	}{grün}
+	\competencytable{2. Fremdsprache}{\competencyMinorSubject{Französisch}{\gradeTwo}{\levelSeven}}
+	\competencytable{gesellschaftswissenschaftliche Fächer}{
+		\competencyMinorSubject{Geographie}{\gradeTwo}{rot}
+		\competencyMinorSubject{Geschichte}{\gradeOne}{grün}
+		\competencyMinorSubject{Religion}{\gradeTwo}{blau}
+	}
+	\competencytable{musisch-künstlerische\,/\,sportwissenschaftliche Fächer}{
+		\competencyMinorSubject{Musik}{\gradeTwo}{\levelEight}
+		\competencyMinorSubject{Kunst}{\gradeOne}{\levelEight}
+		\competencyMinorSubject{Sport}{\gradeTwo}{\levelEight}
+	}
+	\competencytable{naturwissenschaftliche Fächer}{
+		\competencyMinorSubject{Projekt Lutherpark (MNT, technisches Werken)}{\gradeOne}{blau}
+	}
+	\competencytable{Sozialkompetenzen}{
+		\competencyMinorSubject{respektvoller Umgang mit Anderen}{\gradeTwo}{}
+		\competencyMinorSubject{regelkonformes Verhalten}{\gradeOne}{}
+		\competencyMinorSubject{Reflexionsfähigkeit}{\gradeTwo}{}
+	}
+	\competencytable{Methodenkompetenzen und Arbeitsverhalten}{
+		\competencyMinorSubject{Mitarbeit}{\gradeOne}{}
+		\competencyMinorSubject{Arbeitsruhe}{\gradeOne}{}
+		\competencyMinorSubject{selbstständiges Arbeiten\,/\,Arbeitsorganisation}{\gradeTwo}{}
+	}
+
+\thispagestyle{mypagestyle}
+\end{document}
