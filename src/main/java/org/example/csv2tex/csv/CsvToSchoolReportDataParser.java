@@ -2,6 +2,7 @@ package org.example.csv2tex.csv;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.example.csv2tex.data.SchoolCompetencyData;
 import org.example.csv2tex.data.SchoolReportData;
@@ -13,21 +14,22 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.example.csv2tex.csv.CsvParsingUtil.isLevelSettingColumn;
 import static org.example.csv2tex.csv.CsvParsingUtil.splitCompetencyColumnHeader;
 
 public class CsvToSchoolReportDataParser {
 
     public List<SchoolReportData> parseCsvFileToReportDataList(File csvFile) throws IOException {
-        Pair<List<String>, List<CSVRecord>> pair = parseToRecords(csvFile);
+        Pair<List<String>, List<List<String>>> pair = parseToRows(csvFile);
         List<String> headers = pair.getLeft();
-        List<CSVRecord> recordList = pair.getRight();
+        List<List<String>> rowList = pair.getRight();
 
-        new CsvValidator().ensureCorrectFormat(headers, recordList);
+        new CsvValidator().ensureCorrectFormat(headers, rowList);
 
         List<SchoolReportData> result = new ArrayList<>();
-        for (CSVRecord rawData : recordList) {
-            SchoolReportData singleStudentData = createReportDataFromRecord(headers, rawData);
+        for (List<String> rawRowData : rowList) {
+            SchoolReportData singleStudentData = createReportDataFromRow(headers, rawRowData);
             result.add(singleStudentData);
         }
         return result;
@@ -36,28 +38,65 @@ public class CsvToSchoolReportDataParser {
     /**
      * @return pair of (header row titles, data rows)
      */
-    private Pair<List<String>, List<CSVRecord>> parseToRecords(File csvFile) throws IOException {
+    private Pair<List<String>, List<List<String>>> parseToRows(File csvFile) throws IOException {
         CSVFormat parser = CSVFormat.DEFAULT.builder()
                 .setTrim(true)
                 .build();
 
-        List<CSVRecord> recordList = new ArrayList<>();
+        List<List<String>> stringListLines = new ArrayList<>();
         try (Reader in = new FileReader(csvFile)) {
-            Iterable<CSVRecord> records = parser.parse(in);
-            records.forEach(recordList::add);
+            Iterable<CSVRecord> csvLines = parser.parse(in);
+
+            for (CSVRecord line : csvLines) {
+
+                stringListLines.add(toStringList(line));
+            }
         }
-        // skip but save first record - header
-        List<String> headerRow = recordList.remove(0).toList();
-        return Pair.of(headerRow, recordList);
+        stripEmptyColumnsRight(stringListLines);
+        // skip but save first row - header
+        List<String> headerRow = stringListLines.remove(0);
+        return Pair.of(headerRow, stringListLines);
     }
 
-    private SchoolReportData createReportDataFromRecord(List<String> headers, CSVRecord rawRowData) {
+    private List<String> toStringList(CSVRecord csvLine) {
+        List<String> stringLine = newArrayList();
+        for (String cell : csvLine) {
+            stringLine.add(cell);
+        }
+        return stringLine;
+    }
+
+
+    private void stripEmptyColumnsRight(List<List<String>> stringListLines) {
+        int lastColumnIndex = stringListLines.get(0).size() - 1;
+
+        outer:
+        while (lastColumnIndex >= 0) {
+            for (List<String> row : stringListLines) {
+                if (!isLastCellEmpty(row)) {
+                    break outer;
+                }
+            }
+            stringListLines.forEach(this::removeLastCell);
+            lastColumnIndex--;
+        }
+    }
+
+    private boolean isLastCellEmpty(List<String> row) {
+        return StringUtils.isEmpty(row.get(row.size() - 1));
+    }
+
+    private void removeLastCell(List<String> row) {
+        row.remove(row.size() - 1);
+    }
+
+    private SchoolReportData createReportDataFromRow(List<String> headers, List<String> rawRowData) {
         SchoolReportData singleStudentData = createBaseData(rawRowData);
         addCompetencyData(singleStudentData, headers, rawRowData);
         return singleStudentData;
     }
 
-    private SchoolReportData createBaseData(CSVRecord rawData) {
+    private SchoolReportData createBaseData(List<String> rawData) {
         SchoolReportData singleStudentData = new SchoolReportData();
         singleStudentData.surName = rawData.get(0);
         singleStudentData.givenName = rawData.get(1);
@@ -72,7 +111,7 @@ public class CsvToSchoolReportDataParser {
         return singleStudentData;
     }
 
-    private void addCompetencyData(SchoolReportData singleStudentData, List<String> headers, CSVRecord rawData) {
+    private void addCompetencyData(SchoolReportData singleStudentData, List<String> headers, List<String> rawData) {
         String currentLevel = "";
         for (int i = 10; i < rawData.size(); i++) {
             String columnHeader = headers.get(i);
