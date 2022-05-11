@@ -54,7 +54,7 @@ public class CsvValidator {
         if (lengthChecksPassed) {
             return;
         }
-        checkFaultsWithHeuristics(headerRowLength, rowLengths, rowList);
+        throwForFailedLengthCheckUsingHeuristics(headerRowLength, rowLengths, rowList);
     }
 
     // checks cases where all content rows differ from header row
@@ -87,7 +87,7 @@ public class CsvValidator {
     /**
      * Heuristic: determine whether to show "some data rows are wrong" or "the header row is wrong"
      */
-    private void checkFaultsWithHeuristics(float headerRowLength, Map<Integer, Integer> rowLengths, List<List<String>> rowList) {
+    private void throwForFailedLengthCheckUsingHeuristics(float headerRowLength, Map<Integer, Integer> rowLengths, List<List<String>> rowList) {
         float contentRowsShorterThanHeader = 0f;
         float contentRowsLongerThanHeader = 0f;
         for (Map.Entry<Integer, Integer> entry : rowLengths.entrySet()) {
@@ -98,20 +98,29 @@ public class CsvValidator {
             }
         }
 
-        // more than 20% / at least 10 rows off --> assume header error
         float ratioWrongLengthRows = (contentRowsLongerThanHeader + contentRowsShorterThanHeader) / rowList.size();
         if (ratioWrongLengthRows > 0.20f || contentRowsShorterThanHeader + contentRowsLongerThanHeader > 9) {
-            if (contentRowsLongerThanHeader > contentRowsShorterThanHeader) {
-                throw new InvalidCsvException(HEADER_SHORTER_THAN_CONTENT, getListOfLongerRows(headerRowLength, rowList));
-            } else {
-                throw new InvalidCsvException(HEADER_LONGER_THAN_CONTENT, getListOfShorterRows(headerRowLength, rowList));
-            }
-        } else { // assume content error
-            if (contentRowsLongerThanHeader > contentRowsShorterThanHeader) {
-                throw new InvalidCsvException(CONTENT_ROW_LONGER_THAN_HEADER, getListOfLongerRows(headerRowLength, rowList));
-            } else {
-                throw new InvalidCsvException(CONTENT_ROW_SHORTER_THAN_HEADER, getListOfShorterRows(headerRowLength, rowList));
-            }
+            // more than 20% / at least 10 rows off --> assume header error
+            throwExceptionForHeaderIssue(headerRowLength, rowList, contentRowsShorterThanHeader, contentRowsLongerThanHeader);
+        } else {
+            // assume content error
+            throwExceptionForContentIssue(headerRowLength, rowList, contentRowsShorterThanHeader, contentRowsLongerThanHeader);
+        }
+    }
+
+    private void throwExceptionForContentIssue(float headerRowLength, List<List<String>> rowList, float contentRowsShorterThanHeader, float contentRowsLongerThanHeader) {
+        if (contentRowsLongerThanHeader > contentRowsShorterThanHeader) {
+            throw new InvalidCsvException(CONTENT_ROW_LONGER_THAN_HEADER, getListOfLongerRows(headerRowLength, rowList));
+        } else {
+            throw new InvalidCsvException(CONTENT_ROW_SHORTER_THAN_HEADER, getListOfShorterRows(headerRowLength, rowList));
+        }
+    }
+
+    private void throwExceptionForHeaderIssue(float headerRowLength, List<List<String>> rowList, float contentRowsShorterThanHeader, float contentRowsLongerThanHeader) {
+        if (contentRowsLongerThanHeader > contentRowsShorterThanHeader) {
+            throw new InvalidCsvException(HEADER_SHORTER_THAN_CONTENT, getListOfLongerRows(headerRowLength, rowList));
+        } else {
+            throw new InvalidCsvException(HEADER_LONGER_THAN_CONTENT, getListOfShorterRows(headerRowLength, rowList));
         }
     }
 
