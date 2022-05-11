@@ -469,6 +469,16 @@ public class CsvToSchoolReportDataParserTest {
     }
 
     @Test
+    public void parseCsvFileToReportDataList_ifContentTooLongByCountRelativeProportion_throwsException() {
+        File file = getFile("csv/student_data_faulty_content_rows_too_long_relative_blaming_content.csv");
+
+        assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
+                .isInstanceOf(InvalidCsvException.class)
+                .hasMessageContaining("content rows are longer than the header")
+                .hasMessageMatching(".*\\b1\\b.*");
+    }
+
+    @Test
     public void parseCsvFileToReportDataList_ifHeaderTooLongByAbsoluteCount_throwsException() {
         File file = getFile("csv/student_data_faulty_content_rows_too_short_absolute_blaming_header.csv");
 
@@ -485,6 +495,16 @@ public class CsvToSchoolReportDataParserTest {
         assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
                 .isInstanceOf(InvalidCsvException.class)
                 .hasMessageContaining("content rows are shorter than the header")
+                .hasMessageMatching(".*\\b1,2,3,4,5,6,7,8,9\\b.*");
+    }
+
+    @Test
+    public void parseCsvFileToReportDataList_ifContentTooLongByAbsoluteCount_throwsException() {
+        File file = getFile("csv/student_data_faulty_content_rows_too_long_absolute_blaming_content.csv");
+
+        assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
+                .isInstanceOf(InvalidCsvException.class)
+                .hasMessageContaining("content rows are longer than the header")
                 .hasMessageMatching(".*\\b1,2,3,4,5,6,7,8,9\\b.*");
     }
 
