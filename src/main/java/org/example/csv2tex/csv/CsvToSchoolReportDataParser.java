@@ -108,12 +108,13 @@ public class CsvToSchoolReportDataParser {
         singleStudentData.absenceDaysUnauthorized = rawData.get(7);
         singleStudentData.absenceHoursTotal = rawData.get(8);
         singleStudentData.absenceHoursUnauthorized = rawData.get(9);
+        singleStudentData.certificateText = rawData.get(10);
         return singleStudentData;
     }
 
     private void addCompetencyData(SchoolReportData singleStudentData, List<String> headers, List<String> rawData) {
         String currentLevel = "";
-        for (int i = 10; i < rawData.size(); i++) {
+        for (int i = 11; i < rawData.size(); i++) {
             String columnHeader = headers.get(i);
             String cellValue = rawData.get(i);
 

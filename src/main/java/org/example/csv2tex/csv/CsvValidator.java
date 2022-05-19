@@ -23,13 +23,13 @@ public class CsvValidator {
 
 
     private void ensureBaseColumns(List<String> headers) {
-        if (headers.size() < 10) {
+        if (headers.size() < 11) {
             throw new InvalidCsvException(TOO_FEW_COLUMNS);
         }
     }
 
     private void ensureLevelColumn(List<String> headers) {
-        int baseDataLength = 10;
+        int baseDataLength = 11;
         boolean levelColumnFound = false;
         for (String columnName : headers) {
             if (isLevelSettingColumn(columnName)) {
@@ -164,7 +164,7 @@ public class CsvValidator {
     private void ensureCompleteCompetencyHeaders(List<String> headers) {
         // check every column after the base data columns
         List<Integer> invalidHeaderColumnsOneBased = new ArrayList<>();
-        for (int i = 10; i < headers.size(); i++) {
+        for (int i = 11; i < headers.size(); i++) {
             String header = headers.get(i);
             if (!isLevelSettingColumn(header)) {
                 if (splitCompetencyColumnHeader(header).length < 2) {
