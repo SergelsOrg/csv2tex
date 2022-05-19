@@ -59,9 +59,10 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
     private static final String SPECIAL_GRADE_VALUE_GRADE_NOT_GIVEN = "nb";
     private static final String SPECIAL_GRADE_VALUE_GRADE_IN_SECOND_HALF_YEAR = "hj";
 
-    private static final String GERMAN_LEVEL_RED = "rot";
-    private static final String GERMAN_LEVEL_BLUE = "blau";
-    private static final String GERMAN_LEVEL_GREEN = "grün";
+    private static final String LEVEL_RED = "\\levelThree";
+    private static final String LEVEL_BLUE = "\\levelTwo";
+    private static final String LEVEL_GREEN = "\\levelOne";
+    private static final String LEVEL_None = "\\noLevel";
 
     @Override
     public String replaceTableData(SchoolReportData schoolReportData, String texFileContent) {
@@ -73,12 +74,14 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
         }
 
         String currentSubject = schoolReportData.schoolCompetencies.get(0).schoolSubject;
+        String currentLevel = schoolReportData.schoolCompetencies.get(0).level;
         List<SchoolCompetencyData> currentSubjectCompetencyList = new ArrayList<>();
 
         for (SchoolCompetencyData schoolCompetencyData : schoolReportData.schoolCompetencies) {
-            if (isStartOfNewSubject(currentSubject, schoolCompetencyData)) {
+            if (isStartOfNewSubject(currentSubject, schoolCompetencyData)  || hasTableBreakInSubject(currentLevel, schoolCompetencyData)) {
                 renderCompletedCompetencyListOfCurrentSubject(partOfYear, tables, currentSubjectCompetencyList);
                 currentSubject = schoolCompetencyData.schoolSubject;
+                currentLevel = schoolCompetencyData.level;
                 currentSubjectCompetencyList.clear();
             }
             currentSubjectCompetencyList.add(schoolCompetencyData);
@@ -92,6 +95,10 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
         return !currentSubject.equals(schoolCompetencyData.schoolSubject);
     }
 
+    private boolean hasTableBreakInSubject(String currentLevel, SchoolCompetencyData schoolCompetencyData) {
+        return !currentLevel.equals(schoolCompetencyData.level);
+    }
+
     private void renderCompletedCompetencyListOfCurrentSubject(String partOfYear, StringBuilder tables, List<SchoolCompetencyData> currentSubjectCompetencyList) {
         tables.append(makeTableEntry(currentSubjectCompetencyList, partOfYear));
     }
@@ -102,7 +109,6 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
         SchoolCompetencyData firstSchoolCompetencyData = competencyList.get(0);
 
         if (shouldRenderAsMajorSubject(firstSchoolCompetencyData, partOfYear)) {
-
             String competencyTableMajorSubjectCmd = COMMAND_CALL_COMPETENCY_TABLE_MAJOR_SUBJECT
                     .replace(COMMAND_PLACEHOLDER_SUBJECT, firstSchoolCompetencyData.schoolSubject)
                     .replace(COMMAND_PLACEHOLDER_LEVEL, makeLevel(firstSchoolCompetencyData.level))
@@ -208,11 +214,11 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
     String makeLevel(String level) {
         switch (level) {
             case "1":
-                return GERMAN_LEVEL_RED;
+                return LEVEL_RED;
             case "2":
-                return GERMAN_LEVEL_BLUE;
+                return LEVEL_BLUE;
             case "3":
-                return GERMAN_LEVEL_GREEN;
+                return LEVEL_GREEN;
             case "7":
                 return "\\levelSeven";
             case "8":
@@ -220,7 +226,7 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
             case "9":
                 return "\\levelNine";
             default:
-                return "";
+                return LEVEL_None;
         }
     }
 }
