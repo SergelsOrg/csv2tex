@@ -16,9 +16,9 @@
 
 
 \newcommand\levelRow[1]{\multicolumn{5}{|c|}{#1}\\\hline}
-\newcommand{\levelOne}{\levelRow{\centering Du hast vorwiegend auf Niveau {\color{green} Grün} gearbeitet.}}
-\newcommand{\levelTwo}{\levelRow{\centering Du hast vorwiegend auf Niveau {\color{blue} Blau} gearbeitet.}}
-\newcommand{\levelThree}{\levelRow{\centering Du hast vorwiegend auf Niveau {\color{red} Rot} gearbeitet.}}
+\newcommand{\levelOne}{\levelRow{\centering Du hast vorwiegend auf Niveau {\color{greenEnglish} Anforderungsebene 1} gearbeitet.}}
+\newcommand{\levelTwo}{\levelRow{\centering Du hast vorwiegend auf Niveau {\color{blue} Anforderungsebene 2} gearbeitet.}}
+\newcommand{\levelThree}{\levelRow{\centering Du hast vorwiegend auf Niveau {\color{red} Anforderungsebene 3} gearbeitet.}}
 \newcommand{\levelSeven}{\levelRow{\centering bis Klasse 7 ohne Niveau}}
 \newcommand{\levelEight}{\levelRow{\centering bis Klasse 8 ohne Niveau}}
 \newcommand{\levelNine}{\levelRow{\centering bis Klasse 9 ohne Niveau}}
@@ -62,6 +62,13 @@
 		outer=2cm}
 	\setlength{\headsep}{-0.4cm}
 	\pagestyle{fancy}
+}
+
+\newcommand\formatText[1]{
+	\noexpandarg
+	\StrBefore{#1}{\\}[\studentIntro]
+	\StrBehind{#1}{\\}[\certText]
+	{\Large\setstretch{1.5}\textbf{\LARGE\studentIntro\vspace{.5em}\\}\certText\par}
 }
 
 \pagestyle{fancy}
