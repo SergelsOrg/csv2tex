@@ -40,7 +40,7 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
                 .replace(TEX_TEMPLATE_PLACEHOLDER_ABSENCE_DAYS_UNAUTHORIZED, schoolReportData.absenceDaysUnauthorized)
                 .replace(TEX_TEMPLATE_PLACEHOLDER_ABSENCE_HOURS_TOTAL, schoolReportData.absenceHoursTotal)
                 .replace(TEX_TEMPLATE_PLACEHOLDER_ABSENCE_HOURS_UNAUTHORIZED, schoolReportData.absenceHoursUnauthorized)
-                .replace(TEX_TEMPLATE_PLACEHOLDER_CERTIFICATE_TEXT, schoolReportData.certificateText.replaceAll("\r\n|\r|\n", "\\\\"));
+                .replace(TEX_TEMPLATE_PLACEHOLDER_CERTIFICATE_TEXT, schoolReportData.certificateText.replaceAll("\r\n|\r|\n", "\\\\\\\\\n"));
 
         return texFileContent;
     }
