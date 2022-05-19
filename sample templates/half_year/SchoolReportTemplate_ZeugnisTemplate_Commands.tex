@@ -1,5 +1,5 @@
 \newcommand\competencylevel{
-	\begin{tabularx}{\linewidth}{|X|C{.07\linewidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
+	\begin{tabularx}{\linewidth}{|X|C{\tableGradeWidthLevel}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
 		\hline
 		\textbf{Lernziele\,/\,Kompetenzen des Fachbereiches} & \rot{\parbox{3cm}{\thead{Niveaustufe\\überwiegend}}} & \rot{\thead{sehr gut erfüllt}} & \rot{\thead{gut erfüllt}} & \rot{\thead{teilweise}} & \rot{\thead{nicht erfüllt}} \\
 		\hline
@@ -17,10 +17,14 @@
 \newcommand{\gradeDefault}{&  &  &  & \\\hline}
 
 
-\newcommand\levelRow[1]{\phantom{PH} & \multicolumn{1}{m{.07\linewidth}|}{\centering #1} & \multicolumn{4}{c|}{}\\\hline}
-\newcommand{\levelSeven}{\multicolumn{1}{m{.07\linewidth}|}{\centering\tiny bis Klasse 7 ohne Niveau}}
-\newcommand{\levelEight}{\multicolumn{1}{m{.07\linewidth}|}{\centering\tiny bis Klasse 8 ohne Niveau}}
-\newcommand{\levelNine}{\multicolumn{1}{m{.07\linewidth}|}{\centering\tiny bis Klasse 9 ohne Niveau}}
+\newcommand\levelRow[1]{\phantom{PH} & \multicolumn{1}{m{\tableGradeWidthLevel}|}{\centering #1} & \multicolumn{4}{c|}{}\\\hline}
+\newcommand{\levelOne}{\multicolumn{1}{m{\tableGradeWidthLevel}|}{grün}}
+\newcommand{\levelTwo}{\multicolumn{1}{m{\tableGradeWidthLevel}|}{blau}}
+\newcommand{\levelThree}{\multicolumn{1}{m{\tableGradeWidthLevel}|}{rot}}
+\newcommand{\levelSeven}{\multicolumn{1}{m{\tableGradeWidthLevel}|}{\centering\tiny bis Klasse 7 ohne Niveau}}
+\newcommand{\levelEight}{\multicolumn{1}{m{\tableGradeWidthLevel}|}{\centering\tiny bis Klasse 8 ohne Niveau}}
+\newcommand{\levelNine}{\multicolumn{1}{m{\tableGradeWidthLevel}|}{\centering\tiny bis Klasse 9 ohne Niveau}}
+\newcommand{\levelNone}{\multicolumn{1}{m{\tableGradeWidthLevel}|}{}}
 
 %\setlength{\extrarowheight}{0pt}
 \newcommand\competencyMajorSubject[2]{\makecell[{{>{\parindent0em}p{\linewidth}}}]{#1} & #2}
@@ -28,7 +32,7 @@
 
 \newcommand\competencyTableMajorSubject[3]{
 	\renewcommand{\arraystretch}{1.5}
-	\begin{tabularx}{\linewidth}{|K{X}|C{.07\linewidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
+	\begin{tabularx}{\linewidth}{|K{X}|C{\tableGradeWidthLevel}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
 		\hline
 		\multicolumn{6}{|>{\columncolor{egelightblue}}l|}{\textit{\textbf{#1}}} \\
 		\hline
@@ -37,7 +41,7 @@
 	\end{tabularx}\vspace{2pt}
 }
 \newcommand\competencytable[2]{
-	\begin{tabularx}{\linewidth}{|K{X}|C{.07\linewidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
+	\begin{tabularx}{\linewidth}{|K{X}|C{\tableGradeWidthLevel}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
 		\hline
 		\multicolumn{6}{|>{\columncolor{egelightblue}}l|}{\textit{\textbf{#1}}} \\
 		\hline
