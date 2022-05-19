@@ -125,7 +125,7 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
     }
 
     private boolean shouldRenderAsMajorSubject(SchoolCompetencyData firstSchoolCompetencyData, String partOfYear) {
-        return partOfYear.equals("Endjahr") ||
+        return partOfYear.equals("Schuljahr") ||
                 partOfYear.equalsIgnoreCase("End of year") ||
                 firstSchoolCompetencyData.schoolSubject.equals("Mathematik") ||
                 firstSchoolCompetencyData.schoolSubject.equalsIgnoreCase("Mathematics") ||
@@ -147,7 +147,7 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
                 appendUnderlined(competency, schoolCompetencyData.schoolSubCompetency);
             }
             if (!schoolCompetencyData.description.isEmpty()) {
-                String temp = schoolCompetencyData.description.replaceAll("\r\n|\r|\n", "\\" + TEX_TABLE_LINE_BREAK);
+                String temp = schoolCompetencyData.description.replaceAll("\r\n|\r|\n", "\\\\" + TEX_TABLE_LINE_BREAK);
                 competency.append(TEX_TABLE_LINE_BREAK).append(temp);
             }
             String competencyReplaced = COMMAND_CALL_COMPETENCY_MAJOR_SUBJECT
@@ -179,7 +179,7 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
                 competency.append(TEX_TABLE_LINE_BREAK).append(schoolCompetencyData.schoolSubCompetency);
             }
             if (!schoolCompetencyData.description.isEmpty()) {
-                competency.append(TEX_TABLE_LINE_BREAK).append(schoolCompetencyData.description.replaceAll("\\r\\n|\\r|\\n", TEX_TABLE_LINE_BREAK));
+                competency.append(TEX_TABLE_LINE_BREAK).append(schoolCompetencyData.description.replaceAll("\r\n|\r|\n", "\\\\" + TEX_TABLE_LINE_BREAK));
             }
             String competencyReplaced = COMMAND_CALL_COMPETENCY_MINOR_SUBJECT
                     .replace(COMMAND_PLACEHOLDER_COMPETENCY, competency)
