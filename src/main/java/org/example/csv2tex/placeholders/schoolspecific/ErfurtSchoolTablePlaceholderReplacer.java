@@ -78,7 +78,7 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
         List<SchoolCompetencyData> currentSubjectCompetencyList = new ArrayList<>();
 
         for (SchoolCompetencyData schoolCompetencyData : schoolReportData.schoolCompetencies) {
-            if (isStartOfNewSubject(currentSubject, schoolCompetencyData)  || hasTableBreakInSubject(currentLevel, schoolCompetencyData)) {
+            if (isStartOfNewSubject(currentSubject, schoolCompetencyData)  || (hasTableBreakInSubject(currentLevel, schoolCompetencyData) && !schoolReportData.partOfYear.equals("Halbjahr"))) {
                 renderCompletedCompetencyListOfCurrentSubject(partOfYear, tables, currentSubjectCompetencyList);
                 currentSubject = schoolCompetencyData.schoolSubject;
                 currentLevel = schoolCompetencyData.level;
