@@ -33,6 +33,11 @@ public class PlaceholderReplacerImplTest extends AbstractReplacerTest {
                 "5\n" +
                 "7\n" +
                 "3\n" +
+                "Text1\\\\\n" +
+                "Line2\\\\\n" +
+                "Line3\\\\\n" +
+                "\\\\\n" +
+                "Line4\n" +
                 "\n" +
                 "#tables\n" +
                 "\n" +
@@ -59,6 +64,11 @@ public class PlaceholderReplacerImplTest extends AbstractReplacerTest {
                 "5\n" +
                 "7\n" +
                 "3\n" +
+                "Text1\\\\\n" +
+                "Line2\\\\\n" +
+                "Line3\\\\\n" +
+                "\\\\\n" +
+                "Line4\n" +
                 "\n" +
                 "\\competencyTableMajorSubject{Mathematik}{\\competencyMajorSubject{\\textbf{Rechnen}\n" +
                 "\\tableLineBreak\n" +
@@ -70,10 +80,10 @@ public class PlaceholderReplacerImplTest extends AbstractReplacerTest {
                 "\\uline{Subtraktion}\n" +
                 "\\tableLineBreak\n" +
                 "Kann subtrahieren.}{\\gradeTwo}\n" +
-                "}{rot}\n" +
+                "}{\\levelThree}\n" +
                 "\\competencytable{Fremdsprache}{\\competencyMinorSubject{Französisch\\tableLineBreak\n" +
                 "sc\\tableLineBreak\n" +
-                "des}{\\gradeOne}{grün}\n" +
+                "des}{\\gradeOne}{\\levelOne}\n" +
                 "}\n" +
                 "\n" +
                 "\n" +

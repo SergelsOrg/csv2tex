@@ -39,7 +39,7 @@ public class SchoolReportData {
 
     public String absenceHoursUnauthorized;
 
-    public String certificateText;
+    public String certificateText="";
 
     public List<SchoolCompetencyData> schoolCompetencies = new ArrayList<>();
 
