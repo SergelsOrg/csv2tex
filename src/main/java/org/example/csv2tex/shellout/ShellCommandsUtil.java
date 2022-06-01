@@ -79,7 +79,7 @@ public class ShellCommandsUtil {
     }
 
     public ShellResult runPdfUnite(String outputFile, List<String> filesToMerge) {
-        List<String> shellCommand = new ArrayList(filesToMerge);
+        List<String> shellCommand = new ArrayList<>(filesToMerge);
         shellCommand.add(0, "pdfunite");
         shellCommand.add(outputFile);
         return runShellCommand(shellCommand.toArray(new String[]{}));
@@ -120,7 +120,7 @@ public class ShellCommandsUtil {
 
     private Optional<String> getContentFromStream(InputStream inputStream) {
         try {
-            String output = String.join("", IOUtils.readLines(inputStream, StandardCharsets.UTF_8));
+            String output = String.join("\n", IOUtils.readLines(inputStream, StandardCharsets.UTF_8));
             return Optional.of(output);
         } catch (IOException ignored) {
             return Optional.empty();
