@@ -20,6 +20,8 @@ import static org.example.csv2tex.csv.CsvParsingUtil.splitCompetencyColumnHeader
 
 public class CsvToSchoolReportDataParser {
 
+    public static final int NUMBER_OF_FIXED_CSV_COLUMNS = 11;
+
     public List<SchoolReportData> parseCsvFileToReportDataList(File csvFile) throws IOException {
         Pair<List<String>, List<List<String>>> pair = parseToRows(csvFile);
         List<String> headers = pair.getLeft();
@@ -114,7 +116,7 @@ public class CsvToSchoolReportDataParser {
 
     private void addCompetencyData(SchoolReportData singleStudentData, List<String> headers, List<String> rawData) {
         String currentLevel = "";
-        for (int i = 11; i < rawData.size(); i++) {
+        for (int i = NUMBER_OF_FIXED_CSV_COLUMNS; i < rawData.size(); i++) {
             String columnHeader = headers.get(i);
             String cellValue = rawData.get(i);
 

@@ -10,6 +10,7 @@ import java.util.Map;
 import static java.util.stream.Collectors.joining;
 import static org.example.csv2tex.csv.CsvParsingUtil.isLevelSettingColumn;
 import static org.example.csv2tex.csv.CsvParsingUtil.splitCompetencyColumnHeader;
+import static org.example.csv2tex.csv.CsvToSchoolReportDataParser.NUMBER_OF_FIXED_CSV_COLUMNS;
 import static org.example.csv2tex.exception.InvalidCsvCause.*;
 
 public class CsvValidator {
@@ -23,13 +24,12 @@ public class CsvValidator {
 
 
     private void ensureBaseColumns(List<String> headers) {
-        if (headers.size() < 11) {
+        if (headers.size() < NUMBER_OF_FIXED_CSV_COLUMNS) {
             throw new InvalidCsvException(TOO_FEW_COLUMNS);
         }
     }
 
     private void ensureLevelColumn(List<String> headers) {
-        int baseDataLength = 11;
         boolean levelColumnFound = false;
         for (String columnName : headers) {
             if (isLevelSettingColumn(columnName)) {
@@ -37,7 +37,7 @@ public class CsvValidator {
                 break;
             }
         }
-        if (headers.size() > baseDataLength && !levelColumnFound) {
+        if (headers.size() > NUMBER_OF_FIXED_CSV_COLUMNS && !levelColumnFound) {
             throw new InvalidCsvException(HEADER_NO_LEVEL_DEFINED);
         }
     }
@@ -164,7 +164,7 @@ public class CsvValidator {
     private void ensureCompleteCompetencyHeaders(List<String> headers) {
         // check every column after the base data columns
         List<Integer> invalidHeaderColumnsOneBased = new ArrayList<>();
-        for (int i = 11; i < headers.size(); i++) {
+        for (int i = NUMBER_OF_FIXED_CSV_COLUMNS; i < headers.size(); i++) {
             String header = headers.get(i);
             if (!isLevelSettingColumn(header)) {
                 if (splitCompetencyColumnHeader(header).length < 2) {
