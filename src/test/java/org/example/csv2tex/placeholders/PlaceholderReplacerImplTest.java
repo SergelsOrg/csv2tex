@@ -81,7 +81,7 @@ public class PlaceholderReplacerImplTest extends AbstractReplacerTest {
                 "\\tableLineBreak\n" +
                 "Kann subtrahieren.}{\\gradeTwo}\n" +
                 "}{\\levelThree}\n" +
-                "\\competencytable{Fremdsprache}{\\competencyMinorSubject{Französisch\\tableLineBreak\n" +
+                "\\competencyTable{Fremdsprache}{\\competencyMinorSubject{Französisch\\tableLineBreak\n" +
                 "sc\\tableLineBreak\n" +
                 "des}{\\gradeOne}{\\levelOne}\n" +
                 "}\n" +

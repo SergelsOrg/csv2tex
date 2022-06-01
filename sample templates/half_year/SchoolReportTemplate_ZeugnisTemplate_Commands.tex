@@ -1,4 +1,4 @@
-\newcommand\competencylevel{
+\newcommand\competencyLevel{
 	\begin{tabularx}{\linewidth}{|X|C{\tableGradeWidthLevel}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
 		\hline
 		\textbf{Lernziele\,/\,Kompetenzen des Fachbereiches} & \rot{\parbox{3cm}{\thead{Niveaustufe\\überwiegend}}} & \rot{\thead{sehr gut erfüllt}} & \rot{\thead{gut erfüllt}} & \rot{\thead{teilweise}} & \rot{\thead{nicht erfüllt}} \\
@@ -40,7 +40,7 @@
 		\levelRow{#3}
 	\end{tabularx}\vspace{2pt}
 }
-\newcommand\competencytable[2]{\small
+\newcommand\competencyTable[2]{\small
 	\begin{tabularx}{\linewidth}{|K{X}|C{\tableGradeWidthLevel}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
 		\hline
 		\multicolumn{6}{|>{\columncolor{egelightblue}}l|}{\textit{\textbf{#1}}} \\
@@ -62,10 +62,10 @@
 
 
 \pagestyle{fancy}
-\chead{\competencylevel}
+\chead{\competencyLevel}
 
 \fancypagestyle{mypagestyle}{%
-	\chead{\competencylevel}
+	\chead{\competencyLevel}
 	\cfoot{\small\raggedright\textit{Legende}:	Niveau Grün = Hauptschule ( AE I ), Niveau Blau = Realschule ( AE II ), Niveau Rot = Gymnasium ( AE III ),	n.b. = nicht bewertet}
 }
 \renewcommand{\headrulewidth}{0pt}

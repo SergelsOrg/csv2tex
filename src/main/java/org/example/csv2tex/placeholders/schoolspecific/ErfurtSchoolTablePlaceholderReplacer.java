@@ -18,7 +18,7 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
     private static final String COMMAND_PLACEHOLDER_TEXT = "#TEXT";
 
     private static final String COMMAND_CALL_COMPETENCY_TABLE =
-            "\\competencytable{" +
+            "\\competencyTable{" +
                     COMMAND_PLACEHOLDER_SUBJECT +
                     "}{" +
                     COMMAND_PLACEHOLDER_COMPETENCIES +
