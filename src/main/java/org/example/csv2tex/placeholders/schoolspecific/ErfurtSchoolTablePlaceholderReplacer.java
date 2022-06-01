@@ -8,6 +8,8 @@ import org.example.csv2tex.placeholders.TablePlaceholderReplacer;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.regex.Matcher.quoteReplacement;
+
 public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderReplacer {
 
     private static final String COMMAND_PLACEHOLDER_SUBJECT = "#SUBJECT";
@@ -54,7 +56,7 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
                     COMMAND_PLACEHOLDER_TEXT +
                     "}\n";
     private static final String TEX_TABLE_LINE_BREAK = "\\tableLineBreak\n";
-    private static final String TEX_TABLE_LINE_BREAK_REPLACEMENT = "\\\\" + TEX_TABLE_LINE_BREAK;
+    private static final String TEX_TABLE_LINE_BREAK_REPLACEMENT = quoteReplacement(TEX_TABLE_LINE_BREAK);
     private static final String SPECIAL_GRADE_VALUE_GRADE_NOT_GIVEN = "nb";
     private static final String SPECIAL_GRADE_VALUE_GRADE_IN_SECOND_HALF_YEAR = "hj";
 
@@ -178,7 +180,9 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
                 competency.append(TEX_TABLE_LINE_BREAK).append(schoolCompetencyData.schoolSubCompetency);
             }
             if (!schoolCompetencyData.description.isEmpty()) {
-                competency.append(TEX_TABLE_LINE_BREAK).append(schoolCompetencyData.description.replaceAll("\r\n|\r|\n", TEX_TABLE_LINE_BREAK_REPLACEMENT));
+                competency.append(TEX_TABLE_LINE_BREAK)
+                        .append(schoolCompetencyData.description
+                        .replaceAll("\r\n|\r|\n", TEX_TABLE_LINE_BREAK_REPLACEMENT));
             }
             String competencyReplaced = COMMAND_CALL_COMPETENCY_MINOR_SUBJECT
                     .replace(COMMAND_PLACEHOLDER_COMPETENCY, competency)
