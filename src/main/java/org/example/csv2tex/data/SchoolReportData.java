@@ -21,7 +21,7 @@ public class SchoolReportData {
     /**
      * E.g., if your school does half terms, it could be 1 or 2
      * <p>
-     * In the current version, will be expected as "Endjahr" for end of year
+     * In the current version, will be expected as "Schuljahr" for end of year
      */
     public String partOfYear;
 
