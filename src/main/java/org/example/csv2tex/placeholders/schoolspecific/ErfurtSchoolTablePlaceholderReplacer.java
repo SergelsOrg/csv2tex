@@ -79,7 +79,7 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
         List<SchoolCompetencyData> currentSubjectCompetencyList = new ArrayList<>();
 
         for (SchoolCompetencyData schoolCompetencyData : schoolReportData.schoolCompetencies) {
-            if (isStartOfNewSubject(currentSubject, schoolCompetencyData) || (hasTableBreakInSubject(currentLevel, schoolCompetencyData) && !schoolReportData.partOfYear.equals("Halbjahr"))) {
+            if (shouldStartNewSection(schoolReportData, currentSubject, currentLevel, schoolCompetencyData)) {
                 renderCompletedCompetencyListOfCurrentSubject(partOfYear, tables, currentSubjectCompetencyList);
                 currentSubject = schoolCompetencyData.schoolSubject;
                 currentLevel = schoolCompetencyData.level;
@@ -92,12 +92,21 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
         return texFileContent;
     }
 
+    private boolean shouldStartNewSection(SchoolReportData schoolReportData, String currentSubject, String currentLevel, SchoolCompetencyData schoolCompetencyData) {
+        return isStartOfNewSubject(currentSubject, schoolCompetencyData) ||
+                (hasTableBreakInSubject(currentLevel, schoolCompetencyData) && isEndYear(schoolReportData));
+    }
+
     private boolean isStartOfNewSubject(String currentSubject, SchoolCompetencyData schoolCompetencyData) {
         return !currentSubject.equals(schoolCompetencyData.schoolSubject);
     }
 
     private boolean hasTableBreakInSubject(String currentLevel, SchoolCompetencyData schoolCompetencyData) {
         return !currentLevel.equals(schoolCompetencyData.level);
+    }
+
+    private boolean isEndYear(SchoolReportData schoolReportData) {
+        return !schoolReportData.partOfYear.equals("Halbjahr");
     }
 
     private void renderCompletedCompetencyListOfCurrentSubject(String partOfYear, StringBuilder tables, List<SchoolCompetencyData> currentSubjectCompetencyList) {
@@ -182,7 +191,7 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
             if (!schoolCompetencyData.description.isEmpty()) {
                 competency.append(TEX_TABLE_LINE_BREAK)
                         .append(schoolCompetencyData.description
-                        .replaceAll("\r\n|\r|\n", TEX_TABLE_LINE_BREAK_REPLACEMENT));
+                                .replaceAll("\r\n|\r|\n", TEX_TABLE_LINE_BREAK_REPLACEMENT));
             }
             String competencyReplaced = COMMAND_CALL_COMPETENCY_MINOR_SUBJECT
                     .replace(COMMAND_PLACEHOLDER_COMPETENCY, competency)
