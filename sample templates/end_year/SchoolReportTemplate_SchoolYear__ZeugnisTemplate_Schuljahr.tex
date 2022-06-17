@@ -5,6 +5,11 @@
 \setlength\cellspacetoplimit{2pt}
 \setlength\cellspacebottomlimit{2pt}
 
+\newcommand{\tableGradeWidth}{.050\linewidth}
+\newcommand{\tableGradeWidthLevel}{.060\linewidth}
+\newcommand{\tableLineBreak}{\vspace{.2em}\newline}
+\newcommand{\schoolReportDay}{11.02.2022}
+
 \input{SchoolReportTemplate_ZeugnisTemplate_Commands.tex}
 
 \begin{document}
@@ -30,13 +35,14 @@
 			\end{center}
 		\end{minipage}
 	}%
+	
+	\newpage
+	\phantom{~}
+	\newpage
+		\formatText{#certificateText}
+	\newOptionalNewPage{4}
+	\newOptionalNewPage{4}
 
-	\newpage
-	\phantom{~}
-	\newpage
-	\formatText{#certificateText}
-	\newpage
-	\phantom{~}
 	\newpagedefs
 
 #tables
@@ -71,7 +77,7 @@
 			\end{tabularx}
 		\end{minipage}
 	}%
-	\newpage
-	\thispagestyle{plain}
-	\phantom{~}
+%	\newpage
+%	\thispagestyle{plain}
+%	\phantom{~}
 \end{document}

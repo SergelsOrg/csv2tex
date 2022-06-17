@@ -1,12 +1,10 @@
-\newcommand\competencyLevel{
+\newcommand\competencylevel{
 	\begin{tabularx}{\linewidth}{|X|C{\tableGradeWidthLevel}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
 		\hline
 		\textbf{Lernziele\,/\,Kompetenzen des Fachbereiches} & \rot{\parbox{3cm}{\thead{Niveaustufe\\überwiegend}}} & \rot{\thead{sehr gut erfüllt}} & \rot{\thead{gut erfüllt}} & \rot{\thead{teilweise}} & \rot{\thead{nicht erfüllt}} \\
 		\hline
 	\end{tabularx}
 }
-
-\newcommand{\schoolReportDay}{11.02.2022}
 
 \newcommand{\gradeOne}{& $\boxtimes$ & $\Box$ & $\Box$ & $\Box$\\\hline}
 \newcommand{\gradeTwo}{& $\Box$ & $\boxtimes$ & $\Box$ & $\Box$\\\hline}
@@ -40,7 +38,7 @@
 		\levelRow{#3}
 	\end{tabularx}\vspace{2pt}
 }
-\newcommand\competencyTable[2]{\small
+\newcommand\competencytable[2]{\small
 	\begin{tabularx}{\linewidth}{|K{X}|C{\tableGradeWidthLevel}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
 		\hline
 		\multicolumn{6}{|>{\columncolor{egelightblue}}l|}{\textit{\textbf{#1}}} \\
@@ -53,7 +51,7 @@
 \newcommand{\newpagedefs}{
 	\newpage
 	\newgeometry{headheight=106pt,top=7cm,
-		bottom=2cm,
+		bottom=2cm, 
 		inner=2cm,
 		outer=2cm}
 	\setlength{\headsep}{-0.4cm}
@@ -62,14 +60,10 @@
 
 
 \pagestyle{fancy}
-\chead{\competencyLevel}
+\chead{\competencylevel}
 
 \fancypagestyle{mypagestyle}{%
-	\chead{\competencyLevel}
+	\chead{\competencylevel}
 	\cfoot{\small\raggedright\textit{Legende}:	Niveau Grün = Hauptschule ( AE I ), Niveau Blau = Realschule ( AE II ), Niveau Rot = Gymnasium ( AE III ),	n.b. = nicht bewertet}
 }
 \renewcommand{\headrulewidth}{0pt}
-
-\newcommand{\tableGradeWidth}{.050\linewidth}
-\newcommand{\tableGradeWidthLevel}{.050\linewidth}
-\newcommand{\tableLineBreak}{\vspace{.2em}\newline}
