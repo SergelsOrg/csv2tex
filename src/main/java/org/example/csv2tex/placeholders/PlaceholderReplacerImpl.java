@@ -4,9 +4,11 @@ package org.example.csv2tex.placeholders;
 import com.google.common.annotations.VisibleForTesting;
 import org.example.csv2tex.data.SchoolReportData;
 
+import static java.util.regex.Matcher.quoteReplacement;
+
 
 public class PlaceholderReplacerImpl implements PlaceholderReplacer {
-
+    private static final String TEX_NEWLINE_REPLACEMENT = quoteReplacement("\\\\\n");
     private static final String TEX_TEMPLATE_PLACEHOLDER_GIVEN_NAME = "#givenName";
     private static final String TEX_TEMPLATE_PLACEHOLDER_SURNAME = "#surName";
     private static final String TEX_TEMPLATE_PLACEHOLDER_BIRTHDAY = "#birthDay";
@@ -17,6 +19,7 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
     private static final String TEX_TEMPLATE_PLACEHOLDER_ABSENCE_DAYS_UNAUTHORIZED = "#absenceDaysUnauthorized";
     private static final String TEX_TEMPLATE_PLACEHOLDER_ABSENCE_HOURS_TOTAL = "#absenceHoursTotal";
     private static final String TEX_TEMPLATE_PLACEHOLDER_ABSENCE_HOURS_UNAUTHORIZED = "#absenceHoursUnauthorized";
+    private static final String TEX_TEMPLATE_PLACEHOLDER_CERTIFICATE_TEXT = "#certificateText";
 
     @Override
     public String replacePlaceholdersInTexTemplate(String texTemplateAsString, SchoolReportData schoolReportData) {
@@ -38,7 +41,8 @@ public class PlaceholderReplacerImpl implements PlaceholderReplacer {
                 .replace(TEX_TEMPLATE_PLACEHOLDER_ABSENCE_DAYS_TOTAL, schoolReportData.absenceDaysTotal)
                 .replace(TEX_TEMPLATE_PLACEHOLDER_ABSENCE_DAYS_UNAUTHORIZED, schoolReportData.absenceDaysUnauthorized)
                 .replace(TEX_TEMPLATE_PLACEHOLDER_ABSENCE_HOURS_TOTAL, schoolReportData.absenceHoursTotal)
-                .replace(TEX_TEMPLATE_PLACEHOLDER_ABSENCE_HOURS_UNAUTHORIZED, schoolReportData.absenceHoursUnauthorized);
+                .replace(TEX_TEMPLATE_PLACEHOLDER_ABSENCE_HOURS_UNAUTHORIZED, schoolReportData.absenceHoursUnauthorized)
+                .replace(TEX_TEMPLATE_PLACEHOLDER_CERTIFICATE_TEXT, schoolReportData.certificateText.replaceAll("\r\n|\r|\n", TEX_NEWLINE_REPLACEMENT));
 
         return texFileContent;
     }

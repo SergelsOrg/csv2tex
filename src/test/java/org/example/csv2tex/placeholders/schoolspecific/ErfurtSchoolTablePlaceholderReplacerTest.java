@@ -44,14 +44,14 @@ public class ErfurtSchoolTablePlaceholderReplacerTest extends AbstractReplacerTe
         String levelNon = sut.makeLevel("");
         String levelFalse = sut.makeLevel("10");
 
-        assertThat(level).isEqualTo("rot");
-        assertThat(level1).isEqualTo("rot");
-        assertThat(level2).isEqualTo("blau");
-        assertThat(level3).isEqualTo("grün");
+        assertThat(level).isEqualTo("\\levelThree");
+        assertThat(level1).isEqualTo("\\levelThree");
+        assertThat(level2).isEqualTo("\\levelTwo");
+        assertThat(level3).isEqualTo("\\levelOne");
         assertThat(level7).isEqualTo("\\levelSeven");
         assertThat(level8).isEqualTo("\\levelEight");
         assertThat(level9).isEqualTo("\\levelNine");
-        assertThat(levelNon).isEqualTo("");
-        assertThat(levelFalse).isEqualTo("");
+        assertThat(levelNon).isEqualTo("\\noLevel");
+        assertThat(levelFalse).isEqualTo("\\noLevel");
     }
 }

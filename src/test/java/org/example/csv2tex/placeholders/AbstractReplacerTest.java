@@ -18,6 +18,11 @@ public abstract class AbstractReplacerTest {
         schoolReportData.absenceDaysUnauthorized = "5";
         schoolReportData.absenceHoursTotal = "7";
         schoolReportData.absenceHoursUnauthorized = "3";
+        schoolReportData.certificateText= "Text1\n" +
+                "Line2\n" +
+                "Line3\n" +
+                "\n" +
+                "Line4";
         schoolReportData.schoolCompetencies.add(generateSchoolCompetencyData1());
         schoolReportData.schoolCompetencies.add(generateSchoolCompetencyData2());
         schoolReportData.schoolCompetencies.add(generateSchoolCompetencyData3());

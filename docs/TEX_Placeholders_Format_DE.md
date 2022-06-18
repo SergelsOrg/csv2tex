@@ -16,7 +16,7 @@ Diese Platzhalter sind für alle Formate gleich, für alle potentiell teilnehmen
 | `#birthDay` | Geburtsdatum des Schülers. |
 | `#schoolClass` | Jahrgangsstufe und Klasse des Zeugnisses, z.B. `1c` für das erste Schuljahr in Parallelklasse `c`. |
 | `#schoolYear` | Tatsächliches Kalenderjahr, das in der Schule verbracht wurde, z.B. `2021 / 2022`. |
-| `#partOfYear` | Markiert das Halbjahr, z.B. `Endjahr`. |
+| `#partOfYear` | Markiert das Halbjahr, z.B. `Schuljahr` für das ganze Jahr. |
 | `#absenceDaysTotal` | Wie viele Fehltage der Schüler insgesamt im Zeugnis-Zeitraum hatte. |
 | `#absenceDaysUnauthorized` | Wie viele der Fehltage unentschuldigt waren (z.B. weil es kein ärztliches Attest gab). |
 | `#absenceHoursTotal` | Wie viele Fehlstunden der Schüler insgesamt im Zeugnis-Zeitraum hatte. |

@@ -1,4 +1,4 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[10pt,a4paper]{article}
 \usepackage[top=2cm,
 bottom=2cm, 
 inner=2cm,
@@ -6,7 +6,7 @@ outer=2cm]{geometry}
 \usepackage{xcolor}
 \definecolor{egeblue}{RGB}{00, 99, 142}
 \definecolor{egelightblue}{RGB}{66, 144, 179}
-
+\definecolor{greenEnglish}{rgb}{0.0, 0.5, 0.0}
 
 \usepackage[german]{babel}
 \usepackage[T1]{fontenc}
@@ -18,6 +18,8 @@ outer=2cm]{geometry}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{helvet}
+
+\usepackage{lipsum}
 
 \usepackage{fancyhdr}
 \usepackage{graphicx}
@@ -43,6 +45,9 @@ outer=2cm]{geometry}
 \usepackage{setspace}
 % provides enumarate environment
 \usepackage{enumitem}
+
+\usepackage{xstring}
+\usepackage{etoolbox}
 
 % renews command to use sans font as default font
 \renewcommand*{\familydefault}{\sfdefault}

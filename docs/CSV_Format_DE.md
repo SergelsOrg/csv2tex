@@ -29,7 +29,7 @@ Die ersten 10 Spalten sind **feststehende Spalten, unabhängig von den konkreten
 1. Vorname des Schülers (`Karl`)
 1. (Parallel-)Klasse (z.B. `5a` für "a-Parallelklasse des 5. Jahrgangs") (`5a`)
 1. Schuljahre (spiegelt die Kalenderjahre wieder, die das Schuljahr abdeckt) (`2019/2020`)
-1. Halbjahr (1. oder 2. Hälfte) (`1`, hier könnte aber auch ein Wert wie `Endjahr` stehen)
+1. Halbjahr (1. oder 2. Hälfte) (`1`, hier könnte aber auch ein Wert wie `Schuljahr` stehen)
 1. Geburtsdatum des Schülers (`27.12.85`, das konkrete Datums-Format wird aber nicht geprüft - `12/27/85` funktioniert z.B. genauso gut)
 1. alle Fehltage - Wie viele Fehltage der Schüler im Zeugnis-Zeitraum hatte. (`7`)
 1. davon unentschuldigte Fehltage - Wie viele der Fehltage unentschuldigt waren (z.B. weil es kein ärztliches Attest gab). (`5`)

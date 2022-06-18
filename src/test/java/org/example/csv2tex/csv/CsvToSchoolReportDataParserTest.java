@@ -216,6 +216,11 @@ public class CsvToSchoolReportDataParserTest {
         assertThat(schoolReportData.absenceDaysUnauthorized).isEqualTo("5");
         assertThat(schoolReportData.absenceHoursTotal).isEqualTo("5");
         assertThat(schoolReportData.absenceHoursUnauthorized).isEqualTo("4");
+        assertThat(schoolReportData.certificateText).isEqualTo("Text1\n" +
+                "Line2\n" +
+                "Line3\n" +
+                "\n" +
+                "Line4");
     }
 
     private void assertStudent2BaseData(SchoolReportData schoolReportData) {
@@ -231,6 +236,11 @@ public class CsvToSchoolReportDataParserTest {
         assertThat(schoolReportData.absenceDaysUnauthorized).isEqualTo("7");
         assertThat(schoolReportData.absenceHoursTotal).isEqualTo("4");
         assertThat(schoolReportData.absenceHoursUnauthorized).isEqualTo("3");
+        assertThat(schoolReportData.certificateText).isEqualTo("Text1\n" +
+                "Line2\n" +
+                "Line3\n" +
+                "\n" +
+                "Line4");
     }
 
     private void assertStudent3BaseData(SchoolReportData schoolReportData) {
@@ -246,6 +256,11 @@ public class CsvToSchoolReportDataParserTest {
         assertThat(schoolReportData.absenceDaysUnauthorized).isEqualTo("8");
         assertThat(schoolReportData.absenceHoursTotal).isEqualTo("3");
         assertThat(schoolReportData.absenceHoursUnauthorized).isEqualTo("2");
+        assertThat(schoolReportData.certificateText).isEqualTo("Text1\n" +
+                "Line2\n" +
+                "Line3\n" +
+                "\n" +
+                "Line4");
     }
 
     private void assertStudent1Competencies(List<SchoolCompetencyData> studentCompetencies) {
@@ -543,7 +558,7 @@ public class CsvToSchoolReportDataParserTest {
         assertThatThrownBy(() -> sut.parseCsvFileToReportDataList(file))
                 .isInstanceOf(InvalidCsvException.class)
                 .hasMessageContaining("competency definitions in the header are incomplete")
-                .hasMessageMatching(".*\\b12\\b.*"); // fault is identified in column 12
+                .hasMessageMatching(".*\\b13\\b.*"); // fault is identified in column 13
     }
 
     @Test

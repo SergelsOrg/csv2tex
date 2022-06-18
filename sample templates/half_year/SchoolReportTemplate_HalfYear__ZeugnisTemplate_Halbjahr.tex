@@ -2,12 +2,15 @@
 
 \pagenumbering{gobble}
 \setlength\parindent{0pt}
-\setlength\cellspacetoplimit{8pt}
-\setlength\cellspacebottomlimit{8pt}
+\setlength\cellspacetoplimit{5pt}
+\setlength\cellspacebottomlimit{5pt}
+
+\newcommand{\tableGradeWidth}{.050\linewidth}
+\newcommand{\tableGradeWidthLevel}{.060\linewidth}
+\newcommand{\schoolReportDay}{11.02.2022}
 
 \input{SchoolReportTemplate_ZeugnisTemplate_Commands.tex}
 
-\newcommand{\schoolReportDay}{11.02.2022}
 \begin{document}
 	\pagestyle{plain}
 	\fcolorbox{egeblue}{white}{
@@ -46,7 +49,7 @@
 		\begin{center}\setstretch{1.5}
 			\textbf{\Huge Zeugnis}\\
 			\textbf{\LARGE ~\\
-			Evangelischen Gemeinschaftsschule Erfurt\\\vspace{2cm}
+			Evangelische Gemeinschaftsschule Erfurt\\\vspace{2cm}
 			#partOfYear #schoolYear}
 		\end{center}\vspace{3cm}
 		\begin{center}\LARGE

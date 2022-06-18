@@ -1,9 +1,21 @@
-Name,Vorname,Klasse,Schuljahr,Halbjahr,Geburtstag,Fehltage,Fehltage unentschuldigt,Fehlstunden,Fehlstunden unentschuldigt,Niveau,"Mathe
+Name,Vorname,Klasse,Schuljahr,Halbjahr,Geburtstag,Fehltage,Fehltage unentschuldigt,Fehlstunden,Fehlstunden unentschuldigt,Zeugnistext,Niveau,"Mathe
 Rechenoperationen
 
 Ich kann die Grundrechenoperationen im Bereich der natürlichen im Kopf und schriftlich ausführen und an Beispielen den Zusammenhang zwischen Rechenoperationen und deren Umkehroperationen erläutern.
 Ich kann Teiler und Vielfache natürlicher Zahlen bestimmen.
 Ich kann ein Verfahren zur Bestimmung von Primzahlen anwenden."
-Otto,Karl,5a,2019/2020,1,27.12.85,7,5,5,4,1,1
-Domma,Ottokar,5b,2020/2021,2,28.12.85,8,7,4,3,2,4
-Schein,Klara,6c,2021/2022,1,29.1.85,9,8,3,2,3,1
+Otto,Karl,5a,2019/2020,1,27.12.85,7,5,5,4,"Text1
+Line2
+Line3
+
+Line4",1,1
+Domma,Ottokar,5b,2020/2021,2,28.12.85,8,7,4,3,"Text1
+Line2
+Line3
+
+Line4",2,4
+Schein,Klara,6c,2021/2022,1,29.1.85,9,8,3,2,"Text1
+Line2
+Line3
+
+Line4",3,1

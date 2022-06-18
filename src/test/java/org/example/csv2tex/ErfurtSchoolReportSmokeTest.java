@@ -6,8 +6,7 @@ import org.assertj.core.description.LazyTextDescription;
 import org.example.csv2tex.exception.RenderingException;
 import org.example.csv2tex.rendering.SchoolReportsRenderer;
 import org.example.csv2tex.shellout.ShellCommandsUtil;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -24,14 +23,11 @@ public class ErfurtSchoolReportSmokeTest {
     private static final Pattern TEX_PLACEHOLDER_PATTERN = Pattern.compile("\\b\\s+(#[A-Za-z0-9-]+)\\b");
     private static final String EXAMPLE_TEMPLATE_FILE_PATH_PREFIX = "sample templates/";
 
-    @ParameterizedTest
-    @ValueSource(strings = {
-            EXAMPLE_TEMPLATE_FILE_PATH_PREFIX + "half_year/SchoolReportTemplate_HalfYear__ZeugnisTemplate_Halbjahr.tex",
-            EXAMPLE_TEMPLATE_FILE_PATH_PREFIX + "end_year/SchoolReportTemplate_SchoolYear__ZeugnisTemplate_Schuljahr.tex",
-    })
-    public void testThatRenderingOfRealReportSucceeds(String texFilePath) throws Exception {
+    @Test
+    public void testThatRenderingOfRealHalfYearReportSucceeds() throws Exception {
+        String texFilePath = EXAMPLE_TEMPLATE_FILE_PATH_PREFIX + "half_year/SchoolReportTemplate_HalfYear__ZeugnisTemplate_Halbjahr.tex";
         SchoolReportsRenderer renderer = new SchoolReportsRenderer();
-        File csvFile = getFullCsvFile();
+        File csvFile = getFullCsvFileHalfYear();
         File texFile = new File(texFilePath);
         assertThat(csvFile).exists();
         assertThat(texFile).exists();
@@ -41,9 +37,29 @@ public class ErfurtSchoolReportSmokeTest {
         doSanityCheck(result);
     }
 
+    // endyear latex command file doesn't include the competencyTable{} command.
+    // Due to the format of endyear school report another csv file is required.
+    // Otherwise, we'll get an error for "Undefined control sequence"
+    @Test
+    public void testThatRenderingOfRealEndYearReportSucceeds() throws Exception {
+        String texFilePath = EXAMPLE_TEMPLATE_FILE_PATH_PREFIX + "end_year/SchoolReportTemplate_SchoolYear__ZeugnisTemplate_Schuljahr.tex";
+        SchoolReportsRenderer renderer = new SchoolReportsRenderer();
+        File csvFile = getFullCsvFileEndYear();
+        File texFile = new File(texFilePath);
+        assertThat(csvFile).exists();
+        assertThat(texFile).exists();
 
-    private File getFullCsvFile() {
+        Path result = renderer.renderSchoolReportsForGivenFiles(csvFile, texFile);
+
+        doSanityCheck(result);
+    }
+
+    private File getFullCsvFileHalfYear() {
         return new File("src/test/resources/rendering/student_data_example_full.csv");
+    }
+
+    private File getFullCsvFileEndYear() {
+        return new File("src/test/resources/rendering/student_data_example_full_endyear.csv");
     }
 
     private void runShellCommandThrowing(Callable<ShellCommandsUtil.ShellResult> callable) {
