@@ -119,11 +119,13 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
         SchoolCompetencyData firstSchoolCompetencyData = competencyList.get(0);
 
         if (shouldRenderAsMajorSubject(firstSchoolCompetencyData, partOfYear)) {
-            String competencyTableMajorSubjectCmd = COMMAND_CALL_COMPETENCY_TABLE_MAJOR_SUBJECT
-                    .replace(COMMAND_PLACEHOLDER_SUBJECT, firstSchoolCompetencyData.schoolSubject)
-                    .replace(COMMAND_PLACEHOLDER_LEVEL, makeLevel(firstSchoolCompetencyData.level))
-                    .replace(COMMAND_PLACEHOLDER_COMPETENCIES, makeCompetencyEntriesMS(competencyList));
-            subjectTable.append(competencyTableMajorSubjectCmd);
+            if (isNotElectiveSubjectWithoutLevel(firstSchoolCompetencyData.schoolSubject, firstSchoolCompetencyData.level) || isRegularSubject(firstSchoolCompetencyData.schoolSubject)) {
+                String competencyTableMajorSubjectCmd = COMMAND_CALL_COMPETENCY_TABLE_MAJOR_SUBJECT
+                        .replace(COMMAND_PLACEHOLDER_SUBJECT, firstSchoolCompetencyData.schoolSubject)
+                        .replace(COMMAND_PLACEHOLDER_LEVEL, makeLevel(firstSchoolCompetencyData.level))
+                        .replace(COMMAND_PLACEHOLDER_COMPETENCIES, makeCompetencyEntriesMS(competencyList));
+                subjectTable.append(competencyTableMajorSubjectCmd);
+            }
         } else {
             String competencyTableMinorSubjectCmd = COMMAND_CALL_COMPETENCY_TABLE
                     .replace(COMMAND_PLACEHOLDER_SUBJECT, firstSchoolCompetencyData.schoolSubject)
@@ -132,6 +134,22 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
 
         }
         return subjectTable.toString();
+    }
+
+    private boolean isRegularSubject(String schoolSubject) {
+        if (!schoolSubject.contains("Wahlpflichtbereich")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean isNotElectiveSubjectWithoutLevel(String schoolSubject, String level) {
+            if (schoolSubject.contains("Wahlpflichtbereich") && !level.isEmpty()) {
+                return true;
+            } else {
+                return false;
+            }
     }
 
     private boolean shouldRenderAsMajorSubject(SchoolCompetencyData firstSchoolCompetencyData, String partOfYear) {
