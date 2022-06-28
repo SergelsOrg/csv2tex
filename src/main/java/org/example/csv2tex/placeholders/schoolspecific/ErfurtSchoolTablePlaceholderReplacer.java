@@ -127,11 +127,12 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
                 subjectTable.append(competencyTableMajorSubjectCmd);
             }
         } else {
-            String competencyTableMinorSubjectCmd = COMMAND_CALL_COMPETENCY_TABLE
-                    .replace(COMMAND_PLACEHOLDER_SUBJECT, firstSchoolCompetencyData.schoolSubject)
-                    .replace(COMMAND_PLACEHOLDER_COMPETENCIES, makeCompetencyEntriesSS(competencyList));
-            subjectTable.append(competencyTableMinorSubjectCmd);
-
+            if (isNotElectiveSubjectWithoutLevel(firstSchoolCompetencyData.schoolSubject, firstSchoolCompetencyData.level) || isRegularSubject(firstSchoolCompetencyData.schoolSubject)) {
+                String competencyTableMinorSubjectCmd = COMMAND_CALL_COMPETENCY_TABLE
+                        .replace(COMMAND_PLACEHOLDER_SUBJECT, firstSchoolCompetencyData.schoolSubject)
+                        .replace(COMMAND_PLACEHOLDER_COMPETENCIES, makeCompetencyEntriesSS(competencyList));
+                subjectTable.append(competencyTableMinorSubjectCmd);
+            }
         }
         return subjectTable.toString();
     }
