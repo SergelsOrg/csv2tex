@@ -119,7 +119,7 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
         SchoolCompetencyData firstSchoolCompetencyData = competencyList.get(0);
 
         if (shouldRenderAsMajorSubject(firstSchoolCompetencyData, partOfYear)) {
-            if (isNotElectiveSubjectWithoutLevel(firstSchoolCompetencyData.schoolSubject, firstSchoolCompetencyData.level) || isRegularSubject(firstSchoolCompetencyData.schoolSubject)) {
+            if (isNotElectiveSubjectWithoutLevel(firstSchoolCompetencyData.schoolSubject, firstSchoolCompetencyData.level, firstSchoolCompetencyData.grade) || isRegularSubject(firstSchoolCompetencyData.schoolSubject)) {
                 String competencyTableMajorSubjectCmd = COMMAND_CALL_COMPETENCY_TABLE_MAJOR_SUBJECT
                         .replace(COMMAND_PLACEHOLDER_SUBJECT, firstSchoolCompetencyData.schoolSubject)
                         .replace(COMMAND_PLACEHOLDER_LEVEL, makeLevel(firstSchoolCompetencyData.level))
@@ -127,7 +127,7 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
                 subjectTable.append(competencyTableMajorSubjectCmd);
             }
         } else {
-            if (isNotElectiveSubjectWithoutLevel(firstSchoolCompetencyData.schoolSubject, firstSchoolCompetencyData.level) || isRegularSubject(firstSchoolCompetencyData.schoolSubject)) {
+            if (isNotElectiveSubjectWithoutLevel(firstSchoolCompetencyData.schoolSubject, firstSchoolCompetencyData.level, firstSchoolCompetencyData.grade) || isRegularSubject(firstSchoolCompetencyData.schoolSubject)) {
                 String competencyTableMinorSubjectCmd = COMMAND_CALL_COMPETENCY_TABLE
                         .replace(COMMAND_PLACEHOLDER_SUBJECT, firstSchoolCompetencyData.schoolSubject)
                         .replace(COMMAND_PLACEHOLDER_COMPETENCIES, makeCompetencyEntriesSS(competencyList));
@@ -145,8 +145,8 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
         }
     }
 
-    private boolean isNotElectiveSubjectWithoutLevel(String schoolSubject, String level) {
-            if (schoolSubject.contains("Wahlpflichtbereich") && !level.isEmpty()) {
+    private boolean isNotElectiveSubjectWithoutLevel(String schoolSubject, String level, String grade) {
+            if (schoolSubject.contains("Wahlpflichtbereich") && !level.isEmpty() && !grade.isEmpty()) {
                 return true;
             } else {
                 return false;
