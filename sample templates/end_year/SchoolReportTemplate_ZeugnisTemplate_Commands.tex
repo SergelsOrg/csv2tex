@@ -47,6 +47,7 @@
 \newcommand\newOptionalNewPage[1]{
 	\ifnum #1>\value{page}
 		\newpage
+		\thispagestyle{plain}
 		\phantom{~}
 	\fi
 }
@@ -74,7 +75,7 @@
 	\noexpandarg
 	\StrBefore{#1}{\\}[\studentIntro]
 	\StrBehind{#1}{\\}[\certText]
-	{\Large\setstretch{1.5}\textbf{\LARGE\studentIntro\vspace{.5em}\\}\certText\par}
+	{\Large\setstretch{1.15}\textbf{\LARGE\studentIntro\vspace{.5em}\\}\certText\par}
 }
 
 \pagestyle{fancy}
