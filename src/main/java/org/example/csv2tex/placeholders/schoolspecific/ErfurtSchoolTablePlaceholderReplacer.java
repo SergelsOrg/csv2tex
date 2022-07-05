@@ -64,6 +64,7 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
     private static final String LEVEL_BLUE = "\\levelTwo";
     private static final String LEVEL_GREEN = "\\levelOne";
     private static final String LEVEL_None = "\\noLevel";
+    private static final String LEVEL_GB = "\\noLevel";
 
     @Override
     public String replaceTableData(SchoolReportData schoolReportData, String texFileContent) {
@@ -170,14 +171,21 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
 
         for (SchoolCompetencyData schoolCompetencyData : competencyList) {
             StringBuilder competency = new StringBuilder();
-            appendBold(competency, schoolCompetencyData.schoolCompetency);
+            if (!schoolCompetencyData.schoolCompetency.isEmpty()) {
+                appendBold(competency, schoolCompetencyData.schoolCompetency);
+            }
             if (!schoolCompetencyData.schoolSubCompetency.isEmpty()) {
-                competency.append(TEX_TABLE_LINE_BREAK);
+                if (!schoolCompetencyData.schoolCompetency.isEmpty()) {
+                    competency.append(TEX_TABLE_LINE_BREAK);
+                }
                 appendUnderlined(competency, schoolCompetencyData.schoolSubCompetency);
             }
             if (!schoolCompetencyData.description.isEmpty()) {
                 String temp = schoolCompetencyData.description.replaceAll("\r\n|\r|\n", TEX_TABLE_LINE_BREAK_REPLACEMENT);
-                competency.append(TEX_TABLE_LINE_BREAK).append(temp);
+                if (!schoolCompetencyData.schoolCompetency.isEmpty() && !schoolCompetencyData.schoolSubCompetency.isEmpty()) {
+                    competency.append(TEX_TABLE_LINE_BREAK);
+                }
+                competency.append(temp);
             }
             String competencyReplaced = COMMAND_CALL_COMPETENCY_MAJOR_SUBJECT
                     .replace(COMMAND_PLACEHOLDER_COMPETENCY, competency)
@@ -244,6 +252,8 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
     @VisibleForTesting
     String makeLevel(String level) {
         switch (level) {
+            case "0":
+                return LEVEL_GB;
             case "1":
                 return LEVEL_RED;
             case "2":
