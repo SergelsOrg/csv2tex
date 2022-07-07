@@ -1,3 +1,27 @@
+\makeatletter
+\def\nobreakhline{%
+	\noalign{\ifnum0=`}\fi
+	\penalty\@M
+	\futurelet\@let@token\LT@@nobreakhline}
+\def\LT@@nobreakhline{%
+	\ifx\@let@token\hline
+	\global\let\@gtempa\@gobble
+	\gdef\LT@sep{\penalty\@M\vskip\doublerulesep}% <-- change here
+	\else
+	\global\let\@gtempa\@empty
+	\gdef\LT@sep{\penalty\@M\vskip-\arrayrulewidth}% <-- change here
+	\fi
+	\ifnum0=`{\fi}%
+	\multispan\LT@cols
+	\unskip\leaders\hrule\@height\arrayrulewidth\hfill\cr
+	\noalign{\LT@sep}%
+	\multispan\LT@cols
+	\unskip\leaders\hrule\@height\arrayrulewidth\hfill\cr
+	\noalign{\penalty\@M}%
+	\@gtempa}
+\makeatother
+
+
 \newcommand\competencyLevel{
 	\begin{tabularx}{\linewidth}{|X|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
 		\hline
@@ -6,13 +30,13 @@
 	\end{tabularx}
 }
 
-\newcommand{\gradeOne}{& $\boxtimes$ & $\Box$ & $\Box$ & $\Box$\\\hline}
-\newcommand{\gradeTwo}{& $\Box$ & $\boxtimes$ & $\Box$ & $\Box$\\\hline}
-\newcommand{\gradeThree}{& $\Box$ & $\Box$ & $\boxtimes$ & $\Box$\\\hline}
-\newcommand{\gradeFour}{& $\Box$ & $\Box$ & $\Box$ & $\boxtimes$\\\hline}
-\newcommand{\gradeNotGiven}{& \multicolumn{4}{c|}{nicht erteilt}\\\hline}
-\newcommand{\gradeComesWithSecondHalfYear}{& \multicolumn{4}{c|}{wird im 2. Halbjahr belegt}\\\hline}
-\newcommand{\gradeDefault}{&  &  &  & \\\hline}
+\newcommand{\gradeOne}{& $\boxtimes$ & $\Box$ & $\Box$ & $\Box$\\}
+\newcommand{\gradeTwo}{& $\Box$ & $\boxtimes$ & $\Box$ & $\Box$\\}
+\newcommand{\gradeThree}{& $\Box$ & $\Box$ & $\boxtimes$ & $\Box$\\}
+\newcommand{\gradeFour}{& $\Box$ & $\Box$ & $\Box$ & $\boxtimes$\\}
+\newcommand{\gradeNotGiven}{& \multicolumn{4}{c|}{nicht erteilt}\\}
+\newcommand{\gradeComesWithSecondHalfYear}{& \multicolumn{4}{c|}{wird im 2. Halbjahr belegt}\\}
+\newcommand{\gradeDefault}{&  &  &  & \\}
 
 
 \newcommand\levelRow[1]{\multicolumn{5}{|c|}{#1}\\\hline}
@@ -34,13 +58,13 @@
 % #3 ... level
 \newcommand\competencyTableMajorSubject[3]{
 	\renewcommand{\arraystretch}{1.5}
-	\begin{tabularx}{\linewidth}{|K{X}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
-		\hline
-		\multicolumn{5}{|>{\columncolor{egelightblue}}l|}{\textit{\textbf{#1}}} \\
-		\hline
+	\begin{xltabular}{\linewidth}{|K{X}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
+		\nobreakhline
+		\multicolumn{5}{|>{\columncolor{egelightblue}}l|}{\textit{\textbf{#1}}}\\
+		\nobreakhline
 		#2
 		#3
-	\end{tabularx}\vspace{2pt}
+	\end{xltabular}\vspace{2pt}
 }
 
 % argument is the page threshold until a newline should be added
