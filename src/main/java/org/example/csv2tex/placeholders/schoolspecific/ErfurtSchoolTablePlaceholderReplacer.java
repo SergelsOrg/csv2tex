@@ -195,7 +195,20 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
                     .replace(COMMAND_PLACEHOLDER_GRADE, makeGrade(schoolCompetencyData.grade));
             competenciesTable.append(competencyReplaced);
         }
-        return competenciesTable.toString();
+        return replaceLast("\\hline", "\\nobreakhline", competenciesTable.toString());
+    }
+
+    public static String replaceLast(String find, String replace, String string) {
+        int lastIndex = string.lastIndexOf(find);
+
+        if (lastIndex == -1) {
+            return string;
+        }
+
+        String beginString = string.substring(0, lastIndex);
+        String endString = string.substring(lastIndex + find.length());
+
+        return beginString + replace + endString;
     }
 
     private void appendUnderlined(StringBuilder text, String valueToAppend) {
@@ -236,19 +249,19 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
     String makeGrade(String grade) {
         switch (grade) {
             case "1":
-                return "\\gradeOne";
+                return "\\gradeOne\\hline";
             case "2":
-                return "\\gradeTwo";
+                return "\\gradeTwo\\hline";
             case "3":
-                return "\\gradeThree";
+                return "\\gradeThree\\hline";
             case "4":
-                return "\\gradeFour";
+                return "\\gradeFour\\hline";
             case SPECIAL_GRADE_VALUE_GRADE_IN_SECOND_HALF_YEAR:
-                return "\\gradeComesWithSecondHalfYear";
+                return "\\gradeComesWithSecondHalfYear\\hline";
             case SPECIAL_GRADE_VALUE_GRADE_NOT_GIVEN:
-                return "\\gradeNotGiven";
+                return "\\gradeNotGiven\\hline";
             default:
-                return "\\gradeDefault";
+                return "\\gradeDefault\\hline";
         }
     }
 
