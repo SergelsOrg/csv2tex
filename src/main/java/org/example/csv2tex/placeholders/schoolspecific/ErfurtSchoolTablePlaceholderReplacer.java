@@ -63,6 +63,9 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
     private static final String LEVEL_RED = "\\levelThree";
     private static final String LEVEL_BLUE = "\\levelTwo";
     private static final String LEVEL_GREEN = "\\levelOne";
+    private static final String LEVEL_SEVEN = "\\levelSeven";
+    private static final String LEVEL_EIGHT = "\\levelEight";
+    private static final String LEVEL_NINE = "\\levelNine";
     private static final String LEVEL_None = "\\noLevel";
     private static final String LEVEL_GB = "\\noLevel";
 
@@ -182,7 +185,7 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
             }
             if (!schoolCompetencyData.description.isEmpty()) {
                 String temp = schoolCompetencyData.description.replaceAll("\r\n|\r|\n", TEX_TABLE_LINE_BREAK_REPLACEMENT);
-                if (!schoolCompetencyData.schoolCompetency.isEmpty() && !schoolCompetencyData.schoolSubCompetency.isEmpty()) {
+                if (!schoolCompetencyData.schoolCompetency.isEmpty() || !schoolCompetencyData.schoolSubCompetency.isEmpty()) {
                     competency.append(TEX_TABLE_LINE_BREAK);
                 }
                 competency.append(temp);
@@ -255,17 +258,19 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
             case "0":
                 return LEVEL_GB;
             case "1":
-                return LEVEL_RED;
+                return LEVEL_GREEN;
             case "2":
                 return LEVEL_BLUE;
             case "3":
-                return LEVEL_GREEN;
+                return LEVEL_RED;
+            case "4":
+                return LEVEL_None;
             case "7":
-                return "\\levelSeven";
+                return LEVEL_SEVEN;
             case "8":
-                return "\\levelEight";
+                return LEVEL_EIGHT;
             case "9":
-                return "\\levelNine";
+                return LEVEL_NINE;
             default:
                 return LEVEL_None;
         }
