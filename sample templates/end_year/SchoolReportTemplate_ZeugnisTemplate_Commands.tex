@@ -78,7 +78,7 @@
 
 \newcommand{\newpagedefs}{
 	\newpage
-	\newgeometry{headheight=106pt,top=7cm,
+	\newgeometry{headheight=90pt,top=7cm,
 		bottom=2cm, 
 		inner=2cm,
 		outer=2cm}
@@ -101,6 +101,25 @@
 	\StrBehind{#1}{\\}[\certText]
 	{\Large\setstretch{1.15}\textbf{\LARGE\studentIntro\vspace{.5em}\\}\certText\par}
 }
+
+%%\newcommand*\formatTable[1]{%
+%%	\IfSubStr{#1}{\hline}{
+%%		\StrCount{#1}{\hline}[\occur]%
+%%		\StrBefore[\occur]{#1}{\hline}[\strBefore]
+%%		\StrBehind[\occur]{#1}{\hline}[\lastHline]}
+%%		{\strBefore} 
+%%%		\StrSubstitute{\lastHline}{\hline}{\nobreakhline} 
+%%%		\\
+%%	}
+%%}
+%
+%\newcommand*\formatTable[1]{%
+%	\IfSubStr{#1}{\hline}
+%	{
+%		\StrCount{#1}{\hline}[\occur]
+%		\StrBefore[\occur]{#1}{\hline}
+%	}{}
+%}
 
 \pagestyle{fancy}
 \chead{\competencyLevel}

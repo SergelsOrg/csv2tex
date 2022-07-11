@@ -2,8 +2,8 @@
 
 \pagenumbering{gobble}
 \setlength\parindent{0pt}
-\setlength\cellspacetoplimit{8pt}
-\setlength\cellspacebottomlimit{8pt}
+\setlength\cellspacetoplimit{2pt}
+\setlength\cellspacebottomlimit{2pt}
 
 \newcommand{\tableGradeWidth}{.050\linewidth}
 \newcommand{\tableGradeWidthLevel}{.060\linewidth}
@@ -38,14 +38,15 @@
 
 	\newpage
 	\formatText{#certificateText}
-	\newOptionalNewPage{3}
-	\newOptionalNewPage{3}
+%	\newOptionalNewPage{4}
+%	\newOptionalNewPage{4}
 
 	\newpagedefs
-{\small
+
 #tables
-}
+
 %	\thispagestyle{mypagestyle}
+	\newOptionalNewPage{11}
 	\newOptionalNewPage{11}
 	\newpagedefsLastPage
 	\thispagestyle{plain}
