@@ -1,3 +1,6 @@
+
+\newcommand\nobreakhline{\hline}
+
 \newcommand\competencyLevel{
 	\begin{tabularx}{\linewidth}{|X|C{\tableGradeWidthLevel}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|C{\tableGradeWidth}|}
 		\hline
@@ -6,27 +9,40 @@
 	\end{tabularx}
 }
 
-\newcommand{\gradeOne}{& $\boxtimes$ & $\Box$ & $\Box$ & $\Box$\\\hline}
-\newcommand{\gradeTwo}{& $\Box$ & $\boxtimes$ & $\Box$ & $\Box$\\\hline}
-\newcommand{\gradeThree}{& $\Box$ & $\Box$ & $\boxtimes$ & $\Box$\\\hline}
-\newcommand{\gradeFour}{& $\Box$ & $\Box$ & $\Box$ & $\boxtimes$\\\hline}
-\newcommand{\gradeNotGiven}{& \multicolumn{4}{c|}{nicht erteilt}\\\hline}
-\newcommand{\gradeComesWithSecondHalfYear}{& \multicolumn{4}{c|}{wird im 2. Halbjahr belegt}\\\hline}
-\newcommand{\gradeDefault}{&  &  &  & \\\hline}
+\newcommand{\gradeOne}{& $\boxtimes$ & $\Box$ & $\Box$ & $\Box$\\}
+\newcommand{\gradeTwo}{& $\Box$ & $\boxtimes$ & $\Box$ & $\Box$\\}
+\newcommand{\gradeThree}{& $\Box$ & $\Box$ & $\boxtimes$ & $\Box$\\}
+\newcommand{\gradeFour}{& $\Box$ & $\Box$ & $\Box$ & $\boxtimes$\\}
+\newcommand{\gradeNotGiven}{& \multicolumn{4}{c|}{nicht erteilt}\\}
+\newcommand{\gradeComesWithSecondHalfYear}{& \multicolumn{4}{c|}{wird im 2. Halbjahr belegt}\\}
+\newcommand{\gradeDefault}{&  &  &  & \\}
 
 
-\newcommand\levelRow[1]{\phantom{PH} & #1 & \multicolumn{4}{c|}{}\\\hline}
-\newcommand{\levelOne}{\multicolumn{1}{m{\tableGradeWidthLevel}|}{\centering\color{greenEnglish} grün}}
-\newcommand{\levelTwo}{\multicolumn{1}{m{\tableGradeWidthLevel}|}{\centering\color{blue} blau}}
-\newcommand{\levelThree}{\multicolumn{1}{m{\tableGradeWidthLevel}|}{\centering\color{red} rot}}
-\newcommand{\levelSeven}{\multicolumn{1}{m{\tableGradeWidthLevel}|}{\centering\tiny bis Klasse 7 ohne Niveau}}
-\newcommand{\levelEight}{\multicolumn{1}{m{\tableGradeWidthLevel}|}{\centering\tiny bis Klasse 8 ohne Niveau}}
-\newcommand{\levelNine}{\multicolumn{1}{m{\tableGradeWidthLevel}|}{\centering\tiny bis Klasse 9 ohne Niveau}}
-\newcommand{\noLevel}{\multicolumn{1}{m{\tableGradeWidthLevel}|}{}}
+\newcommand\levelRow[1]{\multicolumn{6}{|c|}{\formatMajorLevel{#1}}\\\hline}
+\newcommand\levelCell[1]{\multicolumn{1}{m{\tableGradeWidthLevel}|}{\tiny\centering #1}}
+\newcommand{\levelOne}{\normalsize \color{greenEnglish} grün}
+\newcommand{\levelTwo}{\normalsize \color{blue} blau}
+\newcommand{\levelThree}{\normalsize \color{red} rot}
+\newcommand{\levelSeven}{bis Klasse 7 ohne Niveau}
+\newcommand{\levelEight}{bis Klasse 8 ohne Niveau}
+\newcommand{\levelNine}{bis Klasse 9 ohne Niveau}
+\newcommand{\noLevel}{}
 
 %\setlength{\extrarowheight}{0pt}
 \newcommand\competencyMajorSubject[2]{\makecell[{{>{\parindent0em}p{\linewidth}}}]{#1} & #2}
-\newcommand\competencyMinorSubject[3]{\makecell[{{{>{\parindent0em}p\linewidth}}}]{#1} & #3 #2}
+\newcommand\competencyMinorSubject[3]{\makecell[{{{>{\parindent0em}p\linewidth}}}]{#1} & \levelCell{#3} #2}
+
+\newcommand\formatMajorLevel[1]{%
+	\ifthenelse{\isin{\levelOne}{#1}}
+	{Du hast überwiegend auf Anforderungsebene {#1} gearbeitet.}%
+	{}%
+	\ifthenelse{\isin{\levelTwo}{#1}}
+	{Du hast überwiegend auf Anforderungsebene {#1} gearbeitet.}%
+	{}%
+	\ifthenelse{\isin{\levelThree}{#1}}
+	{Du hast überwiegend auf Anforderungsebene {#1} gearbeitet.}%
+	{}%
+}
 
 \newcommand\competencyTableMajorSubject[3]{\small
 	\renewcommand{\arraystretch}{1.5}
