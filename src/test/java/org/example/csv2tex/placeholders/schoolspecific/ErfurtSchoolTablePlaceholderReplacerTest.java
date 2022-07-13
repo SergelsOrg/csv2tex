@@ -21,14 +21,14 @@ public class ErfurtSchoolTablePlaceholderReplacerTest extends AbstractReplacerTe
         String gradeComesWithSecondHalfYear = sut.makeGrade("hj");
         String gradeFalse = sut.makeGrade("7");
 
-        assertThat(grade).isEqualTo("\\gradeOne");
-        assertThat(grade1).isEqualTo("\\gradeOne");
-        assertThat(grade2).isEqualTo("\\gradeTwo");
-        assertThat(grade3).isEqualTo("\\gradeThree");
-        assertThat(grade4).isEqualTo("\\gradeFour");
-        assertThat(gradeNotGiven).isEqualTo("\\gradeNotGiven");
-        assertThat(gradeComesWithSecondHalfYear).isEqualTo("\\gradeComesWithSecondHalfYear");
-        assertThat(gradeFalse).isEqualTo("\\gradeDefault");
+        assertThat(grade).isEqualTo("\\gradeOne\\hline");
+        assertThat(grade1).isEqualTo("\\gradeOne\\hline");
+        assertThat(grade2).isEqualTo("\\gradeTwo\\hline");
+        assertThat(grade3).isEqualTo("\\gradeThree\\hline");
+        assertThat(grade4).isEqualTo("\\gradeFour\\hline");
+        assertThat(gradeNotGiven).isEqualTo("\\gradeNotGiven\\hline");
+        assertThat(gradeComesWithSecondHalfYear).isEqualTo("\\gradeComesWithSecondHalfYear\\hline");
+        assertThat(gradeFalse).isEqualTo("\\gradeDefault\\hline");
     }
 
     @Test
@@ -44,10 +44,10 @@ public class ErfurtSchoolTablePlaceholderReplacerTest extends AbstractReplacerTe
         String levelNon = sut.makeLevel("");
         String levelFalse = sut.makeLevel("10");
 
-        assertThat(level).isEqualTo("\\levelThree");
-        assertThat(level1).isEqualTo("\\levelThree");
+        assertThat(level).isEqualTo("\\levelOne");
+        assertThat(level1).isEqualTo("\\levelOne");
         assertThat(level2).isEqualTo("\\levelTwo");
-        assertThat(level3).isEqualTo("\\levelOne");
+        assertThat(level3).isEqualTo("\\levelThree");
         assertThat(level7).isEqualTo("\\levelSeven");
         assertThat(level8).isEqualTo("\\levelEight");
         assertThat(level9).isEqualTo("\\levelNine");
