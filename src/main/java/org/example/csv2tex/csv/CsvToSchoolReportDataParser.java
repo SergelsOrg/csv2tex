@@ -106,10 +106,10 @@ public class CsvToSchoolReportDataParser {
         singleStudentData.schoolYear = rawData.get(3);
         singleStudentData.partOfYear = rawData.get(4);
         singleStudentData.birthDay = rawData.get(5);
-        singleStudentData.absenceDaysTotal = rawData.get(6);
-        singleStudentData.absenceDaysUnauthorized = rawData.get(7);
-        singleStudentData.absenceHoursTotal = rawData.get(8);
-        singleStudentData.absenceHoursUnauthorized = rawData.get(9);
+        singleStudentData.absenceDaysTotal = CsvParsingUtil.checkEmptySetDefaultZero(rawData.get(6));
+        singleStudentData.absenceDaysUnauthorized = CsvParsingUtil.checkEmptySetDefaultZero(rawData.get(7));
+        singleStudentData.absenceHoursTotal = CsvParsingUtil.checkEmptySetDefaultZero(rawData.get(8));
+        singleStudentData.absenceHoursUnauthorized = CsvParsingUtil.checkEmptySetDefaultZero(rawData.get(9));
         singleStudentData.certificateText = rawData.get(10);
         return singleStudentData;
     }

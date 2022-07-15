@@ -2,13 +2,13 @@
 
 \pagenumbering{gobble}
 \setlength\parindent{0pt}
-\setlength\cellspacetoplimit{2pt}
-\setlength\cellspacebottomlimit{2pt}
+\setlength\cellspacetoplimit{8pt}
+\setlength\cellspacebottomlimit{8pt}
 
 \newcommand{\tableGradeWidth}{.050\linewidth}
 \newcommand{\tableGradeWidthLevel}{.060\linewidth}
 \newcommand{\tableLineBreak}{\vspace{.2em}\newline}
-\newcommand{\schoolReportDay}{11.02.2022}
+\newcommand{\schoolReportDay}{15.07.2022}
 
 \input{SchoolReportTemplate_ZeugnisTemplate_Commands.tex}
 
@@ -23,7 +23,8 @@
 			\begin{center}\setstretch{1.5}
 				\textbf{\Huge Zeugnis}\\
 				\textbf{\LARGE ~\\
-					Evangelische Gemeinschaftsschule Erfurt\\\vspace{2cm}
+					Evangelische Gemeinschaftsschule Erfurt\\\vspace{1cm}
+					Bildungsgang Lernen\\\vspace{1.5cm}
 					#partOfYear #schoolYear}
 			\end{center}\vspace{3cm}
 			\begin{center}\LARGE
@@ -37,18 +38,16 @@
 	}%
 
 	\newpage
-	\phantom{~}
-	\newpage
 	\formatText{#certificateText}
-	\newOptionalNewPage{4}
-	\newOptionalNewPage{4}
+	\newOptionalNewPage{3}
+	\newOptionalNewPage{3}
 
 	\newpagedefs
-
+{\small
 #tables
-
+}
 %	\thispagestyle{mypagestyle}
-
+	\newOptionalNewPage{11}
 	\newpagedefsLastPage
 	\thispagestyle{plain}
 	\fcolorbox{egeblue}{white}{
