@@ -9,7 +9,8 @@ module org.example.csv2tex {
 //    requires com.google.common;
 //    requires commons.csv;
 //    requires filechooser;
-//    requires org.slf4j;
+
+    requires org.slf4j;
     requires org.apache.commons.io;
     requires org.apache.commons.lang3;
 
