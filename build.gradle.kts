@@ -93,8 +93,8 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.1")
 
     // slf4j bindings:
-    implementation("ch.qos.logback:logback-core:1.2.11")
-    runtimeOnly("ch.qos.logback:logback-classic:1.2.11")
+    implementation("ch.qos.logback:logback-core:1.4.4")
+    runtimeOnly("ch.qos.logback:logback-classic:1.4.4")
     // implementation("org.slf4j:slf4j-simple:1.7.32")
 
     // ############################ JavaFX ############################################
@@ -164,7 +164,7 @@ tasks.jacocoTestReport {
 
 // ######################################### JavaFX #########################################
 
-val javaFxVersion = "19-ea+3"
+val javaFxVersion = "19"
 
 javafx {
     version = javaFxVersion
