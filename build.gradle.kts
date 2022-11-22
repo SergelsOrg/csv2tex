@@ -93,8 +93,8 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.4")
 
     // slf4j bindings:
-    implementation("ch.qos.logback:logback-core:1.4.4")
-    runtimeOnly("ch.qos.logback:logback-classic:1.4.4")
+    implementation("ch.qos.logback:logback-core:1.4.5")
+    runtimeOnly("ch.qos.logback:logback-classic:1.4.5")
     // implementation("org.slf4j:slf4j-simple:1.7.32")
 
     // ############################ JavaFX ############################################
