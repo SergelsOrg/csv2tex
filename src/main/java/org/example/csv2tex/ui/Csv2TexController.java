@@ -81,7 +81,7 @@ public class Csv2TexController {
     }
 
     private FXFileChooserStage getTexChooser() {
-        return getFileChooser("TeX file", "tex", "Pick a TeX file");
+        return getFileChooser("TeX file", "tex");
     }
 
     private void updateTexFile(Optional<Path> tempTexFilePath) {
@@ -100,15 +100,14 @@ public class Csv2TexController {
     }
 
     private FXFileChooserStage getCsvChooser() {
-        return getFileChooser("CSV file", "csv", "Pick a CSV file");
+        return getFileChooser("CSV file", "csv");
     }
 
 
-    private FXFileChooserStage getFileChooser(String filterLabel, String fileExtension, String dialogTitle) {
+    private FXFileChooserStage getFileChooser(String filterLabel, String fileExtension) {
         PathFilter filter = PathFilter.forFileExtension(filterLabel, fileExtension);
         FXFileChooserStage chooser;
         chooser = FXFileChooserStage.create(MODENA, filter);
-        chooser.setTitle(dialogTitle);
         chooser.addLocations(List.of(
                 Locations.at(Path.of("."))
         ));
