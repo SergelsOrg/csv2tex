@@ -276,17 +276,26 @@ public class Csv2TexApplicationTest {
         // I think I need to work around this... https://stackoverflow.com/a/40476164/1143126
 
         SplitMenuButton chooseDirectory = robot.lookup("#chooser").queryAs(SplitMenuButton.class);
-        Bounds chooseAbsoluteBounds = chooseDirectory.localToScreen(chooseDirectory.getBoundsInLocal());
 
         // open dropdown with pre-programmed locations
-        robot.clickOn(chooseAbsoluteBounds.getMaxX() - 10, chooseAbsoluteBounds.getMaxY() - 10);
+        clickOnLowerRightMinusOffset(robot, chooseDirectory, 10);
 
         // choose first item in dropdown (user home)
-        robot.clickOn(chooseAbsoluteBounds.getMinX() + 20, chooseAbsoluteBounds.getMaxY() + 20);
+        clickOnLowerLeftPlusOffset(robot, chooseDirectory, 20);
 
         chooseFirstInListOfFiles(robot);
 
         pressOkButton(robot);
+    }
+
+    private void clickOnLowerRightMinusOffset(FxRobot robot, Node node, int offset) {
+        Bounds absoluteBounds = node.localToScreen(node.getBoundsInLocal());
+        robot.clickOn(absoluteBounds.getMaxX() - offset, absoluteBounds.getMaxY() - offset);
+    }
+
+    private void clickOnLowerLeftPlusOffset(FxRobot robot, Node node, int offset) {
+        Bounds absoluteBounds = node.localToScreen(node.getBoundsInLocal());
+        robot.clickOn(absoluteBounds.getMinX() + offset, absoluteBounds.getMaxY() + offset);
     }
 
     private void chooseFirstInListOfFiles(FxRobot robot) {
@@ -296,9 +305,14 @@ public class Csv2TexApplicationTest {
 //        listOfFiles.refresh();
 //        robot.clickOn(listOfFiles);
 
-        moveMouseToUpperLeftPlusOffset(robot, listOfFiles, 30);
-        robot.clickOn(MouseButton.PRIMARY);
+        clickOnUpperLeftPlusOffset(robot, listOfFiles, 30);
     }
+
+    private void clickOnUpperLeftPlusOffset(FxRobot robot, Node node, int offset) {
+        Bounds absoluteBounds = node.localToScreen(node.getBoundsInLocal());
+        robot.clickOn(absoluteBounds.getMinX() + offset, absoluteBounds.getMinY() + offset);
+    }
+
 
     private void pressOkButton(FxRobot robot) {
         Set<Node> allOkButtons = robot.lookup("#okButton").queryAll();
@@ -306,16 +320,6 @@ public class Csv2TexApplicationTest {
         Node okButton = allOkButtons.iterator().next();
         assertThat(okButton).isEnabled();
         robot.clickOn(okButton);
-    }
-
-    private void moveMouseToUpperLeftPlusOffset(FxRobot robot, Node node, int offset) {
-        Point2D nodeUpperLeft = node.localToScene(0, 0);
-        Scene scene = node.getScene();
-        Window window = scene.getWindow();
-        robot.moveTo(new Point2D(
-                nodeUpperLeft.getX() + scene.getX() + window.getX() + offset,
-                nodeUpperLeft.getY() + scene.getY() + window.getY() + offset
-        ));
     }
 
     private DialogPane assertAndLookUpAlert(FxRobot robot) {
