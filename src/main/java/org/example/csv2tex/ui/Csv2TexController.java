@@ -107,11 +107,7 @@ public class Csv2TexController {
     private FXFileChooserStage getFileChooser(String filterLabel, String fileExtension, String dialogTitle) {
         PathFilter filter = PathFilter.forFileExtension(filterLabel, fileExtension);
         FXFileChooserStage chooser;
-        try {
-            chooser = FXFileChooserStage.create(MODENA, filter);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        chooser = FXFileChooserStage.create(MODENA, filter);
         chooser.setTitle(dialogTitle);
         chooser.addLocations(List.of(
                 Locations.at(Path.of("."))
