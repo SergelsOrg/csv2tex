@@ -1,5 +1,6 @@
 package org.example.csv2tex.integrationtest;
 
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -273,10 +274,15 @@ public class Csv2TexApplicationTest {
 
         // cannot choose the test files directory
         // I think I need to work around this... https://stackoverflow.com/a/40476164/1143126
-//        SplitMenuButton chooseDirectory = robot.lookup("#chooser").queryAs(SplitMenuButton.class);
-//        robot.clickOn(chooseDirectory);
-//        List<MenuItem> items = chooseDirectory.getItems();
-//        MenuItem lastItem = chooseDirectory.getItems().get(items.size() - 1);
+
+        SplitMenuButton chooseDirectory = robot.lookup("#chooser").queryAs(SplitMenuButton.class);
+        Bounds chooseAbsoluteBounds = chooseDirectory.localToScreen(chooseDirectory.getBoundsInLocal());
+
+        // open dropdown with pre-programmed locations
+        robot.clickOn(chooseAbsoluteBounds.getMaxX() - 10, chooseAbsoluteBounds.getMaxY() - 10);
+
+        // choose first item in dropdown (user home)
+        robot.clickOn(chooseAbsoluteBounds.getMinX() + 20, chooseAbsoluteBounds.getMaxY() + 20);
 
         chooseFirstInListOfFiles(robot);
 
@@ -290,7 +296,7 @@ public class Csv2TexApplicationTest {
 //        listOfFiles.refresh();
 //        robot.clickOn(listOfFiles);
 
-        moveMouseToUpperLeftPlusOffset(robot, listOfFiles, 15);
+        moveMouseToUpperLeftPlusOffset(robot, listOfFiles, 30);
         robot.clickOn(MouseButton.PRIMARY);
     }
 
