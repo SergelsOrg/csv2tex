@@ -10,7 +10,12 @@ group = "org.example"
 version = "1.3.0-SNAPSHOT"
 
 repositories {
-    mavenCentral()
+    mavenCentral() {
+        metadataSources {
+            mavenPom()
+            artifact()
+        }
+    }
 }
 
 // ######################################### Tests #########################################
@@ -104,7 +109,7 @@ dependencies {
     implementation("org.openjfx:javafx-fxml:${javaFxVersion}")
     implementation("org.openjfx:javafx-graphics:${javaFxVersion}")
 
-    implementation("net.raumzeitfalle.fx:filechooser:0.0.8")
+    implementation("net.raumzeitfalle.fx:filechooser:0.0.9")
 
     // ################################################################################
 
