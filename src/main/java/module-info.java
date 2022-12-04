@@ -9,7 +9,8 @@ module org.example.csv2tex {
     requires commons.csv;
 
     requires net.raumzeitfalle.fxfilechooser;
-
+    requires javafx.swing;
+    
     requires org.slf4j;
     requires org.apache.commons.io;
     requires org.apache.commons.lang3;
