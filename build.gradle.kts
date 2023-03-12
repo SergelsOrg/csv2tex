@@ -89,7 +89,7 @@ tasks.check {
 
 dependencies {
     implementation("com.google.guava:guava:31.1-jre")
-    implementation("org.apache.commons:commons-csv:1.9.0")
+    implementation("org.apache.commons:commons-csv:1.10.0")
     implementation("org.apache.commons:commons-lang3:3.12.0")
     implementation("commons-io:commons-io:2.11.0")
 
