@@ -151,7 +151,7 @@ application {
 // ######################################### JaCoCo test coverage #########################################
 
 jacoco {
-    toolVersion = "0.8.8"
+    toolVersion = "0.8.9"
 }
 
 tasks.withType(Test::class.java) {
