@@ -85,9 +85,13 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
         for (SchoolCompetencyData schoolCompetencyData : schoolReportData.schoolCompetencies) {
             if (shouldStartNewSection(schoolReportData, currentSubject, currentLevel, schoolCompetencyData)) {
                 renderCompletedCompetencyListOfCurrentSubject(partOfYear, tables, currentSubjectCompetencyList);
-                currentSubject = schoolCompetencyData.schoolSubject;
-                currentLevel = schoolCompetencyData.level;
-                currentSubjectCompetencyList.clear();
+                if (isNotElectiveSubjectWithoutLevelAndGrade(schoolCompetencyData.schoolSubject, schoolCompetencyData.level, schoolCompetencyData.grade) || isRegularSubject(schoolCompetencyData.schoolSubject)) {
+                    currentSubject = schoolCompetencyData.schoolSubject;
+                    currentLevel = schoolCompetencyData.level;
+                    currentSubjectCompetencyList.clear();
+                } else {
+                    currentSubjectCompetencyList.clear();
+                }
             }
             currentSubjectCompetencyList.add(schoolCompetencyData);
         }
@@ -131,7 +135,8 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
                 subjectTable.append(competencyTableMajorSubjectCmd);
             }
         } else {
-            if (isNotElectiveSubjectWithoutLevelAndGrade(firstSchoolCompetencyData.schoolSubject, firstSchoolCompetencyData.level, firstSchoolCompetencyData.grade) || isRegularSubject(firstSchoolCompetencyData.schoolSubject)) {
+            if (isNotElectiveSubjectWithoutLevelAndGrade(firstSchoolCompetencyData.schoolSubject, firstSchoolCompetencyData.level, firstSchoolCompetencyData.grade) ||
+                    isRegularSubject(firstSchoolCompetencyData.schoolSubject)) {
                 String competencyTableMinorSubjectCmd = COMMAND_CALL_COMPETENCY_TABLE
                         .replace(COMMAND_PLACEHOLDER_SUBJECT, firstSchoolCompetencyData.schoolSubject)
                         .replace(COMMAND_PLACEHOLDER_COMPETENCIES, makeCompetencyEntriesSS(competencyList));
@@ -236,7 +241,8 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
         for (SchoolCompetencyData schoolCompetencyData : competencyList) {
             StringBuilder competency = new StringBuilder();
             competency.append(schoolCompetencyData.schoolCompetency);
-            if (!isElectiveSubject(schoolCompetencyData.schoolSubject) && !schoolCompetencyData.grade.isEmpty()) {
+            if (isNotElectiveSubjectWithoutLevelAndGrade(schoolCompetencyData.schoolSubject, schoolCompetencyData.level, schoolCompetencyData.grade) ||
+                    !schoolCompetencyData.grade.isEmpty()) {
                 if (!schoolCompetencyData.schoolSubCompetency.isEmpty()) {
                     competency.append(TEX_TABLE_LINE_BREAK).append(schoolCompetencyData.schoolSubCompetency);
                 }
