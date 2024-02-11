@@ -5,11 +5,12 @@ module org.example.csv2tex.integrationtest {
     requires javafx.controls;
     requires javafx.fxml;
 
-// ! Do not commit this commented-in: It causes issues with integration tests for some reason
-//    requires filechooser;
-//    requires commons.csv;
-//    requires org.apache.commons.io;
-//    requires org.apache.commons.lang3;
+    requires net.raumzeitfalle.fxfilechooser;
+    requires javafx.swing;
+
+    requires org.apache.commons.io;
+    requires org.apache.commons.lang3;
+    requires org.apache.commons.csv;
 
     requires org.junit.jupiter.api;
     requires org.assertj.core;

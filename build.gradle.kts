@@ -109,7 +109,7 @@ dependencies {
     implementation("org.openjfx:javafx-fxml:${javaFxVersion}")
     implementation("org.openjfx:javafx-graphics:${javaFxVersion}")
 
-    implementation("net.raumzeitfalle.fx:filechooser:0.0.9")
+    implementation("net.raumzeitfalle.fx:filechooser:0.0.11.1")
 
     // ################################################################################
 
@@ -138,8 +138,8 @@ dependencies {
 // ######################################### Java application #########################################
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 
@@ -169,11 +169,11 @@ tasks.jacocoTestReport {
 
 // ######################################### JavaFX #########################################
 
-val javaFxVersion = "19"
+val javaFxVersion = "19.0.2.1"
 
 javafx {
     version = javaFxVersion
-    modules("javafx.controls", "javafx.fxml")
+    modules("javafx.controls", "javafx.fxml", "javafx.swing")
 }
 
 jlink {

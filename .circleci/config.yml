@@ -5,7 +5,7 @@ orbs:
   renovate: daniel-shuy/renovate@3.1.0
 
 references:
-  test_docker_image: &test_docker_image "cimg/openjdk:11.0.13"
+  test_docker_image: &test_docker_image "cimg/openjdk:17.0.5"
 
 commands:
   install_pdf_tools:
