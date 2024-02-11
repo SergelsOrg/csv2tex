@@ -122,7 +122,7 @@ public class ShellCommandsUtil {
         try {
             String output = String.join("\n", IOUtils.readLines(inputStream, StandardCharsets.UTF_8));
             return Optional.of(output);
-        } catch (IOException ignored) {
+        } catch (Exception ignored) {
             return Optional.empty();
         }
     }
