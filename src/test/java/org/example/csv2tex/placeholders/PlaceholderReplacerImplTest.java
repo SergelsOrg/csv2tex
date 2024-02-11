@@ -74,16 +74,16 @@ public class PlaceholderReplacerImplTest extends AbstractReplacerTest {
                 "\\tableLineBreak\n" +
                 "\\uline{Addition}\n" +
                 "\\tableLineBreak\n" +
-                "Kann addieren.}{\\gradeOne}\n" +
+                "Kann addieren.}{\\gradeOne\\hline}\n" +
                 "\\competencyMajorSubject{\\textbf{Rechnen}\n" +
                 "\\tableLineBreak\n" +
                 "\\uline{Subtraktion}\n" +
                 "\\tableLineBreak\n" +
-                "Kann subtrahieren.}{\\gradeTwo}\n" +
-                "}{\\levelThree}\n" +
+                "Kann subtrahieren.}{\\gradeTwo\\nobreakhline}\n" +
+                "}{\\levelOne}\n" +
                 "\\competencyTable{Fremdsprache}{\\competencyMinorSubject{Französisch\\tableLineBreak\n" +
                 "sc\\tableLineBreak\n" +
-                "des}{\\gradeOne}{\\levelOne}\n" +
+                "des}{\\gradeOne\\hline}{\\levelThree}\n" +
                 "}\n" +
                 "\n" +
                 "\n" +

@@ -42,7 +42,7 @@ public class ErfurtSchoolReportSmokeTest {
     // Otherwise, we'll get an error for "Undefined control sequence"
     @Test
     public void testThatRenderingOfRealEndYearReportSucceeds() throws Exception {
-        String texFilePath = EXAMPLE_TEMPLATE_FILE_PATH_PREFIX + "end_year/SchoolReportTemplate_SchoolYear__ZeugnisTemplate_Schuljahr.tex";
+        String texFilePath = EXAMPLE_TEMPLATE_FILE_PATH_PREFIX + "end_year/SchoolReportTemplate_SchoolYear__ZeugnisTemplate_Schuljahr_Kl5.tex";
         SchoolReportsRenderer renderer = new SchoolReportsRenderer();
         File csvFile = getFullCsvFileEndYear();
         File texFile = new File(texFilePath);
