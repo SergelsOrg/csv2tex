@@ -169,7 +169,7 @@ tasks.jacocoTestReport {
 
 // ######################################### JavaFX #########################################
 
-val javaFxVersion = "19"
+val javaFxVersion = "19.0.2.1"
 
 javafx {
     version = javaFxVersion
