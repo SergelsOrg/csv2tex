@@ -125,7 +125,7 @@ dependencies {
     // module required by junit, it seems
     testImplementation("org.apiguardian:apiguardian-api:1.1.2")
 
-    val testFxVersion = "4.0.16-alpha"
+    val testFxVersion = "4.0.18"
     testImplementation("org.testfx:testfx-core:${testFxVersion}")
     testImplementation("org.testfx:testfx-junit5:${testFxVersion}")
     // headless tests: no UI required
