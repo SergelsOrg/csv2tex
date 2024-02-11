@@ -8,7 +8,6 @@ module org.example.csv2tex.integrationtest {
     requires net.raumzeitfalle.fxfilechooser;
     requires javafx.swing;
 
-    requires commons.csv;
     requires org.apache.commons.io;
     requires org.apache.commons.lang3;
 

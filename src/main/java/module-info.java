@@ -6,7 +6,6 @@ module org.example.csv2tex {
     requires java.sql;
 
     requires com.google.common;
-    requires commons.csv;
 
     requires net.raumzeitfalle.fxfilechooser;
     requires javafx.swing;
