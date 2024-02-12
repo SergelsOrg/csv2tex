@@ -129,7 +129,7 @@ dependencies {
     testImplementation("org.testfx:testfx-core:${testFxVersion}")
     testImplementation("org.testfx:testfx-junit5:${testFxVersion}")
     // headless tests: no UI required
-    testImplementation("org.testfx:openjfx-monocle:jdk-12.0.1+2")
+    testImplementation("org.testfx:openjfx-monocle:17.0.10")
 
     "integrationTestImplementation"(project)
 
