@@ -1,6 +1,5 @@
 package org.example.csv2tex.rendering;
 
-import com.google.common.io.PatternFilenameFilter;
 import org.apache.commons.io.FileUtils;
 import org.example.csv2tex.csv.CsvToSchoolReportDataParser;
 import org.example.csv2tex.data.SchoolReportData;

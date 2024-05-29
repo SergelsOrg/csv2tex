@@ -5,11 +5,11 @@ module org.example.csv2tex {
     // without it, CSVFormat.Builder.setHeader will not compile somehow
     requires java.sql;
 
-    // ! Do not commit this commented-in: It causes issues with integration tests for some reason
-//    requires com.google.common;
-//    requires commons.csv;
-//    requires filechooser;
+    requires com.google.common;
 
+    requires net.raumzeitfalle.fxfilechooser;
+    requires javafx.swing;
+    
     requires org.slf4j;
     requires org.apache.commons.io;
     requires org.apache.commons.lang3;
