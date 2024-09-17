@@ -1,6 +1,5 @@
 package org.example.csv2tex.rendering;
 
-import com.google.common.io.PatternFilenameFilter;
 import org.apache.commons.io.FileUtils;
 import org.example.csv2tex.csv.CsvToSchoolReportDataParser;
 import org.example.csv2tex.data.SchoolReportData;
@@ -65,7 +64,8 @@ public class SchoolReportsRenderer {
 
     private Path renderSchoolReportsForGivenFiles(List<SchoolReportData> studentDataList, String texTemplate, Path temporaryDirectory, ShellCommandsUtil shellCommandsInTempDir) throws IOException {
         List<String> renderedPdfs = renderStudentReports(studentDataList, texTemplate, temporaryDirectory, shellCommandsInTempDir);
-        Path outputFile = mergePdfs(renderedPdfs, temporaryDirectory, shellCommandsInTempDir);
+        String schoolClass = studentDataList.get(0).schoolClass;
+        Path outputFile = mergePdfs(renderedPdfs, temporaryDirectory, shellCommandsInTempDir, schoolClass);
         return outputFile;
     }
 
@@ -80,15 +80,17 @@ public class SchoolReportsRenderer {
 
     private void renderSingleSchoolReportPdf(List<SchoolReportData> studentDataList, String texTemplate, Path temporaryDirectory,
                                              ShellCommandsUtil shellCommandsInTempDir, List<String> renderedPdfs, int fileNumber) throws IOException {
-        String texWithReplacedPlaceholders = placeholderReplacer.replacePlaceholdersInTexTemplate(texTemplate, studentDataList.get(fileNumber));
-        Path temporaryTexFilePath = temporaryDirectory.resolve("schoolReport_" + fileNumber + ".tex").toAbsolutePath();
+        SchoolReportData actualStudent = studentDataList.get(fileNumber);
+        String texWithReplacedPlaceholders = placeholderReplacer.replacePlaceholdersInTexTemplate(texTemplate, actualStudent);
+        String fileNameBase = "schoolReport_" + String.format("%02d", fileNumber) + "_" + actualStudent.schoolClass + "_" + actualStudent.surName.replaceAll("[^a-zA-Z0-9]+","") +"_"+ actualStudent.givenName.replaceAll("[^a-zA-Z0-9]+","");
+        Path temporaryTexFilePath = temporaryDirectory.resolve(fileNameBase + ".tex").toAbsolutePath();
         Files.writeString(temporaryTexFilePath, texWithReplacedPlaceholders);
         runShellCommandThrowing(() -> shellCommandsInTempDir.runTexi2Pdf(temporaryTexFilePath.toString()));
-        renderedPdfs.add("schoolReport_" + fileNumber + ".pdf");
+        renderedPdfs.add(fileNameBase + ".pdf");
     }
 
-    private Path mergePdfs(List<String> renderedPdfs, Path temporaryDirectory, ShellCommandsUtil shellCommandsInTempDir) {
-        Path outputFile = temporaryDirectory.resolve("schoolReports.pdf").toAbsolutePath();
+    private Path mergePdfs(List<String> renderedPdfs, Path temporaryDirectory, ShellCommandsUtil shellCommandsInTempDir, String schoolClass) {
+        Path outputFile = temporaryDirectory.resolve("schoolReports_" + schoolClass + ".pdf").toAbsolutePath();
         runShellCommandThrowing(() -> shellCommandsInTempDir.runPdfUnite(outputFile.toString(), renderedPdfs));
         return outputFile;
     }

@@ -10,4 +10,12 @@ public class CsvParsingUtil {
         // limit 4: will keep all lines after the 4th as part of the 4th split
         return columnHeader.split("(\r\n|\r|\n)", 4);
     }
+
+    public static String checkEmptySetDefaultZero(String absenceTime) {
+        if (absenceTime.isEmpty()) {
+            return "0";
+        } else {
+            return absenceTime;
+        }
+    }
 }

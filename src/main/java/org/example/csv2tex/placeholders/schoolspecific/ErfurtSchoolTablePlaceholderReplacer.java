@@ -63,7 +63,11 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
     private static final String LEVEL_RED = "\\levelThree";
     private static final String LEVEL_BLUE = "\\levelTwo";
     private static final String LEVEL_GREEN = "\\levelOne";
+    private static final String LEVEL_SEVEN = "\\levelSeven";
+    private static final String LEVEL_EIGHT = "\\levelEight";
+    private static final String LEVEL_NINE = "\\levelNine";
     private static final String LEVEL_None = "\\noLevel";
+    private static final String LEVEL_GB = "\\noLevel";
 
     @Override
     public String replaceTableData(SchoolReportData schoolReportData, String texFileContent) {
@@ -81,9 +85,13 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
         for (SchoolCompetencyData schoolCompetencyData : schoolReportData.schoolCompetencies) {
             if (shouldStartNewSection(schoolReportData, currentSubject, currentLevel, schoolCompetencyData)) {
                 renderCompletedCompetencyListOfCurrentSubject(partOfYear, tables, currentSubjectCompetencyList);
-                currentSubject = schoolCompetencyData.schoolSubject;
-                currentLevel = schoolCompetencyData.level;
-                currentSubjectCompetencyList.clear();
+                if (isNotElectiveSubjectWithoutLevelAndGrade(schoolCompetencyData.schoolSubject, schoolCompetencyData.level, schoolCompetencyData.grade) || isRegularSubject(schoolCompetencyData.schoolSubject)) {
+                    currentSubject = schoolCompetencyData.schoolSubject;
+                    currentLevel = schoolCompetencyData.level;
+                    currentSubjectCompetencyList.clear();
+                } else {
+                    currentSubjectCompetencyList.clear();
+                }
             }
             currentSubjectCompetencyList.add(schoolCompetencyData);
         }
@@ -119,19 +127,47 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
         SchoolCompetencyData firstSchoolCompetencyData = competencyList.get(0);
 
         if (shouldRenderAsMajorSubject(firstSchoolCompetencyData, partOfYear)) {
-            String competencyTableMajorSubjectCmd = COMMAND_CALL_COMPETENCY_TABLE_MAJOR_SUBJECT
-                    .replace(COMMAND_PLACEHOLDER_SUBJECT, firstSchoolCompetencyData.schoolSubject)
-                    .replace(COMMAND_PLACEHOLDER_LEVEL, makeLevel(firstSchoolCompetencyData.level))
-                    .replace(COMMAND_PLACEHOLDER_COMPETENCIES, makeCompetencyEntriesMS(competencyList));
-            subjectTable.append(competencyTableMajorSubjectCmd);
+            if (isNotElectiveSubjectWithoutLevelAndGrade(firstSchoolCompetencyData.schoolSubject, firstSchoolCompetencyData.level, firstSchoolCompetencyData.grade) || isRegularSubject(firstSchoolCompetencyData.schoolSubject)) {
+                String competencyTableMajorSubjectCmd = COMMAND_CALL_COMPETENCY_TABLE_MAJOR_SUBJECT
+                        .replace(COMMAND_PLACEHOLDER_SUBJECT, firstSchoolCompetencyData.schoolSubject)
+                        .replace(COMMAND_PLACEHOLDER_LEVEL, makeLevel(firstSchoolCompetencyData.level))
+                        .replace(COMMAND_PLACEHOLDER_COMPETENCIES, makeCompetencyEntriesMS(competencyList));
+                subjectTable.append(competencyTableMajorSubjectCmd);
+            }
         } else {
-            String competencyTableMinorSubjectCmd = COMMAND_CALL_COMPETENCY_TABLE
-                    .replace(COMMAND_PLACEHOLDER_SUBJECT, firstSchoolCompetencyData.schoolSubject)
-                    .replace(COMMAND_PLACEHOLDER_COMPETENCIES, makeCompetencyEntriesSS(competencyList));
-            subjectTable.append(competencyTableMinorSubjectCmd);
-
+            if (isNotElectiveSubjectWithoutLevelAndGrade(firstSchoolCompetencyData.schoolSubject, firstSchoolCompetencyData.level, firstSchoolCompetencyData.grade) ||
+                    isRegularSubject(firstSchoolCompetencyData.schoolSubject)) {
+                String competencyTableMinorSubjectCmd = COMMAND_CALL_COMPETENCY_TABLE
+                        .replace(COMMAND_PLACEHOLDER_SUBJECT, firstSchoolCompetencyData.schoolSubject)
+                        .replace(COMMAND_PLACEHOLDER_COMPETENCIES, makeCompetencyEntriesSS(competencyList));
+                subjectTable.append(competencyTableMinorSubjectCmd);
+            }
         }
         return subjectTable.toString();
+    }
+
+    private boolean isRegularSubject(String schoolSubject) {
+        if (!schoolSubject.contains("Wahlpflichtbereich")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean isElectiveSubject(String schoolSubject) {
+        if (schoolSubject.contains("Wahlpflichtbereich")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean isNotElectiveSubjectWithoutLevelAndGrade(String schoolSubject, String level, String grade) {
+            if (isElectiveSubject(schoolSubject) && !level.isEmpty() && !grade.isEmpty()) {
+                return true;
+            } else {
+                return false;
+            }
     }
 
     private boolean shouldRenderAsMajorSubject(SchoolCompetencyData firstSchoolCompetencyData, String partOfYear) {
@@ -151,21 +187,41 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
 
         for (SchoolCompetencyData schoolCompetencyData : competencyList) {
             StringBuilder competency = new StringBuilder();
-            appendBold(competency, schoolCompetencyData.schoolCompetency);
+            if (!schoolCompetencyData.schoolCompetency.isEmpty()) {
+                appendBold(competency, schoolCompetencyData.schoolCompetency);
+            }
             if (!schoolCompetencyData.schoolSubCompetency.isEmpty()) {
-                competency.append(TEX_TABLE_LINE_BREAK);
+                if (!schoolCompetencyData.schoolCompetency.isEmpty()) {
+                    competency.append(TEX_TABLE_LINE_BREAK);
+                }
                 appendUnderlined(competency, schoolCompetencyData.schoolSubCompetency);
             }
             if (!schoolCompetencyData.description.isEmpty()) {
                 String temp = schoolCompetencyData.description.replaceAll("\r\n|\r|\n", TEX_TABLE_LINE_BREAK_REPLACEMENT);
-                competency.append(TEX_TABLE_LINE_BREAK).append(temp);
+                if (!schoolCompetencyData.schoolCompetency.isEmpty() || !schoolCompetencyData.schoolSubCompetency.isEmpty()) {
+                    competency.append(TEX_TABLE_LINE_BREAK);
+                }
+                competency.append(temp);
             }
             String competencyReplaced = COMMAND_CALL_COMPETENCY_MAJOR_SUBJECT
                     .replace(COMMAND_PLACEHOLDER_COMPETENCY, competency)
                     .replace(COMMAND_PLACEHOLDER_GRADE, makeGrade(schoolCompetencyData.grade));
             competenciesTable.append(competencyReplaced);
         }
-        return competenciesTable.toString();
+        return replaceLast("\\hline", "\\nobreakhline", competenciesTable.toString());
+    }
+
+    public static String replaceLast(String find, String replace, String string) {
+        int lastIndex = string.lastIndexOf(find);
+
+        if (lastIndex == -1) {
+            return string;
+        }
+
+        String beginString = string.substring(0, lastIndex);
+        String endString = string.substring(lastIndex + find.length());
+
+        return beginString + replace + endString;
     }
 
     private void appendUnderlined(StringBuilder text, String valueToAppend) {
@@ -185,19 +241,22 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
         for (SchoolCompetencyData schoolCompetencyData : competencyList) {
             StringBuilder competency = new StringBuilder();
             competency.append(schoolCompetencyData.schoolCompetency);
-            if (!schoolCompetencyData.schoolSubCompetency.isEmpty()) {
-                competency.append(TEX_TABLE_LINE_BREAK).append(schoolCompetencyData.schoolSubCompetency);
+            if (isNotElectiveSubjectWithoutLevelAndGrade(schoolCompetencyData.schoolSubject, schoolCompetencyData.level, schoolCompetencyData.grade) ||
+                    !schoolCompetencyData.grade.isEmpty()) {
+                if (!schoolCompetencyData.schoolSubCompetency.isEmpty()) {
+                    competency.append(TEX_TABLE_LINE_BREAK).append(schoolCompetencyData.schoolSubCompetency);
+                }
+                if (!schoolCompetencyData.description.isEmpty()) {
+                    competency.append(TEX_TABLE_LINE_BREAK)
+                            .append(schoolCompetencyData.description
+                                    .replaceAll("\r\n|\r|\n", TEX_TABLE_LINE_BREAK_REPLACEMENT));
+                }
+                String competencyReplaced = COMMAND_CALL_COMPETENCY_MINOR_SUBJECT
+                        .replace(COMMAND_PLACEHOLDER_COMPETENCY, competency)
+                        .replace(COMMAND_PLACEHOLDER_GRADE, makeGrade(schoolCompetencyData.grade))
+                        .replace(COMMAND_PLACEHOLDER_LEVEL, makeLevel(schoolCompetencyData.level));
+                competenciesTable.append(competencyReplaced);
             }
-            if (!schoolCompetencyData.description.isEmpty()) {
-                competency.append(TEX_TABLE_LINE_BREAK)
-                        .append(schoolCompetencyData.description
-                                .replaceAll("\r\n|\r|\n", TEX_TABLE_LINE_BREAK_REPLACEMENT));
-            }
-            String competencyReplaced = COMMAND_CALL_COMPETENCY_MINOR_SUBJECT
-                    .replace(COMMAND_PLACEHOLDER_COMPETENCY, competency)
-                    .replace(COMMAND_PLACEHOLDER_GRADE, makeGrade(schoolCompetencyData.grade))
-                    .replace(COMMAND_PLACEHOLDER_LEVEL, makeLevel(schoolCompetencyData.level));
-            competenciesTable.append(competencyReplaced);
         }
         return competenciesTable.toString();
     }
@@ -206,37 +265,41 @@ public class ErfurtSchoolTablePlaceholderReplacer implements TablePlaceholderRep
     String makeGrade(String grade) {
         switch (grade) {
             case "1":
-                return "\\gradeOne";
+                return "\\gradeOne\\hline";
             case "2":
-                return "\\gradeTwo";
+                return "\\gradeTwo\\hline";
             case "3":
-                return "\\gradeThree";
+                return "\\gradeThree\\hline";
             case "4":
-                return "\\gradeFour";
+                return "\\gradeFour\\hline";
             case SPECIAL_GRADE_VALUE_GRADE_IN_SECOND_HALF_YEAR:
-                return "\\gradeComesWithSecondHalfYear";
+                return "\\gradeComesWithSecondHalfYear\\hline";
             case SPECIAL_GRADE_VALUE_GRADE_NOT_GIVEN:
-                return "\\gradeNotGiven";
+                return "\\gradeNotGiven\\hline";
             default:
-                return "\\gradeDefault";
+                return "\\gradeDefault\\hline";
         }
     }
 
     @VisibleForTesting
     String makeLevel(String level) {
         switch (level) {
+            case "0":
+                return LEVEL_GB;
             case "1":
-                return LEVEL_RED;
+                return LEVEL_GREEN;
             case "2":
                 return LEVEL_BLUE;
             case "3":
-                return LEVEL_GREEN;
+                return LEVEL_RED;
+            case "4":
+                return LEVEL_None;
             case "7":
-                return "\\levelSeven";
+                return LEVEL_SEVEN;
             case "8":
-                return "\\levelEight";
+                return LEVEL_EIGHT;
             case "9":
-                return "\\levelNine";
+                return LEVEL_NINE;
             default:
                 return LEVEL_None;
         }
